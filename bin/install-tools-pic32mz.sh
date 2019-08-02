@@ -16,9 +16,9 @@
 
 
 URL_MPLABIPE=http://ww1.microchip.com/downloads/en/DeviceDoc/MPLABX-v4.05-linux-installer.tar
-URL_CODESCAPE=https://www.mips.com/?do-download=linux-x64-mti-bare-metal-2016-05-06
+URL_CODESCAPE=https://www.dropbox.com/s/aescc1ouoqzrc8f/microchip_tools.tar.xz?dl=0
 MPLABIPE=MPLABX-v4.05-linux-installer.tar
-CODESCAPE=Codescape-Bare-Metal.tar.gz
+CODESCAPE=microchip_tools.tar.xz
 DOWNLOAD_DIR=~/Downloads/hyper_files
 
 download_mplab(){
@@ -71,8 +71,8 @@ fi;
 tar -xvf $MPLABIPE
 ./MPLABX-v4.05-linux-installer.sh
 
-tar -zxvf Codescape-Bare-Metal.tar.gz 
-mv mips-mti-elf /opt
+tar -xvf $CODESCAPE
+mv microchip/mips-mti-elf /opt
 
 popd
 
