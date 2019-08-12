@@ -77,7 +77,7 @@ mv microchip/mips-mti-elf /opt
 popd
 
 echo  >> ~/.profile
-echo "export PATH=\"\$PATH:\"/opt/mips-mti-elf/2016.05-06/bin\"\"" >> ~/.profile
+echo "export PATH=\"\$PATH:\"/opt/mips-mti-elf/2016.05-03/bin\"\"" >> ~/.profile
 echo  >> ~/.profile
 
 echo "***********************************************************"
