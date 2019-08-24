@@ -28,7 +28,7 @@ popd
 
 # Configure path.
 echo  >> ~/.profile
-echo "export PATH=\"\$PATH:\"$TOOLS_DIR/riscv-gnu-toolchain-bins\"\"" >> ~/.profile
+echo "export PATH=\"\$PATH:\"$TOOLS_DIR/riscv-gnu-toolchain-bins/bin\"\"" >> ~/.profile
 echo  >> ~/.profile
 
 echo "***********************************************************"
