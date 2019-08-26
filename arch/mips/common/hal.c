@@ -539,6 +539,14 @@ uint32_t getPreviousShadowSet(){
 	return ((srsclt&SRSCTL_PSS)>>SRSCLT_PSS_SHIFT);
 }
 
+/**
+ * @brief Get the number of GPR Shadows.
+ * @return Number of GPR shadows. 
+ */
+uint32_t getNumberGPRShadow(){
+	return ((mfc0(CP0_SRSCTL, 2) & SRSCTL_HSS) >> SRSCTL_HSS_SHIFT);
+}
+
 
 /**
  * @brief Return the CP0 COUNTER.

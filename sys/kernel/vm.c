@@ -152,7 +152,7 @@ vm_t *create_vm(const struct vmconf_t const *vm_conf) {
  */
 vcpu_t *create_vcpu(vm_t *vm, uint32_t entry_point, uint32_t priority){	
     static uint32_t vcpu_id=1;
-    uint32_t num_shadow_gprs = ((mfc0(CP0_SRSCTL, 2) & SRSCTL_HSS) >> SRSCTL_HSS_SHIFT);
+    uint32_t num_shadow_gprs = getNumberGPRShadow();
         
     vcpu_t *vcpu;
 

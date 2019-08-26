@@ -51,6 +51,7 @@ void setLowestGShadow(uint32_t lowestshadow);
 uint32_t getLowestGShadow(void);
 void setPreviousShadowSet(uint32_t shadow_set);
 uint32_t getPreviousShadowSet();
+uint32_t getNumberGPRShadow();
 uint32_t getCounter(void);
 void setGTOffset(int32_t gtoffset);
 void setGuestCTL2(uint32_t guestclt2);
