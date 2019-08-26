@@ -21,7 +21,7 @@ CFG_FILE = cfg/sample-ping-pong.cfg
 CROSS_COMPILER = riscv64-unknown-elf-
 
 # Optional Device Drivers
-#CONFIG_INTERVMCOMM_DRV = yes
+CONFIG_INTERVMCOMM_DRV = yes
 #CONFIG_PIC32MZ_USB_DRV = yes
 #CONFIG_PIC32MZ_ETHERNET_DRV = yes
 #CONFIG_VIRTUAL_IO_DRV = yes
@@ -68,9 +68,9 @@ VERSION:=$(shell $(TOPDIR)/scripts/genversion.sh)
 LINKER_SCRIPT = ../../arch/mips/pic32mz/pic32mz.ld
 
 ### GCC flags configuration: processor tunning ###
-CFLAGS += -Wall
+CFLAGS += #-Wall
 #MIPZ VZ support
-CFLAGS += -Wa,
+CFLAGS += #-Wa,
 #flointing pointing options
 CFLAGS +=  #-mno-check-zero-division -msoft-float -fshort-double
 #General options
@@ -82,7 +82,7 @@ LDFLAGS =
 
 ### Include dirs ###
 INC_DIRS = -I$(TOPDIR)arch/riscv/rv8/include \
-           -I$(TOPDIR)arch/riscv/rv8/include \
+           -I$(TOPDIR)arch/riscv/common/include \
            -I$(TOPDIR)/platform/include \
            -I$(TOPDIR)sys/lib/include \
            -I$(TOPDIR)sys/kernel/include \
@@ -103,10 +103,11 @@ STRIP = $(CROSS_COMPILER)strip
 
 APP = prplHypervisor
 
-all: config_vms lib kernel common pic32mz platform drivers $(APP) bare_apps generate_firmware
+#all: config_vms lib kernel common pic32mz platform drivers $(APP) bare_apps generate_firmware
+all: config_vms kernel common platform drivers
 
 include $(TOPDIR)sys/sys.mk
-#include $(TOPDIR)arch/riscv/rv8/common/common.mk
+include $(TOPDIR)arch/riscv/common/common.mk
 #include $(TOPDIR)arch/riscv/rv8/pic32mz.mk
 include board/board.mk
 include $(TOPDIR)/drivers/drivers.mk
@@ -154,7 +155,7 @@ clean: config_vms
 	rm -f include/config.h
 	rm -f genconf
 	
-	for i in $(APP_LIST) ; do \
-		$(MAKE) -C ../../bare-metal-apps/platform/pic32mz_starter_kit APP=$$i CLEAN=1 clean \
-	;done
+	#for i in $(APP_LIST) ; do \
+	#	$(MAKE) -C ../../bare-metal-apps/platform/rv8_simul APP=$$i CLEAN=1 clean \
+	#;done
 
