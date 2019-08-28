@@ -65,7 +65,7 @@ TOPDIR=../../
 PLATFORM_DIR=platform/rv8_simul/
 VERSION:=$(shell $(TOPDIR)/scripts/genversion.sh)
 
-LINKER_SCRIPT = ../../arch/mips/pic32mz/pic32mz.ld
+LINKER_SCRIPT = ../../arch/riscv/rv8/rv8.ld
 
 ### GCC flags configuration: processor tunning ###
 CFLAGS += #-Wall
@@ -104,11 +104,11 @@ STRIP = $(CROSS_COMPILER)strip
 APP = prplHypervisor
 
 #all: config_vms lib kernel common pic32mz platform drivers $(APP) bare_apps generate_firmware
-all: config_vms kernel common platform drivers
+all: config_vms lib kernel common platform drivers rv8 $(APP)
 
 include $(TOPDIR)sys/sys.mk
 include $(TOPDIR)arch/riscv/common/common.mk
-#include $(TOPDIR)arch/riscv/rv8/pic32mz.mk
+include $(TOPDIR)arch/riscv/rv8/rv8.mk
 include board/board.mk
 include $(TOPDIR)/drivers/drivers.mk
 

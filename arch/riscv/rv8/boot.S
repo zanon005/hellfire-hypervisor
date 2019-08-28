@@ -8,9 +8,9 @@ _start:
     la  a1, _bss_start
 BSS_CLEAR:
     sw  zero, 0(a1)
-    slt v1, a1, a0
-    addiu   a1, a1, 4
-    bnez    v1, BSS_CLEAR
+    
+    
+    
     nop
 
     jal hyper_init
@@ -19,3 +19,17 @@ BSS_CLEAR:
 neverend:
     j neverend
     nop
+
+
+    .align 2
+    .section .text
+    .global gpr_context_save
+gpr_context_save:
+    nop
+    
+    .align 2
+    .section .text
+    .global gpr_context_restore
+gpr_context_restore:
+    nop
+    

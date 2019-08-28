@@ -129,6 +129,6 @@ void contextRestore(){
  * @return 0 on success, otherwise error.
  */
 uint32_t instruction_emulation(uint32_t epc){
-	return __instruction_emulation(epc);
+	return 0;
 }
 
