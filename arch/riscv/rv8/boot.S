@@ -1,4 +1,3 @@
-.section .text
 .globl _start
 _start:
     
@@ -7,27 +6,20 @@ _start:
     la  a0, _bss_end
     la  a1, _bss_start
 BSS_CLEAR:
-    sw  zero, 0(a1)
-    
-    
-    
+1:  sw  zero, 0(a1)
+    addi a1, a1, 4
+    bne a1, a0, 1b
     nop
-
     jal hyper_init
     nop
-
-neverend:
-    j neverend
+2:  j 2b
     nop
 
-
-    .align 2
     .section .text
     .global gpr_context_save
 gpr_context_save:
     nop
     
-    .align 2
     .section .text
     .global gpr_context_restore
 gpr_context_restore:

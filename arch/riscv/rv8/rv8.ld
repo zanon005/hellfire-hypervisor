@@ -1,24 +1,25 @@
+
+OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv",
+          "elf64-littleriscv")
+OUTPUT_ARCH(riscv)
+ENTRY(_start)
+
 MEMORY 
 {
-    ram     (rw!x) : ORIGIN = 0x00000000, LENGTH = 64K /* RAM area. */
+    ram     (rw!x) : ORIGIN = 0x00001000, LENGTH = 64K /* RAM area. */
 }
 
 /* define a global symbol _stack  */
 
 _stack = ORIGIN(ram) + LENGTH(ram);
-_stack_size = 2048;
+_stack_size = 1024;
 
 /* now define the output sections  */
 
 SECTIONS 
 {
-    .kernel 0x00000000:
+    .kernel 0x00001000:
     {
-        . = 0x200;
-        *(.vector_hwint_0)
-            . = 0x220;
-        *(.vector_hwint_1)
-        *(.entry)
         _text = .;
         *(.text)
         *(.text.*)

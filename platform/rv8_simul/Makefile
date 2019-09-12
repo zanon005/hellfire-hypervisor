@@ -68,13 +68,13 @@ VERSION:=$(shell $(TOPDIR)/scripts/genversion.sh)
 LINKER_SCRIPT = ../../arch/riscv/rv8/rv8.ld
 
 ### GCC flags configuration: processor tunning ###
-CFLAGS += #-Wall
+CFLAGS += -march=rv64imafdc -Wall -fpie -ffunction-sections -fdata-sections
 #MIPZ VZ support
 CFLAGS += #-Wa,
 #flointing pointing options
 CFLAGS +=  #-mno-check-zero-division -msoft-float -fshort-double
 #General options
-CFLAGS += -c -ffreestanding -nostdlib -fomit-frame-pointer #-G 0
+CFLAGS += -g -c -ffreestanding -nostdlib -fomit-frame-pointer #-G 0
 #Additional features flags
 CFLAGS += -DCPU_SPEED=$(F_CLK) -DHYPVERSION=${VERSION}
 # LD flags
