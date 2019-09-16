@@ -1,7 +1,6 @@
 .globl _start
 _start:
     
-    la  gp, _gp
     la  sp, _stack
     la  a0, _bss_end
     la  a1, _bss_start

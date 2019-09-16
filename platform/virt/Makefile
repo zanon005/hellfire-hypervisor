@@ -113,8 +113,8 @@ include board/board.mk
 include $(TOPDIR)/drivers/drivers.mk
 
 $(APP): 
-	$(LD) $(LDFLAGS) -T$(LINKER_SCRIPT) -Map $(APP).map -N -o $(APP).elf *.o $(OBJ)
-	$(STRIP) $(APP).elf
+	$(LD) $(LDFLAGS) -g -T$(LINKER_SCRIPT) -Map $(APP).map -N -o $(APP).elf *.o $(OBJ)
+	#$(STRIP) $(APP).elf
 	$(OBJDUMP) --disassemble --reloc $(APP).elf > $(APP).lst
 	$(OBJDUMP) -h $(APP).elf > $(APP).sec
 	$(OBJDUMP) -s $(APP).elf > $(APP).cnt

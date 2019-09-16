@@ -1,81 +1,57 @@
+OUTPUT_ARCH( "riscv" )
 
-OUTPUT_FORMAT("elf64-littleriscv", "elf64-littleriscv",
-          "elf64-littleriscv")
-OUTPUT_ARCH(riscv)
-ENTRY(_start)
+ENTRY( _start )
 
-MEMORY 
-{
-    ram     (rw!x) : ORIGIN = 0x80040000, LENGTH = 64K /* RAM area. */
+MEMORY{
+  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 64K
 }
-
-/* define a global symbol _stack  */
 
 _stack = ORIGIN(ram) + LENGTH(ram);
 _stack_size = 1024;
 
-/* now define the output sections  */
-
-SECTIONS 
-{
-    .kernel 0x80040000:
-    {
-        _text = .;
-        *(.text)
-        *(.text.*)
-        _etext = .;
-    } > ram
-
-    .__drivers_table_init :
-    {
-        . = ALIGN(4);
-        __drivers_table_init_start = .;
-        *(.__drivers_table_init)
-        __drivers_table_init_end = .;
-    } > ram
-    
-    .reginfo : {
-        . = ALIGN(4);
-        *(.reginfo)
-    } > ram
-
-    .rodata :
-    {
-        . = ALIGN(4);
-        _rodata = .;
-        *(.rodata)
-        *(.rodata.*)
-        _erodata = .;
-    } > ram
-
-    .data : 
-    {
-        . = ALIGN(4); 
-        _data = .;
-        *(.data)
-        *(.data.*)
-        _gp = .;
-        *(.sdata)
-        *(.sdata.*)
-        _edata = .;
-    } > ram
-
-    .bss :
-    {
-        . = ALIGN(4);
-        _bss_start = .; 
-        *(.bss) 
-        *(.bss.*)
-        *(.sbss) 
-        *(.sbss.*)
-        *(.scommon)
-        _bss_end = . ;
-    } > ram
-    
-
+PHDRS{
+  text PT_LOAD;
+  data PT_LOAD;
+  bss PT_LOAD;
 }
+
+SECTIONS{
+  .text : {
+    PROVIDE(_text_start = .);
+    *(.text.init) *(.text .text.*)
+    PROVIDE(_text_end = .);
+  } >ram AT>ram :text
+
+  .__drivers_table_init :  {
+    PROVIDE(__drivers_table_init_start = .);
+    *(.__drivers_table_init)
+    PROVIDE(__drivers_table_init_end = .);
+  } >ram AT>ram :text
+
+  .rodata : {
+    PROVIDE(_rodata_start = .);
+    *(.rodata .rodata.*)
+    PROVIDE(_rodata_end = .);
+  } >ram AT>ram :text
+
+
+  .data : {
+    . = ALIGN(4096);
+    PROVIDE(_data_start = .);
+    *(.sdata .sdata.*) *(.data .data.*)
+    PROVIDE(_data_end = .);
+  } >ram AT>ram :data
+
+  .bss :{
+    PROVIDE(_bss_start = .);
+    *(.sbss .sbss.*) *(.bss .bss.*)
+    PROVIDE(_bss_end = .);
+  } >ram AT>ram :bss
+
+  PROVIDE(_memory_start = ORIGIN(ram));
+  PROVIDE(_memory_end = ORIGIN(ram) + LENGTH(ram));
+}
+
 _end = .;
 _heap_start = . ;
 _heap_size = LENGTH(ram) - (_heap_start - ORIGIN(ram)) - 4 - _stack_size;
-    
-
