@@ -26,9 +26,9 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 void *memset(void *dst, int c, unsigned long bytes);
 void *memcpy(void *dst, const void *src, unsigned long bytes);
-int32_t puts(const char *str);
+int32_t puts(const unsigned char *str);
 char *itoa(int i, char *s, int base);
-int32_t printf(const char *format, ...);
+int32_t printf(const unsigned char *format, ...);
 int32_t sprintf(char *out, const char *format, ...);
 int32_t strcmp(const char *s1, const char *s2);
 char *strcpy(char *dest, const char *src);

@@ -23,10 +23,10 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #define PAD_RIGHT 1
 #define PAD_ZERO 2
 
-static void printchar(char **str, int c);
-static int32_t prints(char **out, const char *string, int width, int pad);
-static int32_t printi(char **out, int i, int b, int sg, int width, int pad, int letbase);
-static int32_t print(char **out, const char *format, va_list args );
+static void printchar(unsigned char **str, int c);
+static int32_t prints(unsigned char **out, const unsigned char *string, int width, int pad);
+static int32_t printi(unsigned char **out, int i, int b, int sg, int width, int pad, int letbase);
+static int32_t print(unsigned char **out, const unsigned char *format, va_list args );
 
 
 void *memset(void *dst, int c, unsigned long bytes){
@@ -53,7 +53,7 @@ void *memcpy(void *dst, const void *src, unsigned long bytes){
 	return dst;
 }
 
-int32_t puts(const char *str){
+int32_t puts(const unsigned char *str){
 	while(*str){
 		if(*str == '\n')
 			putchar('\r');
@@ -100,7 +100,7 @@ char *itoa(int i, char *s, int base){
 	return s;
 }
 
-static void printchar(char **str, int c){		
+static void printchar(unsigned char **str, int c){		
 	if (str) {
 		**str = c;
 		++(*str);
@@ -108,7 +108,7 @@ static void printchar(char **str, int c){
 	else (void)putchar(c);
 }
 
-static int32_t prints(char **out, const char *string, int width, int pad){
+static int32_t prints(unsigned char **out, const unsigned char *string, int width, int pad){
 	register int pc = 0, padchar = ' ';
 
 	if (width > 0) {
@@ -137,7 +137,7 @@ static int32_t prints(char **out, const char *string, int width, int pad){
 	return pc;
 }
 
-static int32_t printi(char **out, int i, int b, int sg, int width, int pad, int letbase)
+static int32_t printi(unsigned char **out, int i, int b, int sg, int width, int pad, int letbase)
 {
 	char print_buf[12];
 	register char *s;
@@ -180,7 +180,7 @@ static int32_t printi(char **out, int i, int b, int sg, int width, int pad, int 
 	return pc + prints (out, s, width, pad);
 }
 
-static int32_t print(char **out, const char *format, va_list args )
+static int32_t print(unsigned char **out, const unsigned char *format, va_list args )
 {
 	register int width, pad;
 	register int pc = 0;
@@ -250,7 +250,7 @@ static int32_t print(char **out, const char *format, va_list args )
 
 /*Based on Georges Menie Version
 contributed by Christian Ettinger*/
-int32_t printf(const char *format, ...)
+int32_t printf(const unsigned char *format, ...)
 {
 	va_list args;
         

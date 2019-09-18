@@ -51,7 +51,7 @@ extern uint32_t _heap_size;
 static void print_config(void)
 {
 	INFO("===========================================================");
-	INFO("prplHypervsior %s [%s, %s]", STR_VALUE(HYPVERSION), __DATE__, __TIME__);
+	INFO("prplHypervisor %s [%s, %s]", STR_VALUE(HYPVERSION), __DATE__, __TIME__);
 	INFO("Copyright (c) 2016, prpl Foundation");
 	INFO("===========================================================");
 	INFO("CPU Core:      %s", STR_VALUE(CPU_ID));
