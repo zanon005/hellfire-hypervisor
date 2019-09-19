@@ -20,7 +20,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <hypercall_defines.h>
 #include <vcpu.h>
 #include <globals.h>
-#include <mips_cp0.h>
+#include <proc.h>
 #include <hal.h>
 
 

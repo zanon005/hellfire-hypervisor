@@ -28,7 +28,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <libc.h>
 #include <globals.h>
 #include <hal.h>
-#include <mips_cp0.h>
+#include <proc.h>
 #include <scheduler.h>
 #include <guest_interrupts.h>
 
@@ -112,7 +112,7 @@ void contextRestore(){
 	setGuestCTL2(vcpu->guestclt2);
 	
 	/* clear timer int. */
-	vcpu->guestclt2 &= ~(GUEST_TIMER_INT << GUESTCLT2_GRIPL_SHIFT);
+	//vcpu->guestclt2 &= ~(GUEST_TIMER_INT << GUESTCLT2_GRIPL_SHIFT);
 	
 	setEPC(vcpu->pc);
 	

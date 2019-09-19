@@ -28,7 +28,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <types.h>
 #include <hal.h>
 #include <globals.h>
-#include <mips_cp0.h>
+#include <proc.h>
 #include <board.h>
 #include <malloc.h>
 #include <vm.h>
@@ -83,6 +83,9 @@ void hyper_init(){
 	/* early boot messages with hypervisor configuration. */
 	print_config();
 	
+	uint32_t csr = read_csr(0xF11);
+	printf("%x", csr);
+
 	/* Processor inicialization */
 	if(LowLevelProcInit()){
 		CRITICAL("Low level processor initialization error.");
