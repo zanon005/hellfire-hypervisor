@@ -205,7 +205,10 @@ static int32_t print(unsigned char **out, const unsigned char *format, va_list a
 				width += *format - '0';
 			}
 			if( *format == 's' ) {
-				register char *s = (char *)va_arg( args, int );
+				/* FIXME: va_args() returning 64bits pointer with extended signal.  
+				 *  The follwing workaround clean the 32bit higher bits from var_arg() return. 
+				 */
+				register unsigned char *s = (unsigned char *)(va_arg( args, int ) & 0xFFFFFFFF);
 				pc += prints (out, s?s:"(null)", width, pad);
 				continue;
 			}
