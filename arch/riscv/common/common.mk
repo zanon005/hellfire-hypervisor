@@ -17,4 +17,6 @@ common:
 	$(CC) $(CFLAGS) $(INC_DIRS) \
 	        $(TOPDIR)arch/riscv/common/hal.c \
 	        $(TOPDIR)arch/riscv/common/tlb.c \
-	        $(TOPDIR)arch/riscv/common/vcpu.c 
+	        $(TOPDIR)arch/riscv/common/vcpu.c \
+	        $(TOPDIR)arch/riscv/common/exception.c \
+	        $(TOPDIR)arch/riscv/common/hypercall.c
