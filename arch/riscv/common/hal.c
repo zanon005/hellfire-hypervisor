@@ -610,4 +610,142 @@ void write_csr(int csr, long value){
     }
 }
 
+void set_csr_bits(int csr, long bits){
 
+    switch (csr) {
+    case CSR_FFLAGS:     set_csr_m(0x001, bits); break;
+    case CSR_FRM:        set_csr_m(0x002, bits); break;
+    case CSR_FCSR:       set_csr_m(0x003, bits); break;
+    case CSR_MCYCLE:     set_csr_m(0xB00, bits); break;
+    case CSR_MINSTRET:   set_csr_m(0xB02, bits); break;
+    case CSR_MCYCLEH:    set_csr_m(0xB80, bits); break;
+    case CSR_MINSTRETH:  set_csr_m(0xB82, bits); break;
+    case CSR_CYCLE:      set_csr_m(0xC00, bits); break;
+    case CSR_TIME:       set_csr_m(0xC01, bits); break;
+    case CSR_INSTRET:    set_csr_m(0xC02, bits); break;
+    case CSR_CYCLEH:     set_csr_m(0xC80, bits); break;
+    case CSR_TIMEH:      set_csr_m(0xC81, bits); break;
+    case CSR_INSTRETH:   set_csr_m(0xC82, bits); break;
+    case CSR_MVENDORID:  set_csr_m(0xF11, bits); break;
+    case CSR_MARCHID:    set_csr_m(0xF12, bits); break;
+    case CSR_MIMPID:     set_csr_m(0xF13, bits); break;
+    case CSR_MHARTID:    set_csr_m(0xF14, bits); break;
+    case CSR_MSTATUS:    set_csr_m(0x300, bits); break;
+    case CSR_MISA:       set_csr_m(0x301, bits); break;
+    case CSR_MEDELEG:    set_csr_m(0x302, bits); break;
+    case CSR_MIDELEG:    set_csr_m(0x303, bits); break;
+    case CSR_MIE:        set_csr_m(0x304, bits); break;
+    case CSR_MTVEC:      set_csr_m(0x305, bits); break;
+    case CSR_MCOUNTEREN: set_csr_m(0x306, bits); break;
+    case CSR_MSCRATCH:   set_csr_m(0x340, bits); break;
+    case CSR_MEPC:       set_csr_m(0x341, bits); break;
+    case CSR_MCAUSE:     set_csr_m(0x342, bits); break;
+    case CSR_MTVAL:      set_csr_m(0x343, bits); break;
+    case CSR_MIP:        set_csr_m(0x344, bits); break;
+    case CSR_SSTATUS:    set_csr_m(0x100, bits); break;
+    case CSR_SEDELEG:    set_csr_m(0x102, bits); break;
+    case CSR_SIDELEG:    set_csr_m(0x103, bits); break;
+    case CSR_SIE:        set_csr_m(0x104, bits); break;
+    case CSR_STVEC:      set_csr_m(0x105, bits); break;
+    case CSR_SCOUNTEREN: set_csr_m(0x106, bits); break;
+    case CSR_SSCRATCH:   set_csr_m(0x140, bits); break;
+    case CSR_SEPC:       set_csr_m(0x141, bits); break;
+    case CSR_SCAUSE:     set_csr_m(0x142, bits); break;
+    case CSR_STVAL:      set_csr_m(0x143, bits); break;
+    case CSR_SIP:        set_csr_m(0x144, bits); break;
+    case CSR_SATP:       set_csr_m(0x180, bits); break;
+    case CSR_PMPCFG0:    set_csr_m(0x3A0, bits); break;
+    case CSR_PMPCFG1:    set_csr_m(0x3A1, bits); break;
+    case CSR_PMPCFG2:    set_csr_m(0x3A2, bits); break;
+    case CSR_PMPCFG3:    set_csr_m(0x3A3, bits); break;
+    case CSR_PMPADDR0:   set_csr_m(0x3B0, bits); break;
+    case CSR_PMPADDR1:   set_csr_m(0x3B1, bits); break;
+    case CSR_PMPADDR2:   set_csr_m(0x3B2, bits); break;
+    case CSR_PMPADDR3:   set_csr_m(0x3B3, bits); break;
+    case CSR_PMPADDR4:   set_csr_m(0x3B4, bits); break;
+    case CSR_PMPADDR5:   set_csr_m(0x3B5, bits); break;
+    case CSR_PMPADDR6:   set_csr_m(0x3B6, bits); break;
+    case CSR_PMPADDR7:   set_csr_m(0x3B7, bits); break;
+    case CSR_PMPADDR8:   set_csr_m(0x3B8, bits); break;
+    case CSR_PMPADDR9:   set_csr_m(0x3B9, bits); break;
+    case CSR_PMPADDR10:  set_csr_m(0x3BA, bits); break;
+    case CSR_PMPADDR11:  set_csr_m(0x3BB, bits); break;
+    case CSR_PMPADDR12:  set_csr_m(0x3BC, bits); break;
+    case CSR_PMPADDR13:  set_csr_m(0x3BD, bits); break;
+    case CSR_PMPADDR14:  set_csr_m(0x3BE, bits); break;
+    case CSR_PMPADDR15:  set_csr_m(0x3BF, bits); break;
+    default: 
+		CRITICAL("CSR not found.");
+    	break;
+    }
+}
+
+void clear_csr_bits(int csr, long bits){
+
+    switch (csr) {
+    case CSR_FFLAGS:     clear_csr_m(0x001, bits); break;
+    case CSR_FRM:        clear_csr_m(0x002, bits); break;
+    case CSR_FCSR:       clear_csr_m(0x003, bits); break;
+    case CSR_MCYCLE:     clear_csr_m(0xB00, bits); break;
+    case CSR_MINSTRET:   clear_csr_m(0xB02, bits); break;
+    case CSR_MCYCLEH:    clear_csr_m(0xB80, bits); break;
+    case CSR_MINSTRETH:  clear_csr_m(0xB82, bits); break;
+    case CSR_CYCLE:      clear_csr_m(0xC00, bits); break;
+    case CSR_TIME:       clear_csr_m(0xC01, bits); break;
+    case CSR_INSTRET:    clear_csr_m(0xC02, bits); break;
+    case CSR_CYCLEH:     clear_csr_m(0xC80, bits); break;
+    case CSR_TIMEH:      clear_csr_m(0xC81, bits); break;
+    case CSR_INSTRETH:   clear_csr_m(0xC82, bits); break;
+    case CSR_MVENDORID:  clear_csr_m(0xF11, bits); break;
+    case CSR_MARCHID:    clear_csr_m(0xF12, bits); break;
+    case CSR_MIMPID:     clear_csr_m(0xF13, bits); break;
+    case CSR_MHARTID:    clear_csr_m(0xF14, bits); break;
+    case CSR_MSTATUS:    clear_csr_m(0x300, bits); break;
+    case CSR_MISA:       clear_csr_m(0x301, bits); break;
+    case CSR_MEDELEG:    clear_csr_m(0x302, bits); break;
+    case CSR_MIDELEG:    clear_csr_m(0x303, bits); break;
+    case CSR_MIE:        clear_csr_m(0x304, bits); break;
+    case CSR_MTVEC:      clear_csr_m(0x305, bits); break;
+    case CSR_MCOUNTEREN: clear_csr_m(0x306, bits); break;
+    case CSR_MSCRATCH:   clear_csr_m(0x340, bits); break;
+    case CSR_MEPC:       clear_csr_m(0x341, bits); break;
+    case CSR_MCAUSE:     clear_csr_m(0x342, bits); break;
+    case CSR_MTVAL:      clear_csr_m(0x343, bits); break;
+    case CSR_MIP:        clear_csr_m(0x344, bits); break;
+    case CSR_SSTATUS:    clear_csr_m(0x100, bits); break;
+    case CSR_SEDELEG:    clear_csr_m(0x102, bits); break;
+    case CSR_SIDELEG:    clear_csr_m(0x103, bits); break;
+    case CSR_SIE:        clear_csr_m(0x104, bits); break;
+    case CSR_STVEC:      clear_csr_m(0x105, bits); break;
+    case CSR_SCOUNTEREN: clear_csr_m(0x106, bits); break;
+    case CSR_SSCRATCH:   clear_csr_m(0x140, bits); break;
+    case CSR_SEPC:       clear_csr_m(0x141, bits); break;
+    case CSR_SCAUSE:     clear_csr_m(0x142, bits); break;
+    case CSR_STVAL:      clear_csr_m(0x143, bits); break;
+    case CSR_SIP:        clear_csr_m(0x144, bits); break;
+    case CSR_SATP:       clear_csr_m(0x180, bits); break;
+    case CSR_PMPCFG0:    clear_csr_m(0x3A0, bits); break;
+    case CSR_PMPCFG1:    clear_csr_m(0x3A1, bits); break;
+    case CSR_PMPCFG2:    clear_csr_m(0x3A2, bits); break;
+    case CSR_PMPCFG3:    clear_csr_m(0x3A3, bits); break;
+    case CSR_PMPADDR0:   clear_csr_m(0x3B0, bits); break;
+    case CSR_PMPADDR1:   clear_csr_m(0x3B1, bits); break;
+    case CSR_PMPADDR2:   clear_csr_m(0x3B2, bits); break;
+    case CSR_PMPADDR3:   clear_csr_m(0x3B3, bits); break;
+    case CSR_PMPADDR4:   clear_csr_m(0x3B4, bits); break;
+    case CSR_PMPADDR5:   clear_csr_m(0x3B5, bits); break;
+    case CSR_PMPADDR6:   clear_csr_m(0x3B6, bits); break;
+    case CSR_PMPADDR7:   clear_csr_m(0x3B7, bits); break;
+    case CSR_PMPADDR8:   clear_csr_m(0x3B8, bits); break;
+    case CSR_PMPADDR9:   clear_csr_m(0x3B9, bits); break;
+    case CSR_PMPADDR10:  clear_csr_m(0x3BA, bits); break;
+    case CSR_PMPADDR11:  clear_csr_m(0x3BB, bits); break;
+    case CSR_PMPADDR12:  clear_csr_m(0x3BC, bits); break;
+    case CSR_PMPADDR13:  clear_csr_m(0x3BD, bits); break;
+    case CSR_PMPADDR14:  clear_csr_m(0x3BE, bits); break;
+    case CSR_PMPADDR15:  clear_csr_m(0x3BF, bits); break;
+    default: 
+		CRITICAL("CSR not found.");
+    	break;
+    }
+}
