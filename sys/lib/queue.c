@@ -27,14 +27,7 @@ This code was written by Sergio Johann Filho at Embedded System Group (GSE) at P
  */
 
 #include <types.h>
-#include <hal.h>
-#include <config.h>
-#include <exception.h>
 #include <libc.h>
-#include <globals.h>
-#include <hypercall.h>
-#include <board.h>
-#include <scheduler.h>
 #include <queue.h>
 #include <malloc.h>
  
