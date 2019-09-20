@@ -34,6 +34,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <scheduler.h>
 #include <interrupts.h>
 #include <libc.h>
+#include <proc.h>
 
 #define SYSTEM_TICK_INTERVAL (SYSTEM_TICK_US * MICROSECOND)
 #define QUEST_TICK_INTERVAL (GUEST_QUANTUM_MS * MILISECOND)
@@ -72,7 +73,13 @@ static void timer_interrupt_handler(){
  * first timer interrupt.
  */
 void start_timer(){
-	    
+	long mtime, mie;
+
+	mtime = read_csr(CSR_CYCLE);
+	write_csr(CSR_TIME, mtime + SYSTEM_TICK_INTERVAL);
+	mie = read_csr(CSR_MIE);
+	write_csr(CSR_MIE, mie | MIP_MTIP);
+
 	/* Wait for a timer interrupt */
 	while(1){};
 }
