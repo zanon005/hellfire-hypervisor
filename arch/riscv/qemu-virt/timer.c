@@ -75,12 +75,12 @@ static void timer_interrupt_handler(){
 void start_timer(){
 	long mtime, mie;
 
-	mtime = read_csr(CSR_CYCLE);
-	write_csr(CSR_TIME, mtime + SYSTEM_TICK_INTERVAL);
-	mie = read_csr(CSR_MIE);
-	write_csr(CSR_MIE, mie | MIP_MTIP);
+	MTIMECMP = MTIME + SYSTEM_TICK_INTERVAL;
+
+    set_csr_bits(CSR_MIE, MIP_MTIP);
+    set_csr_bits(CSR_MSTATUS, MSTATUS_MIE);
 
 	/* Wait for a timer interrupt */
-	while(1){};
+	for(;;);
 }
 
