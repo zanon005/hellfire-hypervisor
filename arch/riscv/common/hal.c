@@ -83,9 +83,6 @@ void hyper_init(){
 	/* early boot messages with hypervisor configuration. */
 	print_config();
 	
-	uint32_t csr = read_csr(0xF11);
-	printf("%x", csr);
-
 	/* Processor inicialization */
 	if(LowLevelProcInit()){
 		CRITICAL("Low level processor initialization error.");
@@ -145,43 +142,7 @@ int32_t ConfigureGPRShadow(){
  * @return 1 for error or 0 for success.
  */
 int32_t LowLevelProcInit(){
-
-        /* First some paranoic checks!! */
     
-        /* Verify if the processor implements the VZ module */
-        if(!hasVZ()){
-            /* panic */
-            return 1;
-        }
-
-        /* is it in root mode ?  */
-        if(!isRootMode()){
-            /* panic */
-            return 1;
-        }
-    
-        /* This implementation relies on the GuestID field  */
-        if(isRootASID()){ 
-            return -1;
-        }
-    
-        /* This implementation relies on the GuestID field */
-        if(!hasGuestID()){
-            /* panic */
-            return 1;
-        }
-
-        if(has1KPageSupport()){
-            /* Self Protection agains a variant that may implements 1K PageSupport. */
-            Disable1KPageSupport();     
-        }
-        
-	if (ConfigureGPRShadow()){
-		return 1;
-	}
-		
-        setGTOffset(0);
-	
 	return 0;
 }
 
@@ -505,6 +466,148 @@ uint32_t getBadInstruction(){
  */
 void udelay (uint32_t usec){
 
+}
+
+long read_csr(int csr){
+    long result = -1;
+
+    switch (csr) {
+    case CSR_FFLAGS:     result = read_csr_m(0x001); break;
+    case CSR_FRM:        result = read_csr_m(0x002); break;
+    case CSR_FCSR:       result = read_csr_m(0x003); break;
+    case CSR_MCYCLE:     result = read_csr_m(0xB00); break;
+    case CSR_MINSTRET:   result = read_csr_m(0xB02); break;
+    case CSR_MCYCLEH:    result = read_csr_m(0xB80); break;
+    case CSR_MINSTRETH:  result = read_csr_m(0xB82); break;
+    case CSR_CYCLE:      result = read_csr_m(0xC00); break;
+    case CSR_TIME:       result = read_csr_m(0xC01); break;
+    case CSR_INSTRET:    result = read_csr_m(0xC02); break;
+    case CSR_CYCLEH:     result = read_csr_m(0xC80); break;
+    case CSR_TIMEH:      result = read_csr_m(0xC81); break;
+    case CSR_INSTRETH:   result = read_csr_m(0xC82); break;
+    case CSR_MVENDORID:  result = read_csr_m(0xF11); break;
+    case CSR_MARCHID:    result = read_csr_m(0xF12); break;
+    case CSR_MIMPID:     result = read_csr_m(0xF13); break;
+    case CSR_MHARTID:    result = read_csr_m(0xF14); break;
+    case CSR_MSTATUS:    result = read_csr_m(0x300); break;
+    case CSR_MISA:       result = read_csr_m(0x301); break;
+    case CSR_MEDELEG:    result = read_csr_m(0x302); break;
+    case CSR_MIDELEG:    result = read_csr_m(0x303); break;
+    case CSR_MIE:        result = read_csr_m(0x304); break;
+    case CSR_MTVEC:      result = read_csr_m(0x305); break;
+    case CSR_MCOUNTEREN: result = read_csr_m(0x306); break;
+    case CSR_MSCRATCH:   result = read_csr_m(0x340); break;
+    case CSR_MEPC:       result = read_csr_m(0x341); break;
+    case CSR_MCAUSE:     result = read_csr_m(0x342); break;
+    case CSR_MTVAL:      result = read_csr_m(0x343); break;
+    case CSR_MIP:        result = read_csr_m(0x344); break;
+    case CSR_SSTATUS:    result = read_csr_m(0x100); break;
+    case CSR_SEDELEG:    result = read_csr_m(0x102); break;
+    case CSR_SIDELEG:    result = read_csr_m(0x103); break;
+    case CSR_SIE:        result = read_csr_m(0x104); break;
+    case CSR_STVEC:      result = read_csr_m(0x105); break;
+    case CSR_SCOUNTEREN: result = read_csr_m(0x106); break;
+    case CSR_SSCRATCH:   result = read_csr_m(0x140); break;
+    case CSR_SEPC:       result = read_csr_m(0x141); break;
+    case CSR_SCAUSE:     result = read_csr_m(0x142); break;
+    case CSR_STVAL:      result = read_csr_m(0x143); break;
+    case CSR_SIP:        result = read_csr_m(0x144); break;
+    case CSR_SATP:       result = read_csr_m(0x180); break;
+    case CSR_PMPCFG0:    result = read_csr_m(0x3A0); break;
+    case CSR_PMPCFG1:    result = read_csr_m(0x3A1); break;
+    case CSR_PMPCFG2:    result = read_csr_m(0x3A2); break;
+    case CSR_PMPCFG3:    result = read_csr_m(0x3A3); break;
+    case CSR_PMPADDR0:   result = read_csr_m(0x3B0); break;
+    case CSR_PMPADDR1:   result = read_csr_m(0x3B1); break;
+    case CSR_PMPADDR2:   result = read_csr_m(0x3B2); break;
+    case CSR_PMPADDR3:   result = read_csr_m(0x3B3); break;
+    case CSR_PMPADDR4:   result = read_csr_m(0x3B4); break;
+    case CSR_PMPADDR5:   result = read_csr_m(0x3B5); break;
+    case CSR_PMPADDR6:   result = read_csr_m(0x3B6); break;
+    case CSR_PMPADDR7:   result = read_csr_m(0x3B7); break;
+    case CSR_PMPADDR8:   result = read_csr_m(0x3B8); break;
+    case CSR_PMPADDR9:   result = read_csr_m(0x3B9); break;
+    case CSR_PMPADDR10:  result = read_csr_m(0x3BA); break;
+    case CSR_PMPADDR11:  result = read_csr_m(0x3BB); break;
+    case CSR_PMPADDR12:  result = read_csr_m(0x3BC); break;
+    case CSR_PMPADDR13:  result = read_csr_m(0x3BD); break;
+    case CSR_PMPADDR14:  result = read_csr_m(0x3BE); break;
+    case CSR_PMPADDR15:  result = read_csr_m(0x3BF); break;
+    default: 
+    	CRITICAL("CSR not found.");
+    	break;
+    }
+    return result;
+}
+
+void write_csr(int csr, long value){
+
+    switch (csr) {
+    case CSR_FFLAGS:     write_csr_m(0x001, value); break;
+    case CSR_FRM:        write_csr_m(0x002, value); break;
+    case CSR_FCSR:       write_csr_m(0x003, value); break;
+    case CSR_MCYCLE:     write_csr_m(0xB00, value); break;
+    case CSR_MINSTRET:   write_csr_m(0xB02, value); break;
+    case CSR_MCYCLEH:    write_csr_m(0xB80, value); break;
+    case CSR_MINSTRETH:  write_csr_m(0xB82, value); break;
+    case CSR_CYCLE:      write_csr_m(0xC00, value); break;
+    case CSR_TIME:       write_csr_m(0xC01, value); break;
+    case CSR_INSTRET:    write_csr_m(0xC02, value); break;
+    case CSR_CYCLEH:     write_csr_m(0xC80, value); break;
+    case CSR_TIMEH:      write_csr_m(0xC81, value); break;
+    case CSR_INSTRETH:   write_csr_m(0xC82, value); break;
+    case CSR_MVENDORID:  write_csr_m(0xF11, value); break;
+    case CSR_MARCHID:    write_csr_m(0xF12, value); break;
+    case CSR_MIMPID:     write_csr_m(0xF13, value); break;
+    case CSR_MHARTID:    write_csr_m(0xF14, value); break;
+    case CSR_MSTATUS:    write_csr_m(0x300, value); break;
+    case CSR_MISA:       write_csr_m(0x301, value); break;
+    case CSR_MEDELEG:    write_csr_m(0x302, value); break;
+    case CSR_MIDELEG:    write_csr_m(0x303, value); break;
+    case CSR_MIE:        write_csr_m(0x304, value); break;
+    case CSR_MTVEC:      write_csr_m(0x305, value); break;
+    case CSR_MCOUNTEREN: write_csr_m(0x306, value); break;
+    case CSR_MSCRATCH:   write_csr_m(0x340, value); break;
+    case CSR_MEPC:       write_csr_m(0x341, value); break;
+    case CSR_MCAUSE:     write_csr_m(0x342, value); break;
+    case CSR_MTVAL:      write_csr_m(0x343, value); break;
+    case CSR_MIP:        write_csr_m(0x344, value); break;
+    case CSR_SSTATUS:    write_csr_m(0x100, value); break;
+    case CSR_SEDELEG:    write_csr_m(0x102, value); break;
+    case CSR_SIDELEG:    write_csr_m(0x103, value); break;
+    case CSR_SIE:        write_csr_m(0x104, value); break;
+    case CSR_STVEC:      write_csr_m(0x105, value); break;
+    case CSR_SCOUNTEREN: write_csr_m(0x106, value); break;
+    case CSR_SSCRATCH:   write_csr_m(0x140, value); break;
+    case CSR_SEPC:       write_csr_m(0x141, value); break;
+    case CSR_SCAUSE:     write_csr_m(0x142, value); break;
+    case CSR_STVAL:      write_csr_m(0x143, value); break;
+    case CSR_SIP:        write_csr_m(0x144, value); break;
+    case CSR_SATP:       write_csr_m(0x180, value); break;
+    case CSR_PMPCFG0:    write_csr_m(0x3A0, value); break;
+    case CSR_PMPCFG1:    write_csr_m(0x3A1, value); break;
+    case CSR_PMPCFG2:    write_csr_m(0x3A2, value); break;
+    case CSR_PMPCFG3:    write_csr_m(0x3A3, value); break;
+    case CSR_PMPADDR0:   write_csr_m(0x3B0, value); break;
+    case CSR_PMPADDR1:   write_csr_m(0x3B1, value); break;
+    case CSR_PMPADDR2:   write_csr_m(0x3B2, value); break;
+    case CSR_PMPADDR3:   write_csr_m(0x3B3, value); break;
+    case CSR_PMPADDR4:   write_csr_m(0x3B4, value); break;
+    case CSR_PMPADDR5:   write_csr_m(0x3B5, value); break;
+    case CSR_PMPADDR6:   write_csr_m(0x3B6, value); break;
+    case CSR_PMPADDR7:   write_csr_m(0x3B7, value); break;
+    case CSR_PMPADDR8:   write_csr_m(0x3B8, value); break;
+    case CSR_PMPADDR9:   write_csr_m(0x3B9, value); break;
+    case CSR_PMPADDR10:  write_csr_m(0x3BA, value); break;
+    case CSR_PMPADDR11:  write_csr_m(0x3BB, value); break;
+    case CSR_PMPADDR12:  write_csr_m(0x3BC, value); break;
+    case CSR_PMPADDR13:  write_csr_m(0x3BD, value); break;
+    case CSR_PMPADDR14:  write_csr_m(0x3BE, value); break;
+    case CSR_PMPADDR15:  write_csr_m(0x3BF, value); break;
+    default: 
+		CRITICAL("CSR not found.");
+    	break;
+    }
 }
 
 

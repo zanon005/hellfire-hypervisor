@@ -17,29 +17,17 @@
 #ifndef __RISCV__
 #define __RISCV__
 
-
-#define read_csr(reg) ({ unsigned long __tmp; \
+#define read_csr_m(reg) ({ unsigned long __tmp; \
   asm volatile ("csrr %0, " #reg : "=r"(__tmp)); __tmp; })
 
-#define write_csr(reg, val) ({ \
+#define write_csr_m(reg, val) ({ \
   asm volatile ("csrw " #reg ", %0" :: "rK"(val)); })
 
-#define swap_csr(reg, val) ({ unsigned long __tmp; \
-  asm volatile ("csrrw %0, " #reg ", %1" : "=r"(__tmp) : "rK"(val)); __tmp; })
-
-#define set_csr(reg, bit) ({ unsigned long __tmp; \
-  asm volatile ("csrrs %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); __tmp; })
-
-#define clear_csr(reg, bit) ({ unsigned long __tmp; \
-  asm volatile ("csrrc %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); __tmp; })
-
-static inline uint32_t get_field(uint32_t reg, uint32_t mask)
-{
+static inline uint32_t get_field(uint32_t reg, uint32_t mask){
     return ((reg & mask) / (mask & ~(mask << 1)));
 }
 
-static inline uint32_t set_field(uint32_t reg, uint32_t mask, uint32_t val)
-{
+static inline uint32_t set_field(uint32_t reg, uint32_t mask, uint32_t val){
     return ((reg & ~mask) | ((val * (mask & ~(mask << 1))) & mask));
 }
 
@@ -47,7 +35,69 @@ static inline uint32_t set_field(uint32_t reg, uint32_t mask, uint32_t val)
 #define __riscv
 #define __riscv_xlen 64
 
-#define CSR_FFLAGS      0x001
+#define CSR_FFLAGS      1
+#define CSR_FRM         2
+#define CSR_FCSR        3
+#define CSR_MCYCLE      4
+#define CSR_MINSTRET    5
+#define CSR_MCYCLEH     6
+#define CSR_MINSTRETH   7
+#define CSR_CYCLE       8
+#define CSR_TIME        9
+#define CSR_INSTRET     10
+#define CSR_CYCLEH      11
+#define CSR_TIMEH       12
+#define CSR_INSTRETH    13
+#define CSR_MVENDORID   14
+#define CSR_MARCHID     15
+#define CSR_MIMPID      16
+#define CSR_MHARTID     17
+#define CSR_MSTATUS     18
+#define CSR_MISA        19
+#define CSR_MEDELEG     20
+#define CSR_MIDELEG     21
+#define CSR_MIE         22
+#define CSR_MTVEC       23
+#define CSR_MCOUNTEREN  24
+#define CSR_MSCRATCH    25
+#define CSR_MEPC        26
+#define CSR_MCAUSE      27
+#define CSR_MTVAL       28
+#define CSR_MIP         29
+#define CSR_SSTATUS     30
+#define CSR_SEDELEG     31
+#define CSR_SIDELEG     32
+#define CSR_SIE         33
+#define CSR_STVEC       34
+#define CSR_SCOUNTEREN  35
+#define CSR_SSCRATCH    36
+#define CSR_SEPC        37
+#define CSR_SCAUSE      38
+#define CSR_STVAL       39
+#define CSR_SIP         40
+#define CSR_SATP        41
+#define CSR_PMPCFG0     42
+#define CSR_PMPCFG1     43
+#define CSR_PMPCFG2     44
+#define CSR_PMPCFG3     45
+#define CSR_PMPADDR0    46
+#define CSR_PMPADDR1    47
+#define CSR_PMPADDR2    48
+#define CSR_PMPADDR3    49
+#define CSR_PMPADDR4    50
+#define CSR_PMPADDR5    51
+#define CSR_PMPADDR6    52
+#define CSR_PMPADDR7    53
+#define CSR_PMPADDR8    54
+#define CSR_PMPADDR9    55
+#define CSR_PMPADDR10   56
+#define CSR_PMPADDR11   57
+#define CSR_PMPADDR12   58
+#define CSR_PMPADDR13   59
+#define CSR_PMPADDR14   60
+#define CSR_PMPADDR15   61
+
+/*#define CSR_FFLAGS      0x001
 #define CSR_FRM         0x002
 #define CSR_FCSR        0x003
 #define CSR_MCYCLE      0xB00
@@ -107,7 +157,7 @@ static inline uint32_t set_field(uint32_t reg, uint32_t mask, uint32_t val)
 #define CSR_PMPADDR12   0x3BC
 #define CSR_PMPADDR13   0x3BD
 #define CSR_PMPADDR14   0x3BE
-#define CSR_PMPADDR15   0x3BF
+#define CSR_PMPADDR15   0x3BF*/
 
 
 #define MSTATUS_UIE         0x00000001

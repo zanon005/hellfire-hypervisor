@@ -59,5 +59,7 @@ uint32_t getGuestCTL2();
 uint32_t getRandom();
 uint32_t getBadInstruction();
 void udelay (uint32_t usec);
+long read_csr(int csr);
+void write_csr(int csrenum, long value);
 
 #endif /* _HAL_H_ */
