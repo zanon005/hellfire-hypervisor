@@ -32,7 +32,6 @@ This code was written by Sergio Johann Filho at Embedded System Group (GSE) at P
 #include <exception.h>
 #include <libc.h>
 #include <globals.h>
-#include <mips_cp0.h>
 #include <hypercall.h>
 #include <board.h>
 #include <scheduler.h>

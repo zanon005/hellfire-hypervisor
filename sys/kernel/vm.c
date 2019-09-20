@@ -36,7 +36,6 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <tlb.h>
 #include <types.h>
 #include <globals.h>
-#include <mips_cp0.h>
 #include <queue.h>
 #include <board.h>
 

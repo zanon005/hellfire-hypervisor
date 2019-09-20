@@ -15,8 +15,6 @@
 
 kernel:
 	$(CC) $(CFLAGS) $(INC_DIRS) \
-	        $(TOPDIR)sys/kernel/hypercall.c \
-	       	$(TOPDIR)sys/kernel/exception.c \
 	        $(TOPDIR)sys/kernel/scheduler.c \
 	        $(TOPDIR)sys/kernel/vm.c \
 	        $(TOPDIR)sys/kernel/driver.c
