@@ -122,20 +122,11 @@ $(APP):
 #	$(OBJCOPY) -O ihex --change-addresses=0x80000000 $(APP).elf $(BIN).hex
 	$(SIZE) $(APP).elf
 
-serial:
-	stty ${BAUDRATE} raw cs8 -hupcl -parenb -crtscts clocal cread ignpar ignbrk -ixon -ixoff -ixany -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon -iexten -echo -echoe -echok -echoctl -echoke -F ${SERIAL_DEV}
-
-load: serial
-	../../bin/pic32prog -S -d ${SERIAL_DEV} firmware.hex
-
 bare_apps:
 	for i in $(APP_LIST) ; do \
 		$(MAKE) -C ../../bare-metal-apps/platform/pic32mz_starter_kit APP=$$i CLEAN=1 clean; \
 		$(MAKE) -C ../../bare-metal-apps/platform/pic32mz_starter_kit APP=$$i CROSS_COMPILER=$(CROSS_COMPILER) F_CLK=$(F_CLK) FLASH_SIZE=`awk  '$$1=="'$$i'" {print $$2}' include/vms.info` RAM_SIZE=`awk '$$1=="'$$i'" {print $$3}' include/vms.info` DEBUG_GUEST=$(DEBUG_GUEST) \
 	;done
-
-generate_firmware:
-	../../scripts/genhex.sh $(APP_LIST)
 
 make_genconf:
 	gcc -o genconf ../cfg_reader/genconf.c -lconfig
@@ -146,7 +137,15 @@ config_vms: make_genconf
 	#execute and export to a makefile variable the ouput of the script
 	$(eval APP_LIST:=$(shell ./genconf $(CFG_FILE) || (exit 1)))
 
-	
+start:
+	$(HOME)/riscv-tools/qemu-4.1.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -kernel prplHypervisor.elf -serial mon:stdio &
+
+debug:
+	$(HOME)/riscv-tools/qemu-4.1.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -kernel prplHypervisor.elf -serial mon:stdio -s -S &
+
+stop:
+	killall qemu-system-riscv64
+
 clean: config_vms
 	rm -f $(APP).* 
 	rm -f *.o

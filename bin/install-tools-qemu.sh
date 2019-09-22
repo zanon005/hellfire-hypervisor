@@ -1,9 +1,9 @@
-OOLS_DIR=$HOME/riscv-tools
+TOOLS_DIR=$HOME/riscv-tools
 
 # Install required packages
 sudo apt update
-sudo apt upgrade
-sudo apt install autoconf automake autotools-dev curl \
+#sudo apt upgrade
+sudo apt --yes --force-yes install autoconf automake autotools-dev curl \
   		libmpc-dev libmpfr-dev libgmp-dev gawk build-essential \
   		bison flex texinfo gperf libtool patchutils bc zlib1g-dev pkg-config \
 		libglibmm-2.4-dev libpixman-1-dev libconfig-dev
