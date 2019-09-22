@@ -9,51 +9,83 @@ ld \a, ((\b)*REGBYTES)(sp)
 sd \a, ((\b)*REGBYTES)(sp)
 .endm
     
+
     .align 2
 trap_vector:
     # Save registers.
-    addi    sp, sp, -190
+    addi    sp, sp, -248
     sxsp    ra, 0
-    sxsp    a0, 1
-    sxsp    a1, 2
-    sxsp    a2, 3
-    sxsp    a3, 4
-    sxsp    a4, 5
-    sxsp    a5, 6
-    sxsp    a6, 7
-    sxsp    a7, 8
-    sxsp    t0, 9
-    sxsp    t1, 10
-    sxsp    t2, 11
-    sxsp    t3, 12
-    sxsp    t4, 13
-    sxsp    t5, 14
-    sxsp    t6, 15
+    sxsp    sp, 1
+    sxsp    gp, 2
+    sxsp    fp, 3
+    sxsp    tp, 4
+    sxsp    a0, 5
+    sxsp    a1, 6
+    sxsp    a2, 7
+    sxsp    a3, 8
+    sxsp    a4, 9
+    sxsp    a5, 10
+    sxsp    a6, 11
+    sxsp    a7, 12
+    sxsp    s1, 13
+    sxsp    s2, 14
+    sxsp    s3, 15
+    sxsp    s4, 16
+    sxsp    s5, 17
+    sxsp    s6, 18
+    sxsp    s7, 19
+    sxsp    s8, 20
+    sxsp    s9, 21
+    sxsp    s10, 22
+    sxsp    s11, 23
+    sxsp    t0, 24
+    sxsp    t1, 25
+    sxsp    t2, 26
+    sxsp    t3, 27
+    sxsp    t4, 28
+    sxsp    t5, 29
+    sxsp    t6, 30
 
     # Invoke the handler.
     mv      a0, sp
     csrr    a1, mcause
     csrr    a2, mepc
-    jal     general_exception_handler
+    csrr    a3, mstatus
+    jal     _start
 
     # Restore registers.
     lxsp    ra, 0
-    lxsp    a0, 1
-    lxsp    a1, 2
-    lxsp    a2, 3
-    lxsp    a3, 4
-    lxsp    a4, 5
-    lxsp    a5, 6
-    lxsp    a6, 7
-    lxsp    a7, 8
-    lxsp    t0, 9
-    lxsp    t1, 10
-    lxsp    t2, 11
-    lxsp    t3, 12
-    lxsp    t4, 13
-    lxsp    t5, 14
-    lxsp    t6, 15
-    addi sp, sp, 190
+    lxsp    sp, 1
+    lxsp    gp, 2
+    lxsp    fp, 3
+    lxsp    tp, 4
+    lxsp    a0, 5
+    lxsp    a1, 6
+    lxsp    a2, 7
+    lxsp    a3, 8
+    lxsp    a4, 9
+    lxsp    a5, 10
+    lxsp    a6, 11
+    lxsp    a7, 12
+    lxsp    s1, 13
+    lxsp    s2, 14
+    lxsp    s3, 15
+    lxsp    s4, 16
+    lxsp    s5, 17
+    lxsp    s6, 18
+    lxsp    s7, 19
+    lxsp    s8, 20
+    lxsp    s9, 21
+    lxsp    s10, 22
+    lxsp    s11, 23
+    lxsp    t0, 24
+    lxsp    t1, 25
+    lxsp    t2, 26
+    lxsp    t3, 27
+    lxsp    t4, 28
+    lxsp    t5, 29
+    lxsp    t6, 30
+    addi sp, sp, 248
     mret
 
 .globl _start
