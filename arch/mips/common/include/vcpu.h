@@ -21,6 +21,8 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <types.h>
 #include <vm.h>
 
+#define register_t	long
+
 #define NUM_ASIDS 64
 
 #define ESPECIAL 	0x00
@@ -115,7 +117,7 @@ typedef struct vcpu_t {
 	uint32_t pc;
 	uint32_t init;	
 	message_buffer_t messages;
-        uint32_t *gpr;
+    register_t *gpr;
 }vcpu_t;
 
 typedef struct {

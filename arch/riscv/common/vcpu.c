@@ -46,7 +46,9 @@ void contextSave(){
 	vcputosave = vcpu_in_execution;
 	
 	if (vcputosave->init == 0){
-		/* FIXME: Code for context save.*/
+		/* FIXME: CSR registers to save? .*/
+
+		gpr_context_save(vcputosave->gpr);
 	}
 }
 
@@ -87,38 +89,17 @@ void contextRestore(){
 		return;
 	}
 	
-	if (vcpu->gprshadowset){
-            setPreviousShadowSet(vcpu->gprshadowset);
-	
-            setLowestGShadow(vcpu->gprshadowset);	
-        }
-        
-	setGuestID(vcpu->id);
-	
-	setGuestMode();
-	
 	/* Mark the VCPU as initialized. */
 	if(vcpu_in_execution->init){
 		vcpu_in_execution->init = 0;
 	}
 	
 
-
 	/* FIXME: Code for context restore should be here!!*/	
-
-
-
-
-	setGuestCTL2(vcpu->guestclt2);
-	
-	/* clear timer int. */
-	//vcpu->guestclt2 &= ~(GUEST_TIMER_INT << GUESTCLT2_GRIPL_SHIFT);
 	
 	setEPC(vcpu->pc);
 	
-        if(vcpu->gpr){
-		gpr_context_restore(vcpu->gpr);
-	}
+	gpr_context_restore(vcpu->gpr);
 }
 
 /**

@@ -15,19 +15,28 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 */
 
+/*
+ *  Baikal-T (P5600) core address definitions
+  *
+ */
+
 #ifndef _GRP_CONTEXT_H
 #define _GRP_CONTEXT_H
 
+#include <types.h>
+
+#define GPR_SIZE (31*8) /* 31 64 bits GPR   */
+
+void gpr_context_restore(register_t* gpr_p);
+void gpr_context_save(register_t* gpr_p);
+
 /** 
-  * These macros can read/write registers on the previous GPR Shadow.  
-  * On PIC32MZ, the guests are kept on separated GRP shadows. Thus,
-  * the hypercall parameters are read from them.
+  * These functions can read/write the saved registers from the stack.  
+  * On P5600, the guests share the same GPR set (GPR Shadows are not implemented). Thus,
+  * the hypercall parameters are read/write from the stack.
   */
+void MoveToPreviousGuestGPR(uint32_t reg, uint32_t value);
+uint32_t MoveFromPreviousGuestGPR(uint32_t reg);
 
-/* Write to previous gpr shadow */
-#define MoveToPreviousGuestGPR(reg, value) 0
-
-/* Read from previous gpr shadow */        
-#define MoveFromPreviousGuestGPR(reg) 0
 
 #endif /* _GRP_CONTEXT_H */
