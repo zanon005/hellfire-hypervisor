@@ -47,11 +47,9 @@ trap_vector:
     sxsp    t6, 30
 
     # Invoke the handler.
-    mv      a0, sp
-    csrr    a1, mcause
-    csrr    a2, mepc
-    csrr    a3, mstatus
-    jal     _start
+    csrr    a0, mcause
+    csrr    a1, mepc
+    jal     general_exception_handler
 
     # Restore registers.
     lxsp    ra, 0

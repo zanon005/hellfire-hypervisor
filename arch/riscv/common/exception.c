@@ -32,6 +32,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <libc.h>
 #include <globals.h>
 #include <mips_cp0.h>
+#include <proc.h>
 #include <hypercall.h>
 #include <board.h>
 #include <scheduler.h>
@@ -71,18 +72,15 @@ static uint32_t guest_exit_exception(){
  * @brief General exception handler. 
  * 
  */
-void general_exception_handler(){
-	uint32_t CauseCode = getCauseCode();
+void general_exception_handler(long mcause, long mepc){
+	uint32_t cause = get_field(mcause, MCAUSE_MASK);
 
-	switch (CauseCode){
-		case    GUEST_EXIT_EXCEPTION:   
-				guest_exit_exception();
-				break;
-		/* TLB load, store or fetch exception */
-		case    TLB_LOAD_FETCH_EXCEPTION:                                            
-		case    TLB_STORE_EXCEPTION:
-		default:
-			CRITICAL("VM will be stopped due to error Cause Code 0x%x, EPC 0x%x, VCPU ID 0x%x", CauseCode, getEPC(), vcpu_in_execution->id);
-			break;
+	/* Interruption */
+	if(MCAUSE_INT & mcause){
+		switch(cause){
+			case IRQ_M_TIMER:
+					timer_interrupt_handler();
+					break;
+		}
 	}
 }

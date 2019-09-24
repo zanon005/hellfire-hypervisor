@@ -18,6 +18,7 @@ This code was written by Sergio Johann at Embedded System Group (GSE) at PUCRS/B
 #ifndef _TIMER_H
 #define _TIMER_H
 
+void timer_interrupt_handler();
 void start_timer();
 
 #endif 

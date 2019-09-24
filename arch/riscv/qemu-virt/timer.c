@@ -39,31 +39,18 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #define SYSTEM_TICK_INTERVAL (SYSTEM_TICK_US * MICROSECOND)
 #define QUEST_TICK_INTERVAL (GUEST_QUANTUM_MS * MILISECOND)
 
-
-/**
- * @brief Configures the COMPARE register to the next interrupt. 
- * 
- * @param interval Time interval to the next interrupt in CPU ticks (CPU_FREQ/2)
- */
-void calc_next_timer_interrupt(uint32_t interval){
-	return;
-}
-
 /**
  * @brief Time interrupt handler.
  * 
  * Perfoms VCPUs scheduling and virtual timer interrupt injection on guests. 
  */
-static void timer_interrupt_handler(){
-	static uint32_t past = 0;
-	uint32_t now, diff_time;
-	
-	calc_next_timer_interrupt(SYSTEM_TICK_INTERVAL);
-	
+void timer_interrupt_handler(){
+	MTIMECMP = MTIME + SYSTEM_TICK_INTERVAL*4;
+
 	run_scheduler();
-	
-	/* FIXME: configure next timer interrupt. */	
-    
+
+	/* wait interrupt bit fall to avoid spurious interrupts. */
+	while(read_csr(CSR_MIP) & MIP_MTIP);
 }
 
 /**
