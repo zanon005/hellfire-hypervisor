@@ -106,13 +106,4 @@ BSS_CLEAR:
 2:  j 2b
     nop
 
-    .section .text
-    .global gpr_context_save
-gpr_context_save:
-    nop
-    
-    .section .text
-    .global gpr_context_restore
-gpr_context_restore:
-    nop
     
