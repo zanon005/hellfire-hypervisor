@@ -53,7 +53,7 @@ static char* get_extensions(char *ex, uint32_t sz){
     uint32_t i, c = 0, mask = 1;
     uint32_t misa = read_csr(CSR_MISA);
 
-    for(i=0; i<26 & i<sz; i++){
+    for(i=0; (i<26) & (i<sz); i++){
         if(misa & mask){
             ex[c++] = 65 + i;
         }

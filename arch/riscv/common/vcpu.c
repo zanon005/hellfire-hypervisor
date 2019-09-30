@@ -82,7 +82,6 @@ void contextRestore(){
 	
 	vcpu_t *vcpu = vcpu_in_execution;
 	
-	/* 
 	/* There are not VCPUs ready to execute. Put CPU in adle mode. */
 	if(!vcpu){
 		config_idle_cpu();

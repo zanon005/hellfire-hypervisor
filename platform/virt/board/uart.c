@@ -44,5 +44,6 @@ void putchar(uint8_t c){
  * @return Read character. 
  */
 uint32_t getchar(void){
+	return 0;
 }
 

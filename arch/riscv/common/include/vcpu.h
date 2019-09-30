@@ -129,6 +129,7 @@ extern vcpu_t *idle_vcpu;
 
 void contextSave();
 void contextRestore();
+uint32_t instruction_emulation(uint32_t epc);
 
 
 #endif

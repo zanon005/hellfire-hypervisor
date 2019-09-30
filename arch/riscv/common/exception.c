@@ -36,12 +36,14 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <hypercall.h>
 #include <board.h>
 #include <scheduler.h>
+#include <vcpu.h>
+#include <timer.h>
 
 /**
  * @brief Guest exit exception handler. 
  * 
  */
-static uint32_t guest_exit_exception(){
+/*static uint32_t guest_exit_exception(){
 	uint32_t guestcause = getGCauseCode();
 	uint32_t epc = getEPC();
 	
@@ -66,7 +68,7 @@ static uint32_t guest_exit_exception(){
 	}
 	
 	return 0;
-}
+}*/
 
 /**
  * @brief General exception handler. 

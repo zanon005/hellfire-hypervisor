@@ -22,6 +22,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <vcpu.h>
 #include <config.h>
 #include <scheduler.h>
+#include <libc.h>
 
 #define CRITICAL(X,...) printf("\nCRITICAL: "X, ##__VA_ARGS__); wait_for_reset();
 

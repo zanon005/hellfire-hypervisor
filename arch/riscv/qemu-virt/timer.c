@@ -60,8 +60,6 @@ void timer_interrupt_handler(){
  * first timer interrupt.
  */
 void start_timer(){
-	long mtime, mie;
-
 	MTIMECMP = MTIME + SYSTEM_TICK_INTERVAL;
 
     set_csr_bits(CSR_MIE, MIP_MTIP);

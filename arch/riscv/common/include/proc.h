@@ -34,11 +34,11 @@
   asm volatile ("csrrc %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
   __tmp; })
 
-static inline uint32_t get_field(uint32_t reg, uint32_t mask){
+static inline long get_field(uint32_t reg, long mask){
     return ((reg & mask) / (mask & ~(mask << 1)));
 }
 
-static inline uint32_t set_field(uint32_t reg, uint32_t mask, uint32_t val){
+static inline long set_field(uint32_t reg, long mask, long val){
     return ((reg & ~mask) | ((val * (mask & ~(mask << 1))) & mask));
 }
 

@@ -9,7 +9,6 @@
  */
 void remove_vms(){
 	uint32_t i;
-	vcpu_t *vcpu;
 	
 	for(i=0;i<NVMACHINES;i++){
 		queue_remtail(scheduler_info.vcpu_ready_list);

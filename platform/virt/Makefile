@@ -71,7 +71,7 @@ LINKER_SCRIPT = ../../arch/riscv/qemu-virt/qemu-virt.ld
 ### GCC flags configuration: processor tunning ###
 CFLAGS += -march=rv64imafdc -Wall -fpie -ffunction-sections -fdata-sections
 #MIPZ VZ support
-CFLAGS += -Wno-duplicate-decl-specifier #-Wa, 
+CFLAGS += -Wno-duplicate-decl-specifier -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast#-Wa, 
 #flointing pointing options
 CFLAGS +=  #-mno-check-zero-division -msoft-float -fshort-double
 #General options
