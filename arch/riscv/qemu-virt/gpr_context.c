@@ -37,8 +37,8 @@ extern long _stack;
 void print_stack(){
 	uint32_t i;
 	printf("\n==========================");
-	for(i=((register_t)(&_stack))-GPR_SIZE;  i<((register_t)(&_stack)); i+=sizeof(register_t*)){
-		printf("\n0x%x", *(register_t*)i);
+	for(i=((unsigned long)(&_stack))-GPR_SIZE;  i<((unsigned long)(&_stack)); i+=sizeof(unsigned long*)){
+		printf("\n0x%x", *(long*)i);
 	}
 	printf("\n==========================");
 }
@@ -47,10 +47,10 @@ void print_stack(){
  * @brief Copy the GPR from vcpu to the stack. 
  * @param grp_p Pointer to the address where the gpr is saved. 
  */
-void gpr_context_restore(register_t* gpr_p){
+void gpr_context_restore(long* gpr_p){
 	uint32_t i, j;
-	for(i=((register_t)(&_stack))-GPR_SIZE, j=0; i<((register_t)(&_stack)); i+=sizeof(register_t*), j++){
-		*(register_t*)i = gpr_p[j]; 
+	for(i=((unsigned long)(&_stack))-GPR_SIZE, j=0; i<((unsigned long)(&_stack)); i+=sizeof(unsigned long*), j++){
+		*(long*)i = gpr_p[j]; 
 	}
 }
 
@@ -59,10 +59,10 @@ void gpr_context_restore(register_t* gpr_p){
  * @brief Copy the GPR from stack to the vcpu. 
  * @param grp_p Pointer to the address where gpr will be saved. 
  */
-void gpr_context_save(register_t* gpr_p){
+void gpr_context_save(long* gpr_p){
 	uint32_t i, j;
-	for(i=((register_t)(&_stack))-GPR_SIZE, j=0; i<((register_t)(&_stack)); i+=sizeof(register_t*), j++){
-		gpr_p[j] = ((register_t)*(register_t*)i); 
+	for(i=((long)(&_stack))-GPR_SIZE, j=0; i<((long)(&_stack)); i+=sizeof(long*), j++){
+		gpr_p[j] = ((long)*(long*)i); 
 	}
 }
 
@@ -72,8 +72,8 @@ void gpr_context_save(register_t* gpr_p){
  * @param reg GPR number.
  * @param value Value to write on the stack.
  */
-void MoveToPreviousGuestGPR(uint32_t reg, uint32_t value){
-	uint32_t* sp = (((uint32_t)(&_stack)) - GPR_SIZE);
+void MoveToPreviousGuestGPR(long reg, long value){
+	unsigned long* sp = (((unsigned long)(&_stack)) - GPR_SIZE);
 	sp[reg] = value;
 }
 
@@ -83,8 +83,8 @@ void MoveToPreviousGuestGPR(uint32_t reg, uint32_t value){
  * @param reg GPR number.
  * @return GPR data.
  */
-uint32_t MoveFromPreviousGuestGPR(uint32_t reg){
-	uint32_t* sp = (((uint32_t)(&_stack)) - GPR_SIZE);
+uint32_t MoveFromPreviousGuestGPR(long reg){
+	unsigned long* sp = (((unsigned long)(&_stack)) - GPR_SIZE);
 	return sp[reg];
 }
 

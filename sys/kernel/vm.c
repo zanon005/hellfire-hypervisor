@@ -174,7 +174,7 @@ vcpu_t *create_vcpu(vm_t *vm, uint32_t entry_point, uint32_t priority){
         }
         
         /* Alloc memory for GPR saving. */
-        vcpu->gpr = (register_t*)malloc(GPR_SIZE);
+        vcpu->gpr = malloc(GPR_SIZE);
 	
 	memset(vcpu->gpr, 0, GPR_SIZE);
     }

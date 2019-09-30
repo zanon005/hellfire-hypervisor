@@ -81,10 +81,10 @@ void contextSave(){
 
 		 vcputosave->pc = getEPC();
                  
-                 /* Save the GPR shadow if needed. */
-                 if(vcputosave->gpr){
-                     gpr_context_save(vcputosave->gpr);
-                 }
+                /* Save the GPR shadow if needed. */
+                if(vcputosave->gpr){
+                	gpr_context_save((uint32_t*)vcputosave->gpr);
+                }
 	}
 }
 
@@ -164,7 +164,7 @@ void contextRestore(){
 	setEPC(vcpu->pc);
 	
         if(vcpu->gpr){
-		gpr_context_restore(vcpu->gpr);
+			gpr_context_restore((uint32_t*)vcpu->gpr);
 	}
 }
 

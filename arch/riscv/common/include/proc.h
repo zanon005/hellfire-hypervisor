@@ -43,7 +43,6 @@ static inline uint32_t set_field(uint32_t reg, uint32_t mask, uint32_t val){
 }
 
 
-#define __riscv
 #define __riscv_xlen 64
 
 #define CSR_FFLAGS      1

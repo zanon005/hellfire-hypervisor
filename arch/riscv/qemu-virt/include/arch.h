@@ -20,7 +20,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 #define BARE_METAL_ENTRY_POINT 0x9d001000
 #define LINUX_ENTRY_POINT 0x80100400
-#define GPR_SIZE 32
+#define GPR_SIZE (31*8)
 
 #include <qemu_virt.h>
 #include <gpr_context.h>

@@ -25,18 +25,16 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 #include <types.h>
 
-#define GPR_SIZE (31*8) /* 31 64 bits GPR   */
-
-void gpr_context_restore(register_t* gpr_p);
-void gpr_context_save(register_t* gpr_p);
+void gpr_context_restore(long* gpr_p);
+void gpr_context_save(long* gpr_p);
 
 /** 
   * These functions can read/write the saved registers from the stack.  
   * On P5600, the guests share the same GPR set (GPR Shadows are not implemented). Thus,
   * the hypercall parameters are read/write from the stack.
   */
-void MoveToPreviousGuestGPR(uint32_t reg, uint32_t value);
-uint32_t MoveFromPreviousGuestGPR(uint32_t reg);
+void MoveToPreviousGuestGPR(long reg, long value);
+uint32_t MoveFromPreviousGuestGPR(long reg);
 
 
 #endif /* _GRP_CONTEXT_H */
