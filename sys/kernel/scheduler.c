@@ -146,7 +146,7 @@ void run_scheduler(){
 		(vcpu_in_execution && vcpu_in_execution->state == VCPU_BLOCKED)) /* The current VCPU was blocked, perform a context-switching. */
 	{
 		aux = round_robin_scheduler();
-		if (aux != scheduler_info.vcpu_executing){
+		if (aux != scheduler_info.vcpu_executing || aux == NULL) {
 			contextSave();   
 			scheduler_info.vcpu_executing = aux;
 			contextRestore();
@@ -154,7 +154,6 @@ void run_scheduler(){
 		
 	}
 	tick_count++;
-
 }
 
 /**

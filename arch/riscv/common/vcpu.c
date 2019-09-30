@@ -69,10 +69,7 @@ static void cpu_idle(){
  * 
  */
 static void config_idle_cpu(){
-		setGuestID(0); /* Root guest ID */
-		//setPreviousShadowSet(0); /* Hypervisor GPR shadow page  */
-		clearGuestMode(); /* keep the processor in root mode. */
-		setEPC((uint32_t)cpu_idle);
+	write_csr(CSR_MEPC, (long)cpu_idle);
 }
 
 /**
