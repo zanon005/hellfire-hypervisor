@@ -15,7 +15,7 @@
 
 #Input CFG file for VMs configuration
 #CFG_FILE = cfg/sample-blink.cfg
-CFG_FILE = cfg/sample-ping-pong.cfg
+CFG_FILE = cfg/sample-blink.cfg
 
 # CROSS Compiler 
 CROSS_COMPILER = riscv64-unknown-elf-
@@ -105,7 +105,7 @@ STRIP = $(CROSS_COMPILER)strip
 APP = prplHypervisor
 
 #all: config_vms lib kernel common pic32mz platform drivers $(APP) bare_apps generate_firmware
-all: config_vms lib kernel common platform drivers qemu-virt $(APP)
+all: config_vms lib kernel common platform drivers qemu-virt $(APP) bare_apps generate_firmware
 
 include $(TOPDIR)sys/sys.mk
 include $(TOPDIR)arch/riscv/common/common.mk
@@ -119,18 +119,21 @@ $(APP):
 	$(OBJDUMP) --disassemble --reloc $(APP).elf > $(APP).lst
 	$(OBJDUMP) -h $(APP).elf > $(APP).sec
 	$(OBJDUMP) -s $(APP).elf > $(APP).cnt
-#	$(OBJCOPY) -O binary $(APP).elf $(APP).bin
+	$(OBJCOPY) -O binary $(APP).elf $(APP).bin
 #	$(OBJCOPY) -O ihex --change-addresses=0x80000000 $(APP).elf $(BIN).hex
 	$(SIZE) $(APP).elf
 
 bare_apps:
 	for i in $(APP_LIST) ; do \
-		$(MAKE) -C ../../bare-metal-apps/platform/pic32mz_starter_kit APP=$$i CLEAN=1 clean; \
-		$(MAKE) -C ../../bare-metal-apps/platform/pic32mz_starter_kit APP=$$i CROSS_COMPILER=$(CROSS_COMPILER) F_CLK=$(F_CLK) FLASH_SIZE=`awk  '$$1=="'$$i'" {print $$2}' include/vms.info` RAM_SIZE=`awk '$$1=="'$$i'" {print $$3}' include/vms.info` DEBUG_GUEST=$(DEBUG_GUEST) \
+		$(MAKE) -C ../../bare-metal-apps/platform/virt APP=$$i CLEAN=1 clean; \
+		$(MAKE) -C ../../bare-metal-apps/platform/virt APP=$$i CROSS_COMPILER=$(CROSS_COMPILER) F_CLK=$(F_CLK) FLASH_SIZE=`awk  '$$1=="'$$i'" {print $$2}' include/vms.info` RAM_SIZE=`awk '$$1=="'$$i'" {print $$3}' include/vms.info` DEBUG_GUEST=$(DEBUG_GUEST) \
 	;done
 
 make_genconf:
 	gcc -o genconf ../cfg_reader/genconf.c -lconfig
+
+generate_firmware:
+	../../scripts/genhex.sh $(APP_LIST)
 	
 config_vms: make_genconf
 	#execute first and exit in case of errors
