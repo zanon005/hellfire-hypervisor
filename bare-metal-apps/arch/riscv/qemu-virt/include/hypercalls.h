@@ -30,11 +30,18 @@ asm volatile ("nop"); })
 
 /* interVM send message  */
 #define ipc_send(targed_id, msg, size) ({ int32_t __ret; \
-asm volatile ("nop"); })
+asm volatile (                    \
+"nop" \
+ : "=r" (__ret) : "r" ((uint32_t) (target_id)), "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_IPC_SEND_MSG) : "a0", "a1", "a2", "a0"); \
+ __ret; })
  
  /* interVM recv message  */
 #define ipc_recv(source_id, msg) ({ int32_t __ret; \
-asm volatile ("nop"); })
+asm volatile (                    \
+"nop" \
+ : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a0"); \
+ __ret; })
+
  
 /* Get own guest ID  */
 #define get_guestid() ({ int32_t __ret; \
