@@ -64,6 +64,10 @@ ifeq ($(CONFIG_NO_VMS_DRV),yes)
 	DRIVERS_LIST += $(TOPDIR)drivers/no_vms.c
 endif
 
+ifeq ($(CONFIG_PIC32MZ_DENIED_HYPERCALLS_DRV),yes)
+	DRIVERS_LIST += $(TOPDIR)drivers/pic32mz-denied-hypercalls.c
+endif
+
 ifeq ($(CONFIG_PIC32MZ_PUF_SRAM_DRV),yes)
 	DRIVERS_LIST += $(TOPDIR)drivers/pic32mz-puf-functions.c
 	DRIVERS_LIST += $(TOPDIR)drivers/pic32mz-puf-sram.c

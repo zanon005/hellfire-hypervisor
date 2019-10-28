@@ -41,10 +41,10 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <globals.h>
 #include <interrupts.h>
 
-static uint32_t NVMUnlock(uint32_t nvmop);
-static uint32_t NVMErasePage(void *address);
-static uint32_t NVMWriteQuad(void *address, void *data);
-static uint32_t flash_read1Kbuffer(uint8_t *buffer);
-static uint32_t flash_write1Kbuffer(uint8_t *buffer);
+uint32_t NVMUnlock(uint32_t nvmop);
+uint32_t NVMErasePage(void *address);
+uint32_t NVMWriteQuad(void *address, void *data);
+uint32_t flash_read1Kbuffer(uint8_t *buffer);
+uint32_t flash_write1Kbuffer(uint8_t *buffer);
 
 #endif

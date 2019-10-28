@@ -38,12 +38,12 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <pic32mz-puf-functions.h>
 
 /* Uses the last page 16Kb of the flash to data persistance */
-static uint32_t* pageFlash = (uint32_t *)0xbd1fc000;
+uint32_t* pageFlash = (uint32_t *)0xbd1fc000;
 
 /**
  * @brief Unlock flash for write erase/write operations. 
  */
-static uint32_t NVMUnlock(uint32_t nvmop){
+uint32_t NVMUnlock(uint32_t nvmop){
 	uint32_t status;
 
 	/*  Suspend or Disable all Interrupts */
@@ -82,7 +82,7 @@ static uint32_t NVMUnlock(uint32_t nvmop){
 /**
  * @brief Erase a flash page. 
  */
-static uint32_t NVMErasePage(void *address){
+uint32_t NVMErasePage(void *address){
 	uint32_t res;
 
 	/* Set NVMADDR to the Start Address of page to erase */
@@ -97,7 +97,7 @@ static uint32_t NVMErasePage(void *address){
 /**
  * @brief Write four int size to flash.
  */
-static uint32_t NVMWriteQuad(void *address, void *data){
+uint32_t NVMWriteQuad(void *address, void *data){
 	uint32_t res;
 
 	/* Set NVMADDR to Start Address of row to program */
@@ -124,7 +124,7 @@ static uint32_t NVMWriteQuad(void *address, void *data){
  * @param buffer Pointer to the destination buffer. 
  * @return Fix value 1024. 
  */
-static uint32_t flash_read1Kbuffer(uint8_t *buffer){
+uint32_t flash_read1Kbuffer(uint8_t *buffer){
 	uint32_t i;
 	for(i=0; i<256; i++){
 		((uint32_t *)buffer)[i] = pageFlash[i];
@@ -137,7 +137,7 @@ static uint32_t flash_read1Kbuffer(uint8_t *buffer){
  * @param buffer Pointer to the source buffer. 
  * @return Fix value 1024. 
  */
-static uint32_t flash_write1Kbuffer(uint8_t *buffer){
+uint32_t flash_write1Kbuffer(uint8_t *buffer){
 	uint32_t i;
 	NVMErasePage(pageFlash);
 	for(i=0; i<256; i+=4){
