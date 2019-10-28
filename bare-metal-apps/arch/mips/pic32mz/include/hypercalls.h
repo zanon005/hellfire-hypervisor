@@ -185,6 +185,14 @@ asm volatile (                    \
  move %0, $v0" \
  : "=r" (__ret) : "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_UART_SEND) : "a0", "a1", "v0"); \
  __ret; })
+
+/* Get PUF ID  */
+#define get_puf_id() ({ int32_t __ret; \
+asm volatile (                    \
+"hypcall %1 \n\
+ move %0, $v0 " \
+ : "=r" (__ret) : "I" (HCALL_GET_PUF_ID) : "a0", "v0"); \
+ __ret; })
  
 #endif
 

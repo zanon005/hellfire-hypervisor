@@ -161,5 +161,10 @@ typedef void hypercall_t();
  */
 #define HCALL_UART_RECV 19
 
+/* GET PUF ID 
+ * v0 = identification number.
+ */
+#define HCALL_GET_PUF_ID 20
+
 #endif
 

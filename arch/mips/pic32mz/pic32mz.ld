@@ -22,14 +22,15 @@ ENTRY(_entry)
 
 MEMORY 
 {
-flash       (rx)  : ORIGIN = 0x9d000000, LENGTH = 32k    /* Flash area*/
-ram     (rw!x) : ORIGIN = 0x80000000, LENGTH = 32K /* RAM area. */
-}
-
+    flash (rx) : ORIGIN = 0x9d000000, LENGTH = 32k /* Flash area*/
+    ram (rw!x) : ORIGIN = 0x80000000, LENGTH = 31K /* RAM area. */ 
+    puf (r) : ORIGIN = 0x80000000 + 31K, LENGTH = 1K
+    }
 /* define a global symbol _stack  */
 
 _stack = ORIGIN(ram) + LENGTH(ram);
 _stack_size = 1024;
+_puf = ORIGIN(puf);
 
 /* now define the output sections  */
 

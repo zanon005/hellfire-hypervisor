@@ -34,6 +34,8 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <tlb.h>
 #include <mips_cp0.h>
 
+
+
 /**
  * @brief Hypercalls table 
  *
@@ -68,6 +70,7 @@ int32_t register_hypercall(hypercall_t* hyper, uint32_t code){
  * @brief Called during guest exit exception to execute the required hypercall.
  */
 void hypercall_execution(){
+    int i;
     /* Get the hypervall code */
     uint32_t code = getHypercallCode(); 
     
@@ -77,6 +80,14 @@ void hypercall_execution(){
         return;
     }
     
+    /* Hypercall denied */
+    for(i=0;i< vm_in_execution->vmconf->denied_hypercalls_sz;i++){
+        if(code== vm_in_execution->vmconf->denied_hypercalls[i]){
+	    MoveToPreviousGuestGPR(REG_V0, HCALL_NOT_IMPLEMENTED);
+            return;
+        }
+    }
+
     /* Execute the hypercall */
     hypercall_table[code]();
     

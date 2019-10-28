@@ -35,13 +35,8 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <mips_cp0.h>
 #include <globals.h>
 #include <interrupts.h>
+#include <pic32mz-puf-functions.h>
 
-
-/* Uses the last page 16Kb of the flash to data persistance */
-static uint32_t* pageFlash = (uint32_t *)0xbd1fc000;
-
-static uint32_t flash_read1Kbuffer(uint8_t *buffer);
-static uint32_t flash_write1Kbuffer(uint8_t *buffer);
 
 /**
  * @brief Hypercall to read 1K byte from flash. 
@@ -75,111 +70,7 @@ static void flash_write(){
 	MoveToPreviousGuestGPR(REG_V0, ret);
 }
 
-/**
- * @brief Unlock flash for write erase/write operations. 
- */
-static uint32_t NVMUnlock(uint32_t nvmop){
-	uint32_t status;
 
-	/*  Suspend or Disable all Interrupts */
-	asm volatile ("di %0" : "=r" (status));
-	
-	/* Enable Flash Write/Erase Operations and Select
-	 * Flash operation to perform */
-	NVMCON = nvmop;
-	udelay(10);
-	
-        /* Write Keys */
-	NVMKEY = 0x0;
-	NVMKEY = 0xAA996655;
-	NVMKEY = 0x556699AA;
-	
-	/* Start the operation using the Set Register */
-	NVMCONSET = 0x8000;
-	
-	/* Wait for operation to complete */
-	while (NVMCON & 0x8000);
-	
-	/* Restore Interrupts */
-	if (status & 0x00000001){
-		asm volatile ("ei");
-	}else{
-		asm volatile ("di");
-	}
-	
-	/* Disable NVM write enable */
-	NVMCONCLR = 0x0004000;
-	
-	/* Return WRERR and LVDERR Error Status Bits */
-	return (NVMCON & 0x3000);
-}
-
-/**
- * @brief Erase a flash page. 
- */
-static uint32_t NVMErasePage(void *address){
-	uint32_t res;
-
-	/* Set NVMADDR to the Start Address of page to erase */
-	NVMADDR = ((uint32_t)address) & 0x1fffffff;
-	
-	/* Unlock and Erase Page */
-	res = NVMUnlock(0x4004);
-
-	return res;
-}
-
-/**
- * @brief Write four int size to flash.
- */
-static uint32_t NVMWriteQuad(void *address, void *data){
-	uint32_t res;
-
-	/* Set NVMADDR to Start Address of row to program */
-	NVMADDR = ((uint32_t)address) & 0x1fffffff;
-	NVMDATA0 = (*((uint32_t *)data));
-	
-	/* value written to */
-	NVMDATA1 = (*((uint32_t *)data+1));
-	
-	/* value written to */
-	NVMDATA2 = (*((uint32_t *)data+2));
-	
-	/*  value written to */
-	NVMDATA3 = (*((uint32_t *)data+3));
-        
-	/*  Unlock and Write Quad */
-	res = NVMUnlock(0x4002);
-
-	return res;
-}
-
-/**
- * @brief Read 1K byte from flash.
- * @param buffer Pointer to the destination buffer. 
- * @return Fix value 1024. 
- */
-static uint32_t flash_read1Kbuffer(uint8_t *buffer){
-	uint32_t i;
-	for(i=0; i<256; i++){
-		((uint32_t *)buffer)[i] = pageFlash[i];
-	}
-	return 1024;
-}
-
-/**
- * @brief Write 1K byte to flash.
- * @param buffer Pointer to the source buffer. 
- * @return Fix value 1024. 
- */
-static uint32_t flash_write1Kbuffer(uint8_t *buffer){
-	uint32_t i;
-	NVMErasePage(pageFlash);
-	for(i=0; i<256; i+=4){
-		NVMWriteQuad((pageFlash+i), ((uint32_t*)buffer)+i);    
-	}
-	return 1024;
-}
 
 /**
  * @brief Initialize driver registering the hypervcalls. 

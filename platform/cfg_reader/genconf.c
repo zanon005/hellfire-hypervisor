@@ -31,6 +31,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <stdarg.h>
 #include <sys/stat.h>
 
+
 #if (LIBCONFIG_VER_MAJOR <= 1 && LIBCONFIG_VER_MINOR < 5)
 #define config_setting_lookup config_lookup_from
 #endif 
@@ -184,6 +185,9 @@ int initial_msg(FILE *f, char * conf_name){
 	if (write_to_conf_file(f, "#include <arch.h>\n\n"))
 		return EXIT_FAILURE;
     
+	if (write_to_conf_file(f, "#include <hypercall_defines.h>\n\n"))
+		return EXIT_FAILURE;
+
 	return 0;
 }
 
@@ -307,8 +311,7 @@ int gen_system_configuration(config_t cfg, FILE* outfile){
 			return ret;
 		}
 	}
-	
-       
+    
 	if ( (ret = insert_blank_line(outfile)) ){
 		return ret;
 	}
@@ -602,6 +605,44 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 			}
 		}
 		
+		/* Denied Hypercalls Array  */
+		config_setting_t * denied_hypercalls_setting = config_setting_lookup(vm_conf, "denied_hypercalls");
+		if(denied_hypercalls_setting){
+			int int_sz = config_setting_length(denied_hypercalls_setting);
+			int i;
+			/* get fast_int_sz */
+			snprintf(str, STRSZ, "\t\tdenied_hypercalls_sz: %d,\n", int_sz);
+			if ( (ret = write_to_conf_file(outfile, str)) ) {
+				return ret;
+			}
+
+			if ( (ret = write_to_conf_file(outfile, "\t\tdenied_hypercalls:(uint32_t []) {")) ) {
+					return ret;
+				}
+
+			for(i = 0; i < int_sz-1; ++i){
+					
+	
+				const char* denied_hypercall_name = config_setting_get_string_elem(denied_hypercalls_setting, i);
+				
+				strings_cat(str, STRSZ, denied_hypercall_name,",", NULL);
+				
+				if ( (ret = write_to_conf_file(outfile, (char*)str)) ) {
+					return ret;
+				}
+				
+			}
+			const char* denied_hypercall_name = config_setting_get_string_elem(denied_hypercalls_setting, i);
+					
+			if ( (ret = write_to_conf_file(outfile, (char*)denied_hypercall_name)) ) {
+				return ret;
+			}
+		
+			if ( (ret = write_to_conf_file(outfile, "},\n")) ) {
+				return ret;
+			}
+
+		}
 		/* fast_interrupts array  */
 		config_setting_t * fast_int_setting = config_setting_lookup(vm_conf, "fast_interrupts");
 		if(fast_int_setting){
@@ -776,10 +817,11 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 		}
 		
 		/* write the a ddress where the VM is in the RAM as seeing by the hypervisor (physical intermediate address) */
-		snprintf(auxstr, STRSZ, "\t\tram_base: 0x%x\n", vm_data_inter_addr);
+		snprintf(auxstr, STRSZ, "\t\tram_base: 0x%x,\n", vm_data_inter_addr);
 		if ( (ret = write_to_conf_file(outfile, auxstr)) ) {
 			return ret;
 		}
+
 		
 #ifndef BAIKAL_T1        
 		snprintf(auxstr, STRSZ, "%d \t%d \t0x%x\n", flash_size, ram_size, vm_code_inter_addr);

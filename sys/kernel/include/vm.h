@@ -69,6 +69,8 @@ struct vmconf_t{
     const struct tlb_entries const *tlb;
     uint32_t devices_mapping_sz;
     const struct device_mapping_t const *devices;
+    uint32_t denied_hypercalls_sz;
+    uint32_t *denied_hypercalls;
 };    
 
 /* Holds information about a Virtual machine on runtime.  */

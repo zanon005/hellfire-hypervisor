@@ -17,9 +17,9 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 #include <hypercall_defines.h>
 
-
-
 	.section .exception
+	.org 0
+	.word _etext
 	.org    0xf8
 _ebase:
 	.word   0x9d000000
