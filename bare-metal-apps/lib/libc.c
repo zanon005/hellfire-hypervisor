@@ -607,12 +607,6 @@ int32_t sprintf(char *out, const char *fmt, ...){
 }
 
 
-void mdelay(uint32_t msec){
-    uint32_t now = mfc0 (CP0_COUNT, 0);
-    
-    while(!wait_time(now, msec));
-}
-
 uint32_t calc_diff_time(uint32_t now, uint32_t old){
 	if (now >= old){
 		return  now - old;
@@ -1301,13 +1295,6 @@ float __floatunsisf(uint32_t af){
 	return resp;
 }
 
-time_t time(time_t *t){
-	uint32_t aux = mfc0(CP0_COUNT, 0);
-	if(t){
-		*t = aux;
-	}
-	return aux;
-}
 
 uint32_t toupper (uint32_t ch){
 	 if(('a' <= ch) && (ch <= 'z')){

@@ -20,6 +20,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <guest_interrupts.h>
 #include <malloc.h>
 #include <libc.h>
+#include <platform.h>
 
 #define NUM_GUEST_INTERRUPTS 10
 
@@ -122,5 +123,29 @@ uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
 	return 0;
 }
 
+
+void mdelay(uint32_t msec){
+    uint32_t now = mfc0 (CP0_COUNT, 0);
+    
+    while(!wait_time(now, msec));
+}
+
+
+time_t time(time_t *t){
+	uint32_t aux = mfc0(CP0_COUNT, 0);
+	if(t){
+		*t = aux;
+	}
+	return aux;
+}
+
+
+void di(){
+	    asm volatile("di");
+}
+
+void ei(){
+	asm volatile("ei");
+}
 
 

@@ -28,9 +28,14 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #define ENABLE_INTERVM_INT() do{}while(0)
 
 typedef void interrupt_handler_t();
+typedef long time_t;
 
 uint32_t interrupt_register(interrupt_handler_t *handler, uint32_t interrupt);
 void init_proc();
 uint32_t wait_time(uint32_t old_time, uint32_t ms_delay);
+void mdelay(uint32_t msec);
+time_t time(time_t *t);
+void di();
+void ei();
 
 #endif

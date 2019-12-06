@@ -71,7 +71,6 @@ extern int32_t random(void);
 extern void srand(uint32_t seed);
 extern int32_t printf(char *fmt, ...);
 extern int32_t sprintf(char *out, const char *fmt, ...);
-extern void mdelay(uint32_t msec);
 extern uint32_t calc_diff_time(uint32_t now, uint32_t old);
 extern uint32_t toupper (uint32_t c);
 extern uint32_t tolower (uint32_t c);
@@ -107,9 +106,6 @@ union float_long{
 	float f;
 	int32_t l;
 };
-
-//char    *__ctype_ptr__;
-typedef long time_t;
 
 
 #endif

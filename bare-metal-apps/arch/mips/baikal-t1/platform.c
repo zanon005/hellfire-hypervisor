@@ -129,5 +129,20 @@ uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
 	return 0;
 }
 
+void mdelay(uint32_t msec){
+    uint32_t now = mfc0 (CP0_COUNT, 0);
+    
+    while(!wait_time(now, msec));
+}
+
+
+time_t time(time_t *t){
+	uint32_t aux = mfc0(CP0_COUNT, 0);
+	if(t){
+		*t = aux;
+	}
+	return aux;
+}
+
 
 

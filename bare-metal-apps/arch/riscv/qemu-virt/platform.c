@@ -71,4 +71,18 @@ uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
 }
 
 
+void mdelay(uint32_t msec){
+        
+  
+}
+
+
+void di(){
+
+}
+
+void ei(){
+
+}
+
 

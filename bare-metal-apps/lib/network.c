@@ -27,16 +27,16 @@ static struct message_list_t message_list;
 int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t block){
         unsigned int size, out;
 	
-        asm volatile("di");
+        di();
         if(message_list.num_messages == 0 && block){
-            asm volatile("ei");
+            ei();
             while(!message_list.num_messages);
         }else if (message_list.num_messages == 0){
-            asm volatile("ei");
+            ei();
             return 0;
         }
         
-        asm volatile("di");
+        di();
         
         out = message_list.out;
         size = message_list.messages[out].size;
@@ -52,7 +52,7 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
         message_list.out = (out + 1) % MESSAGELIST_SZ;
         message_list.num_messages--;
         
-        asm volatile("ei");
+        ei();
         
         return size;
 }
