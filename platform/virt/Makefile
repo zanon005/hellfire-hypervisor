@@ -22,7 +22,7 @@ CROSS_COMPILER = riscv64-unknown-elf-
 
 # Optional Device Drivers
 CONFIG_INTERVMCOMM_DRV = yes
-CONFIG_NO_VMS_DRV = yes
+#CONFIG_NO_VMS_DRV = yes
 #CONFIG_PIC32MZ_USB_DRV = yes
 #CONFIG_PIC32MZ_ETHERNET_DRV = yes
 #CONFIG_VIRTUAL_IO_DRV = yes
@@ -130,10 +130,10 @@ bare_apps:
 	;done
 
 make_genconf:
-	gcc -o genconf ../cfg_reader/genconf.c -lconfig
+	gcc -o genconf ../cfg_reader/genconf.c -lconfig -DRISC_VIRT
 
 generate_firmware:
-	../../scripts/genhex.sh $(APP_LIST)
+	$(shell export BASE_ADDR=0x80000000; ../../scripts/genhex.sh $(APP_LIST))
 	
 config_vms: make_genconf
 	#execute first and exit in case of errors

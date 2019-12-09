@@ -48,7 +48,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 /* Virtual address for VM's RAM */
 #define VMS_RAM_VIRTUAL_BASE_ADDRESS  0x80000000
 
-#ifndef BAIKAL_T1
+#ifdef PIC32MZ
 
 /* Intermediate Physical address of the first VM on the RAM */
 #define VMS_DATA_INTERMEDIATE_BASE_ADDRESS 0x80008000
@@ -62,7 +62,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 /* Number of TLB entries available for use. */
 #define TOTAL_TLB_ENTRIES      15
 
-#else
+#elif BAIKAL_T1
 
 /* Intermediate Physical address of the first VM on the RAM */
 #define VMS_DATA_INTERMEDIATE_BASE_ADDRESS 0x80010000
@@ -75,6 +75,20 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 /* Number of TLB entries available for use. */
 #define TOTAL_TLB_ENTRIES      63
+
+#elif RISC_VIRT 
+
+/* Intermediate Physical address of the first VM on the RAM */
+#define VMS_DATA_INTERMEDIATE_BASE_ADDRESS 0x80010000
+
+/* Intermediate Physical address of the first VM on the FLASH */
+#define VMS_CODE_INTERMEDIATE_BASE_ADDRESS  0x80010000
+
+/* Virtual address for VM's FLASH */
+#define VMS_CODE_VIRTUAL_BASE_ADDRESS  0x80000000
+
+/* Number of TLB entries available for use. */
+#define TOTAL_TLB_ENTRIES      10
 
 #endif
 
@@ -481,7 +495,7 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 	strcpy(app_list, "");
     
 	/* Generates a list of VM's flash and RAM sizes */
-#ifndef BAIKAL_T1	
+#if !defined(BAIKAL_T1) && !defined(RISC_VIRT)
 	strcpy(vms_info, "VM name \tflash_size \tram_size \t address_start\n");
 #else
 	strcpy(vms_info, "VM name \tcode_size \tram_size \t address_start\n");
@@ -710,7 +724,7 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 		/* write num of tlb entries */
 		config_setting_t *mem_maps = config_setting_lookup(vm_conf, "memory_maps");
 		aux = mem_maps? config_setting_length(mem_maps) : 0;
-#ifndef BAIKAL_T1		
+#if !defined(BAIKAL_T1) && !defined(RISC_VIRT)
 		/* RAM and FLASH mapping requires 2 additional TLB entries 
 		 * for code on flash and data on RAM.
 		 */
@@ -756,7 +770,7 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 		
 		/* get FLASH size */
 		if( !config_setting_lookup_string(vm_conf, "flash_size_bytes", &auxstrp)){
-#ifndef BAIKAL_T1			
+#if !defined(BAIKAL_T1) && !defined(RISC_VIRT)
 			fprintf(stderr, "Missing flash_size_bytes proprierty on virtual_machines group.\n");
 			return EXIT_FAILURE;
 #endif			
@@ -823,7 +837,7 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 		}
 
 		
-#ifndef BAIKAL_T1        
+#if !defined(BAIKAL_T1) && !defined(RISC_VIRT)
 		snprintf(auxstr, STRSZ, "%d \t%d \t0x%x\n", flash_size, ram_size, vm_code_inter_addr);
 #else
 		snprintf(auxstr, STRSZ, "%d \t%d \t0x%x\n", ram_size, ram_size, vm_code_inter_addr);
@@ -835,7 +849,7 @@ int gen_conf_vms(config_t cfg, FILE* outfile, char *app_list, int* vm_count, cha
 		vm_data_inter_addr += ram_size;
 		
 		/* Increment to the intermediate address of the next VM */
-#ifndef BAIKAL_T1		
+#if !defined(BAIKAL_T1) && !defined(RISC_VIRT)
 		vm_code_inter_addr += flash_size;
 #else
 		vm_code_inter_addr += ram_size;
