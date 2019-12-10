@@ -142,10 +142,10 @@ config_vms: make_genconf
 	$(eval APP_LIST:=$(shell ./genconf $(CFG_FILE) || (exit 1)))
 
 start:
-	$(HOME)/riscv-tools/qemu-4.1.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -kernel prplHypervisor.elf -serial mon:stdio &
+	$(HOME)/riscv-tools/qemu-4.1.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -bios firmware.bin -serial mon:stdio &
 
 debug:
-	$(HOME)/riscv-tools/qemu-4.1.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -kernel prplHypervisor.elf -serial mon:stdio -s -S &
+	$(HOME)/riscv-tools/qemu-4.1.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -bios firmware.bin -serial mon:stdio -s -S &
 
 stop:
 	killall qemu-system-riscv64
