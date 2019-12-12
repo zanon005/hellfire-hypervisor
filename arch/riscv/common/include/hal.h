@@ -36,7 +36,7 @@ void clearInterruptMask(uint32_t im);
 void enableIE();
 uint32_t hasGuestID();
 uint32_t isDirectRoot();
-void setEPC(uint32_t epc);
+void setEPC(uint64_t epc);
 uint32_t getEPC();
 void setGuestRID(uint32_t guestrid);
 void setGuestID(uint32_t guestid);

@@ -276,8 +276,8 @@ uint32_t isDirectRoot(){
  * @brief Set CP0 EPC. 
  * 
  */
-void setEPC(uint32_t epc){
-    
+void setEPC(uint64_t epc){
+    write_csr(CSR_MEPC, epc);   
 }
 
 

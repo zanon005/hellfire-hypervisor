@@ -78,7 +78,7 @@ static void config_idle_cpu(){
 void contextRestore(){
 	
 	vcpu_t *vcpu = vcpu_in_execution;
-	
+
 	/* There are not VCPUs ready to execute. Put CPU in adle mode. */
 	if(!vcpu){
 		config_idle_cpu();
@@ -94,6 +94,11 @@ void contextRestore(){
 	/* FIXME: Code for context restore should be here!!*/	
 	
 	setEPC(vcpu->pc);
+
+
+	/* FIXME: setting supervisor mode. */	
+	write_csr(CSR_MSTATUS, read_csr(CSR_MSTATUS) & ~0x800);
+
 	
 	gpr_context_restore(vcpu->gpr);
 }
