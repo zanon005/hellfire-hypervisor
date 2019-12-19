@@ -69,7 +69,7 @@ static void cpu_idle(){
  * 
  */
 static void config_idle_cpu(){
-	write_csr(CSR_MEPC, (long)cpu_idle);
+	write_csr(mepc, (long)cpu_idle);
 }
 
 /**
@@ -97,7 +97,7 @@ void contextRestore(){
 
 
 	/* FIXME: setting supervisor mode. */	
-	write_csr(CSR_MSTATUS, read_csr(CSR_MSTATUS) & ~0x800);
+	write_csr(mstatus, read_csr(mstatus) & ~0x800);
 
 	
 	gpr_context_restore(vcpu->gpr);

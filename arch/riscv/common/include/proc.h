@@ -20,17 +20,17 @@
 #define MTIME           (*(volatile long long *)(0x02000000 + 0xbff8))
 #define MTIMECMP        (*(volatile long long *)(0x02000000 + 0x4000))
 
-#define read_csr_m(reg) ({ unsigned long __tmp; \
+#define read_csr(reg) ({ unsigned long __tmp; \
   asm volatile ("csrr %0, " #reg : "=r"(__tmp)); __tmp; })
 
-#define write_csr_m(reg, val) ({ \
+#define write_csr(reg, val) ({ \
   asm volatile ("csrw " #reg ", %0" :: "rK"(val)); })
 
-#define set_csr_m(reg, bit) ({ unsigned long __tmp; \
+#define set_csr_bits(reg, bit) ({ unsigned long __tmp; \
   asm volatile ("csrrs %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
   __tmp; })
 
-#define clear_csr_m(reg, bit) ({ unsigned long __tmp; \
+#define clear_csr_bits(reg, bit) ({ unsigned long __tmp; \
   asm volatile ("csrrc %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
   __tmp; })
 

@@ -50,7 +50,7 @@ void timer_interrupt_handler(){
 	run_scheduler();
 
 	/* wait interrupt bit fall to avoid spurious interrupts. */
-	while(read_csr(CSR_MIP) & MIP_MTIP);
+	while(read_csr(mip) & MIP_MTIP);
 }
 
 /**
@@ -62,8 +62,8 @@ void timer_interrupt_handler(){
 void start_timer(){
 	MTIMECMP = MTIME + SYSTEM_TICK_INTERVAL;
 
-    set_csr_bits(CSR_MIE, MIP_MTIP);
-    set_csr_bits(CSR_MSTATUS, MSTATUS_MIE);
+    set_csr_bits(mie, MIP_MTIP);
+    set_csr_bits(mstatus, MSTATUS_MIE);
 
 	/* Wait for a timer interrupt */
 	for(;;);
