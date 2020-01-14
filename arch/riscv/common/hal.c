@@ -65,6 +65,26 @@ static char* get_extensions(char *ex, uint32_t sz){
     return ex;
 }
 
+
+/** @brief Determine the number of valid ASID bits in the SATP register.
+ *  @return number of valid bits.
+ */
+static int get_asid_sz(){
+	uint64_t asid;
+	uint32_t i = 0;
+	
+	write_csr(satp, SATP_ASID_MASK);
+
+	asid = get_field(read_csr(satp), SATP_ASID_MASK);
+
+	while(asid & 0x1){
+		i++;
+		asid >>= 1;
+	}
+
+	return i;
+}
+
 /**
  * @brief Early boot message. 
  * 	Print to the stdout usefull hypervisor information.
@@ -78,6 +98,7 @@ static void print_config(void){
 	INFO("===========================================================");
 	INFO("CPU Core:      %s", STR_VALUE(CPU_ID));
     INFO("Extentions:    %s", get_extensions(ex, sizeof(ex)));
+    INFO("ASID size:     %dbits", get_asid_sz());
 	INFO("Board:         %s", STR_VALUE(CPU_ARCH));
 	INFO("System Clock:  %dMHz", CPU_FREQ/1000000);
 	INFO("Heap Size:     %dKbytes", (int)(&_heap_size)/1024);

@@ -34,11 +34,11 @@
   asm volatile ("csrrc %0, " #reg ", %1" : "=r"(__tmp) : "rK"(bit)); \
   __tmp; })
 
-static inline long get_field(uint32_t reg, long mask){
+static inline long get_field(uint64_t reg, long mask){
     return ((reg & mask) / (mask & ~(mask << 1)));
 }
 
-static inline long set_field(uint32_t reg, long mask, long val){
+static inline long set_field(uint64_t reg, long mask, long val){
     return ((reg & ~mask) | ((val * (mask & ~(mask << 1))) & mask));
 }
 
@@ -143,6 +143,8 @@ static inline long set_field(uint32_t reg, long mask, long val){
 
 #define MCAUSE_INT			(1ULL<<63)
 #define MCAUSE_MASK			0x7FFFFFFFFFFFFFFF
+#define SATP_ASID_MASK		0x0FFFF00000000000
+#define SATP_PPN_MASK		0xFFFFFFFFFFF
 
 #define DCSR_XDEBUGVER      (3U<<30)
 #define DCSR_NDRESET        (1<<29)
