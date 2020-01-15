@@ -90,15 +90,12 @@ void contextRestore(){
 		vcpu_in_execution->init = 0;
 	}
 	
-
 	/* FIXME: Code for context restore should be here!!*/	
 	
 	setEPC(vcpu->pc);
 
-
 	/* FIXME: setting supervisor mode. */	
-	write_csr(mstatus, read_csr(mstatus) & ~0x800);
-
+	write_csr(mstatus, read_csr(mstatus) ^ 0x1000);
 	
 	gpr_context_restore(vcpu->gpr);
 }
