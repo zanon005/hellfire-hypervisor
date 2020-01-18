@@ -3,7 +3,7 @@ OUTPUT_ARCH( "riscv" )
 ENTRY( _start )
 
 MEMORY{
-  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 64K
+  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 256K
 }
 
 _stack = ORIGIN(ram) + LENGTH(ram);
