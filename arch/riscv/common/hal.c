@@ -38,6 +38,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 /* HEAP size as calculated by the linker script. */
 extern uint32_t _heap_size;
+extern uint64_t __pages_start;
 
 /* Stringfy compiler parameters. */
 #define STR(x) #x
@@ -99,6 +100,7 @@ static void print_config(void){
 	INFO("CPU Core:      %s", STR_VALUE(CPU_ID));
     INFO("Extentions:    %s", get_extensions(ex, sizeof(ex)));
     INFO("ASID size:     %dbits", get_asid_sz());
+    INFO("Pages Address  0x%x", (uint64_t)&__pages_start);
 	INFO("Board:         %s", STR_VALUE(CPU_ARCH));
 	INFO("System Clock:  %dMHz", CPU_FREQ/1000000);
 	INFO("Heap Size:     %dKbytes", (int)(&_heap_size)/1024);

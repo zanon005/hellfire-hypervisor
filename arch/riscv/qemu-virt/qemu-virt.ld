@@ -48,6 +48,14 @@ SECTIONS{
     PROVIDE(_bss_end = .);
   } >ram AT>ram :bss
 
+  .page_tables : {
+    . = ALIGN(4096);
+    __pages_size = 148k;
+    PROVIDE(__pages_start = .);
+    . = . + __pages_size;
+    PROVIDE(__pages_end = .);
+  } >ram AT>ram
+
   PROVIDE(_memory_start = ORIGIN(ram));
   PROVIDE(_memory_end = ORIGIN(ram) + LENGTH(ram));
 }
