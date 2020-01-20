@@ -161,7 +161,7 @@ clean: config_vms
 	rm -f include/config.h
 	rm -f genconf
 	
-	#for i in $(APP_LIST) ; do \
-	#	$(MAKE) -C ../../bare-metal-apps/platform/rv8_simul APP=$$i CLEAN=1 clean \
-	#;done
+	for i in $(APP_LIST) ; do \
+		$(MAKE) -C ../../bare-metal-apps/platform/virt APP=$$i CLEAN=1 clean \
+	;done
 
