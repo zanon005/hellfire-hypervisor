@@ -79,10 +79,10 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #elif RISC_VIRT 
 
 /* Intermediate Physical address of the first VM on the RAM */
-#define VMS_DATA_INTERMEDIATE_BASE_ADDRESS 0x80010000
+#define VMS_DATA_INTERMEDIATE_BASE_ADDRESS 0x80040000
 
 /* Intermediate Physical address of the first VM on the FLASH */
-#define VMS_CODE_INTERMEDIATE_BASE_ADDRESS  0x80010000
+#define VMS_CODE_INTERMEDIATE_BASE_ADDRESS  0x80040000
 
 /* Virtual address for VM's FLASH */
 #define VMS_CODE_VIRTUAL_BASE_ADDRESS  0x80000000

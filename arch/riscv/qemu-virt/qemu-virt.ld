@@ -3,7 +3,7 @@ OUTPUT_ARCH( "riscv" )
 ENTRY( _start )
 
 MEMORY{
-  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 64K
+  ram   (wxa!ri) : ORIGIN = 0x80000000, LENGTH = 256K
 }
 
 _stack = ORIGIN(ram) + LENGTH(ram);
@@ -47,6 +47,14 @@ SECTIONS{
     *(.sbss .sbss.*) *(.bss .bss.*)
     PROVIDE(_bss_end = .);
   } >ram AT>ram :bss
+
+  .page_tables : {
+    . = ALIGN(4096);
+    __pages_size = 148k;
+    PROVIDE(__pages_start = .);
+    . = . + __pages_size;
+    PROVIDE(__pages_end = .);
+  } >ram AT>ram
 
   PROVIDE(_memory_start = ORIGIN(ram));
   PROVIDE(_memory_end = ORIGIN(ram) + LENGTH(ram));

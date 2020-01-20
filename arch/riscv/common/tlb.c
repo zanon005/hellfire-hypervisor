@@ -23,6 +23,9 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <proc.h>
 #include <hal.h>
 
+uint8_t page_Buffer[15000]; 
+
+uint64_t *page_table;
 
 
 /** Get a random tlb index  */
@@ -35,9 +38,37 @@ uint32_t tblGetRandomIndex(){
 	@param entry the entry to be written.
  */
 void tlbEntryWrite(struct tlbentry *entry){
+	uint64_t csr_satp;
+	uint32_t addr, i;
 
+	memset(page_Buffer, 0, sizeof(page_Buffer));
 
+	page_table = (0x1000 - (uint64_t)page_Buffer & 0xFFF) + (uint64_t)page_Buffer;
+	page_table[2] |= 1;
+	page_table[2] |= (((uint64_t)page_table + 0x1000) >> 12) << 10;
+
+	page_table = (uint8_t*)page_table + 0x1000;
+	page_table[0] |= 1;
+	page_table[0] |= (((uint64_t)page_table + 0x1000) >> 12) << 10;
+
+	page_table = (uint8_t*)page_table + 0x1000;
 	
+	addr = 0x80040;
+	for(i=0; i<8; i++){
+		page_table[i] |= 0xf;
+		page_table[i] |= addr << 10;
+		addr++;
+	}
+
+
+
+	page_table = (0x1000 - (uint64_t)page_Buffer & 0xFFF) + (uint64_t)page_Buffer;
+	
+	csr_satp = (8ULL<<60) | (1ULL<<44) | ((uint64_t)page_table >> 12);
+	write_csr(satp, csr_satp);
+
+	asm volatile ("SFENCE.VMA");
+
 }
 
 /** Create a temporary tlb entry mapped to non cachable area.
