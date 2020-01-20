@@ -20,6 +20,9 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 #include "types.h"
 
+struct vm_t;
+typedef struct vm_t vm_t;
+
 #define STATICTLB
 
 /* EntryLo bit flags */
@@ -69,7 +72,7 @@ typedef struct tlbentry{
 	uint32_t coherency;
 }tlbentry_t;
 
-void tlbEntryWrite(struct tlbentry *entry);
+void tlbEntryWrite(vm_t* vm, struct tlbentry *entry);
 uint32_t tlbCreateEntry(uint32_t address, uint32_t baseaddr, uint32_t size, uint32_t tlbindex, uint32_t use_cache);
 
 #endif

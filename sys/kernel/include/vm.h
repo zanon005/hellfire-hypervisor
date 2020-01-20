@@ -83,6 +83,7 @@ typedef struct vm_t {
 	const struct vmconf_t * vmconf;
 	uint32_t ntlbent;
 	struct tlbentry *tlbentries;
+    uint64_t *root_page_table;
 }vm_t;
 
 vm_t *create_vm(const struct vmconf_t const *vm);
