@@ -96,6 +96,10 @@ void contextRestore(){
 
 	/* FIXME: setting supervisor mode. */	
 	write_csr(mstatus, read_csr(mstatus) ^ 0x1000);
+
+	write_csr(satp, (8ULL<<60) | (1ULL<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
+
+	asm volatile ("SFENCE.VMA");
 	
 	gpr_context_restore(vcpu->gpr);
 }

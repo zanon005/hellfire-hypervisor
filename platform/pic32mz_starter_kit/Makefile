@@ -139,7 +139,7 @@ generate_firmware:
 	../../scripts/genhex.sh $(APP_LIST)
 
 make_genconf:
-	gcc -o genconf ../cfg_reader/genconf.c -lconfig
+	gcc -o genconf ../cfg_reader/genconf.c -lconfig -DPIC32MZ
 	
 config_vms: make_genconf
 	#execute first and exit in case of errors

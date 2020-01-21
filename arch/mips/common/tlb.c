@@ -34,7 +34,7 @@ uint32_t tblGetRandomIndex(){
 	@param index tlb index. The current entry on index will be lost. 
 	@param entry the entry to be written.
  */
-void tlbEntryWrite(struct tlbentry *entry){
+void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 
 	/* Guest ID to be write by the root */
 	setGuestRID(entry->guestid);
@@ -100,7 +100,7 @@ uint32_t tlbCreateEntry(uint32_t address, uint32_t baseaddr, uint32_t size, uint
 		entry.coherency = 2;
 	}
     
-	tlbEntryWrite(&entry);
+	tlbEntryWrite(vm_in_execution, &entry);
     
 	return (address & 0xFFF) + baseaddr - KSEG;
 }

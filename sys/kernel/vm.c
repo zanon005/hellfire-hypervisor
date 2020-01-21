@@ -119,7 +119,7 @@ vm_t *create_vm(const struct vmconf_t const *vm_conf) {
 		vm->tlbentries[i].entryhi = vm_conf->tlb[i].entryhi;
 		vm->tlbentries[i].coherency = vm_conf->tlb[i].coherency;
 		/* Write TLB on hardware */
-		tlbEntryWrite(&vm->tlbentries[i]);
+		tlbEntryWrite(vm, &vm->tlbentries[i]);
 	}
 
 	switch(vm->os_type){
