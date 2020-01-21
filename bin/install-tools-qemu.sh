@@ -16,7 +16,7 @@ pushd $TOOLS_DIR
 git clone https://github.com/riscv/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git submodule update --init --recursive
-./configure --prefix=$TOOLS_DIR/riscv-gnu-toolchain-bins
+./configure --prefix=$TOOLS_DIR/riscv-gnu-toolchain-bins --enable-gdb
 make
 cd ..
 
