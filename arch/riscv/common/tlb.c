@@ -55,7 +55,7 @@ uint32_t tblGetRandomIndex(){
  */
 void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	uint64_t *page_table, *inner_page_table;
-	uint32_t addr, i, first_va, last_va, first_va_jump, last_va_jump;
+	uint64_t addr, i, first_va, last_va, first_va_jump, last_va_jump;
 
 	/* Get level 1 and 2 page tables. */
 	page_table = get_next_page();
@@ -67,7 +67,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	addr = vm->base_addr;
 
 	first_va = VIRTUALBASE;
-	last_va = ((entry->entrylo1 - entry->entrylo0)*2)<<12 + VIRTUALBASE;
+	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE;
 	first_va_jump = first_va>>30;
 	last_va_jump = last_va>>30;
 
