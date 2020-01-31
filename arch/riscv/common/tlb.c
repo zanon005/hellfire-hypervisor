@@ -25,6 +25,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 
 #define PAGESIZE 4096
+#define VIRTUALBASE 0x80000000
 
 extern uint64_t __pages_start;
 static const uint8_t *page_Buffer = (uint8_t *)&__pages_start;
@@ -54,7 +55,7 @@ uint32_t tblGetRandomIndex(){
  */
 void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	uint64_t *page_table, *inner_page_table;
-	uint32_t addr, i;
+	uint32_t addr, i, first_va, last_va, first_va_jump, last_va_jump;
 
 	/* Get level 1 and 2 page tables. */
 	page_table = get_next_page();
@@ -63,27 +64,48 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	/* Keep the root page table address for context switches*/
 	vm->root_page_table = page_table;
 
-	page_table[2] |= 1;
-	page_table[2] |= (((uint64_t)inner_page_table) >> 12) << 10;
+	addr = vm->base_addr;
+
+	first_va = VIRTUALBASE;
+	last_va = ((entry->entrylo1 - entry->entrylo0)*2)<<12 + VIRTUALBASE;
+	first_va_jump = first_va>>30;
+	last_va_jump = last_va>>30;
+
+	for(i=first_va_jump;i<=(last_va_jump - first_va_jump);i++){
+	
+	page_table[i] |= 1;
+	page_table[i] |= (((uint64_t)page_table + 0x1000 + (0x1*(i-first_va_jump))) >> 12) << 10;
+
+	}
 
 	/* Get level 3 page table */
 	page_table = inner_page_table;
 	inner_page_table = get_next_page();
 
-	page_table[0] |= 1;
-	page_table[0] |= (((uint64_t)inner_page_table) >> 12) << 10;
+	first_va_jump = (first_va<<2)>>23;
+	last_va_jump = (last_va<<2)>>23;
+
+	for(i=first_va_jump;i<=(last_va_jump - first_va_jump);i++){
+
+	page_table[i] |= 1;
+	page_table[i] |= (((uint64_t)page_table + 0x1000 + (0x1*(i-first_va_jump))) >> 12) << 10;
+
+	}
 
 	page_table = inner_page_table;
+
+	first_va_jump = (first_va<<11)>>23;
+	last_va_jump = (last_va<<11)>>23;
 	
-	/* fill 32kb space address.*/
-	addr = 0x80040;
-	for(i=0; i<8; i++){
-		page_table[i] |= 0xf;
-		page_table[i] |= addr << 10;
-		addr++;
+	for(i=first_va_jump;i<=(last_va_jump - first_va_jump);i++){
+
+	page_table[i] |= 0xf;
+	page_table[i] |= (addr + (0x1*(i-first_va_jump)))<< 10;
+
 	}
 
 }
+
 
 /** Create a temporary tlb entry mapped to non cachable area.
  *  Uses the VM base address as virtual address to map the page.
