@@ -18,7 +18,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #ifndef __ARCH_H
 #define __ARCH_H
 
-#define BARE_METAL_ENTRY_POINT 0x80000000
+#define BARE_METAL_ENTRY_POINT 0x800000e4
 #define LINUX_ENTRY_POINT 0x80100400
 #define GPR_SIZE (31*8)
 
