@@ -64,7 +64,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	/* Keep the root page table address for context switches*/
 	vm->root_page_table = page_table;
 
-	addr = vm->base_addr;
+	addr = (vm->base_addr>>12);
 
 	first_va = VIRTUALBASE;
 	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE;
@@ -82,8 +82,8 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	page_table = inner_page_table;
 	inner_page_table = get_next_page();
 
-	first_va_jump = (first_va<<2)>>23;
-	last_va_jump = (last_va<<2)>>23;
+	first_va_jump = (first_va&0x3FE00000)>>21;
+	last_va_jump = (last_va&0x3FE00000)>21;
 
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 
@@ -94,8 +94,8 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 
 	page_table = inner_page_table;
 
-	first_va_jump = (first_va<<11)>>23;
-	last_va_jump = (last_va<<11)>>23;
+	first_va_jump = (first_va&0x1FF000)>>12;
+	last_va_jump = (last_va&0x1FF000)>>12;
 	
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 
