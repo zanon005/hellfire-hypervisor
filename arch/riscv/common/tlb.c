@@ -74,7 +74,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 	
 	page_table[i] |= 1;
-	page_table[i] |= ((inner_page_table + (0x1*(i-first_va_jump))) >> 12) << 10;
+	page_table[i] |= (((uint64_t)inner_page_table + (uint64_t)(0x1*(i-first_va_jump))) >> 12) << 10;
 
 	}
 
@@ -88,7 +88,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 
 	page_table[i] |= 1;
-	page_table[i] |= ((inner_page_table + (0x1*(i-first_va_jump))) >> 12) << 10;
+	page_table[i] |= (((uint64_t)inner_page_table + (uint64_t)(0x1*(i-first_va_jump))) >> 12) << 10;
 
 	}
 
@@ -100,7 +100,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 
 	page_table[i] |= 0xf;
-	page_table[i] |= (addr + (0x1*(i-first_va_jump)))<< 10;
+	page_table[i] |= (addr + (uint64_t)(0x1*(i-first_va_jump)))<< 10;
 
 	}
 
