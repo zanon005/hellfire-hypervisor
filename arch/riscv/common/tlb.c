@@ -25,7 +25,6 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 
 #define PAGESIZE 4096
-#define VIRTUALBASE 0x80000000
 
 extern uint64_t __pages_start;
 static const uint8_t *page_Buffer = (uint8_t *)&__pages_start;
@@ -66,8 +65,8 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 
 	addr = (vm->base_addr>>12);
 
-	first_va = VIRTUALBASE;
-	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE;
+	first_va = BARE_METAL_ENTRY_POINT;
+	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + BARE_METAL_ENTRY_POINT;
 	first_va_jump = first_va>>30;
 	last_va_jump = last_va>>30;
 
