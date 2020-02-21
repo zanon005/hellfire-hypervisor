@@ -45,7 +45,10 @@ asm volatile (                    \
  
 /* Get own guest ID  */
 #define get_guestid() ({ int32_t __ret; \
-asm volatile ("nop"); })
+asm volatile (     \
+"li a7, 0\n\
+ ecall\n\
+ "); })
 
  /* Ethernert link checker */
 #define eth_watch() ({ int32_t __ret; \
