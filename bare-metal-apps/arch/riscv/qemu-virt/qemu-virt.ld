@@ -18,6 +18,7 @@ PHDRS{
 SECTIONS{
   .text : {
     PROVIDE(_text_start = .);
+    *(.e_entry)
     *(.text.init) *(.text .text.*)
     PROVIDE(_text_end = .);
   } >ram AT>ram :text

@@ -103,6 +103,7 @@ trap_vector:
     addi sp, sp, 248
     mret
 
+.section .e_entry
 .globl _start
 _start:
     
