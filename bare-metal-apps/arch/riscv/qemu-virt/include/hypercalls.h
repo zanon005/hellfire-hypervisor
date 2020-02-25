@@ -102,11 +102,6 @@ asm volatile ("nop"); })
 
  /* UART send msg */
 #define uart_send(msg, size) ({ int32_t __ret; \
-asm volatile ("nop"); })
-
-
-/* UART send msg */
-#define uart_send(msg, size) ({ int32_t __ret; \
 asm volatile (                    \
 "move a0, %z1 \n \
  move a1, %z2 \n \
