@@ -73,6 +73,9 @@ ifeq ($(CONFIG_PIC32MZ_PUF_SRAM_DRV),yes)
 	DRIVERS_LIST += $(TOPDIR)drivers/pic32mz-puf-sram.c
 endif  
 
+ifeq ($(CONFIG_GUEST_SERVICES),yes)
+	DRIVERS_LIST += $(TOPDIR)drivers/guest_services.c
+endif  
 
 
 drivers:

@@ -40,13 +40,13 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  * V0 guest register will be replaced with the VM id. 
  */
 void get_vm_id(){
-	write_csr(a0,vcpu_in_execution->vm->id);
+	MoveToPreviousGuestGPR(REG_A0,vcpu_in_execution->vm->id);
 }
 
 /**
  * @brief Driver init call.  Registers the hypercalls. 
  */
-void intervm_init(){
+void guestid_init(){
 	if (register_hypercall(get_vm_id, HCALL_GET_VM_ID) < 0){
 		ERROR("Error registering the HCALL_GET_VM_ID hypercall");
 		return;
@@ -55,6 +55,6 @@ void intervm_init(){
 	INFO("Hypercall Guest ID implemented.");
 }
 
-driver_init(intervm_init);
+driver_init(guestid_init);
 
 
