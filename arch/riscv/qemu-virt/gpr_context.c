@@ -72,8 +72,8 @@ void gpr_context_save(long* gpr_p){
  * @param reg GPR number.
  * @param value Value to write on the stack.
  */
-void MoveToPreviousGuestGPR(long reg, long value){
-	unsigned long* sp = (((unsigned long*)(&_stack)) - GPR_SIZE);
+void MoveToPreviousGuestGPR(long reg, uint64_t value){
+	uint64_t* sp = (((uint64_t*)(&_stack)) - GPR_SIZE);
 	sp[reg] = value;
 }
 
@@ -83,8 +83,8 @@ void MoveToPreviousGuestGPR(long reg, long value){
  * @param reg GPR number.
  * @return GPR data.
  */
-uint32_t MoveFromPreviousGuestGPR(long reg){
-	unsigned long* sp = (((unsigned long*)(&_stack)) - GPR_SIZE);
+uint64_t MoveFromPreviousGuestGPR(long reg){
+	uint64_t* sp = (((uint64_t*)(&_stack)) - GPR_SIZE);
 	return sp[reg];
 }
 

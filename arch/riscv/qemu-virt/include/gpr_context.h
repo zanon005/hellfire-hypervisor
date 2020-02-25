@@ -33,8 +33,8 @@ void gpr_context_save(long* gpr_p);
   * On P5600, the guests share the same GPR set (GPR Shadows are not implemented). Thus,
   * the hypercall parameters are read/write from the stack.
   */
-void MoveToPreviousGuestGPR(long reg, long value);
-uint32_t MoveFromPreviousGuestGPR(long reg);
+void MoveToPreviousGuestGPR(long reg, uint64_t value);
+uint64_t MoveFromPreviousGuestGPR(long reg);
 
 
 #endif /* _GRP_CONTEXT_H */
