@@ -206,8 +206,8 @@ uint32_t getCauseCode(){
  * 
  * @return Hypercall code.
  */
-uint32_t getHypercallCode(){
-	return 0;	
+uint64_t getHypercallCode(){
+	return MoveFromPreviousGuestGPR(REG_A7);	
 }
 
 

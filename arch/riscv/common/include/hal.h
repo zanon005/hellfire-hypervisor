@@ -26,7 +26,7 @@ int32_t hasVZ();
 int32_t ConfigureGPRShadow();
 int32_t LowLevelProcInit();
 uint32_t getCauseCode();
-uint32_t getHypercallCode();
+uint64_t getHypercallCode();
 uint32_t getCauseBD();
 uint32_t getGCauseCode();
 uint32_t getInterruptPending();

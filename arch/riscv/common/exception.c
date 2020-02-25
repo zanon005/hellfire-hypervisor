@@ -43,22 +43,18 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  * @brief Guest exit exception handler. 
  * 
  */
-/*static uint32_t guest_exit_exception(){
-	uint32_t guestcause = getGCauseCode();
-	uint32_t epc = getEPC();
-	
-	switch (guestcause) {
-		case GUEST_INSTRUCTION_EMULATION:	
-			instruction_emulation(epc);
-			break;
-		case GUEST_HYPERCALL:
-			hypercall_execution();			
+static void guest_exit_exception(long cause, uint64_t epc){
+
+	switch (cause) {
+		case IRQ_S_EXT:	
+			hypercall_execution();
 			break;
 		default:
-			WARNING("Guest exit cause code %d not supported.", guestcause);
+			WARNING("Guest exit cause code %d not supported.", cause);
 			break;
 	}
 	
+	/* Advance to the next instruction. */
 	vcpu_in_execution->pc = epc+4;
 
 	setEPC(vcpu_in_execution->pc);	
@@ -68,13 +64,13 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 	}
 	
 	return 0;
-}*/
+}
 
 /**
  * @brief General exception handler. 
  * 
  */
-void general_exception_handler(long mcause, long mepc){
+void general_exception_handler(long mcause, uint64_t mepc){
 	uint32_t cause = get_field(mcause, MCAUSE_MASK);
 
 	/* Interruption */
@@ -84,5 +80,7 @@ void general_exception_handler(long mcause, long mepc){
 					timer_interrupt_handler();
 					break;
 		}
+	}else{ /* Exceptions */ 
+		guest_exit_exception(cause, mepc);
 	}
 }

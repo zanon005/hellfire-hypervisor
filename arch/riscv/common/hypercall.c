@@ -32,7 +32,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <hal.h>
 #include <globals.h>
 #include <tlb.h>
-#include <mips_cp0.h>
+#include <proc.h>
 
 /**
  * @brief Hypercalls table 
@@ -73,7 +73,7 @@ void hypercall_execution(){
     
     /* Hypercall not implemented */
     if ( (code > HCALL_TABLE_SIZE-1) || (code < 0) || (!hypercall_table[code])){
-        MoveToPreviousGuestGPR(REG_V0, HCALL_NOT_IMPLEMENTED);
+        MoveToPreviousGuestGPR(REG_A0, HCALL_NOT_IMPLEMENTED);
         return;
     }
     
