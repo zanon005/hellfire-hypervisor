@@ -15,13 +15,14 @@
 
 #Input CFG file for VMs configuration
 #CFG_FILE = cfg/sample-blink.cfg
-CFG_FILE = cfg/sample-blink.cfg
+CFG_FILE = cfg/test.cfg
 
 # CROSS Compiler 
 CROSS_COMPILER = riscv64-unknown-elf-
 
 # Optional Device Drivers
-CONFIG_INTERVMCOMM_DRV = yes
+CONFIG_GUEST_SERVICES = yes
+#CONFIG_INTERVMCOMM_DRV = yes
 #CONFIG_NO_VMS_DRV = yes
 #CONFIG_PIC32MZ_USB_DRV = yes
 #CONFIG_PIC32MZ_ETHERNET_DRV = yes
