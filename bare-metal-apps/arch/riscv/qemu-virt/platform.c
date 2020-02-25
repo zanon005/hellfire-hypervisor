@@ -56,7 +56,7 @@ void _irq_handler(uint32_t status, uint32_t cause){
  */
 void init_proc(){
 	/* Enable float-point instructions */
-	write_csr(status, read_csr(sstatus) | (1 << 13));
+	write_csr(sstatus, read_csr(sstatus) | (1 << 13));
 }
 
 
