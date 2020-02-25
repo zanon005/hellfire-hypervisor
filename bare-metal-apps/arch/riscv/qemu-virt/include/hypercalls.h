@@ -45,10 +45,12 @@ asm volatile (                    \
  
 /* Get own guest ID  */
 #define get_guestid() ({ int32_t __ret; \
-asm volatile (     \
-"li a7, 0\n\
- ecall\n\
- "); })
+asm volatile (                    \
+"li a7, %1 \n\
+ ecall \n\
+ move %0, a0 " \
+ : "=r" (__ret) : "I" (HCALL_GET_VM_ID) : "a0", "a7"); \
+ __ret; })
 
  /* Ethernert link checker */
 #define eth_watch() ({ int32_t __ret; \
@@ -101,6 +103,19 @@ asm volatile ("nop"); })
  /* UART send msg */
 #define uart_send(msg, size) ({ int32_t __ret; \
 asm volatile ("nop"); })
+
+
+/* UART send msg */
+#define uart_send(msg, size) ({ int32_t __ret; \
+asm volatile (                    \
+"move a0, %z1 \n \
+ move a1, %z2 \n \
+ li   a7, %3 \n\
+ ecall \n\
+ move %0, a0" \
+ : "=r" (__ret) : "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_UART_SEND) : "a0", "a1", "a7"); \
+ __ret; })
+
 
 #endif
 

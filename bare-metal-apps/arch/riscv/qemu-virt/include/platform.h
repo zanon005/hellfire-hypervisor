@@ -29,6 +29,13 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 	
 #define ENABLE_INTERVM_INT() 
 
+#define read_csr(reg) ({ unsigned long __tmp; \
+  asm volatile ("csrr %0, " #reg : "=r"(__tmp)); __tmp; })
+
+#define write_csr(reg, val) ({ \
+  asm volatile ("csrw " #reg ", %0" :: "rK"(val)); })
+
+
 typedef void interrupt_handler_t();
 
 uint32_t interrupt_register(interrupt_handler_t *handler, uint32_t interrupt);

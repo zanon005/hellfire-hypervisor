@@ -20,6 +20,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <guest_interrupts.h>
 #include <malloc.h>
 #include <libc.h>
+#include <platform.h>
 
 #define NUM_GUEST_INTERRUPTS 10
 
@@ -54,7 +55,8 @@ void _irq_handler(uint32_t status, uint32_t cause){
  * 
  */
 void init_proc(){
-
+	/* Enable float-point instructions */
+	write_csr(status, read_csr(sstatus) | (1 << 13));
 }
 
 
