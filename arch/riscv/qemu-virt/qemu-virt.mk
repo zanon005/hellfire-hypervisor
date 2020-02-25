@@ -17,7 +17,8 @@ qemu-virt:
 	$(CC) $(CFLAGS) $(INC_DIRS) \
 		$(TOPDIR)arch/riscv/qemu-virt/boot.S \
 		$(TOPDIR)arch/riscv/qemu-virt/timer.c \
-		$(TOPDIR)arch/riscv/qemu-virt/gpr_context.c 
+		$(TOPDIR)arch/riscv/qemu-virt/gpr_context.c \
+		$(TOPDIR)arch/riscv/qemu-virt/uart_driver.c
 
 
 		
