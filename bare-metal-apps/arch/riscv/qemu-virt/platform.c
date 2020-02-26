@@ -68,13 +68,26 @@ void init_proc(){
  * @return 0 if the period was not consumed, 1 otherwise.
  */
 uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
+	uint64_t diff_time;
+	uint64_t now = read_csr(time);
+    
+	if (now >= old_time)
+		diff_time = now - old_time;
+	else
+		diff_time = 0xffffffff - (old_time - now);
+
+	if(diff_time > (ms_delay * MILISECOND)){
+		return 1;
+	}
 	
 	return 0;
 }
 
 
 void mdelay(uint32_t msec){
-        
+ 	uint64_t now = read_csr(time);
+    
+    while(!wait_time(now, msec));       
   
 }
 
