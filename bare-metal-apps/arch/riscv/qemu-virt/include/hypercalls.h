@@ -109,6 +109,14 @@ asm volatile (                    \
  ecall \n\
  move %0, a0" \
  : "=r" (__ret) : "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_UART_SEND) : "a0", "a1", "a7"); \
+ __ret; }),
+
+#define get_mtimer_value() ({ int32_t __ret; \
+asm volatile (                    \
+"li a7, %1 \n\
+ ecall \n\
+ move %0, a0 " \
+ : "=r" (__ret) : "I" (HCALL_GET_MTIMER_VALUE) : "a0", "a7"); \
  __ret; })
 
 

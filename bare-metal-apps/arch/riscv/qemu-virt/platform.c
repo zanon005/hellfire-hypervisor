@@ -69,7 +69,7 @@ void init_proc(){
  */
 uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
 	uint64_t diff_time;
-	uint64_t now = read_csr(time);
+	uint64_t now = get_mtimer_value();
     
 	if (now >= old_time)
 		diff_time = now - old_time;
@@ -85,7 +85,7 @@ uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
 
 
 void mdelay(uint32_t msec){
- 	uint64_t now = read_csr(time);
+ 	uint64_t now = get_mtimer_value();
     
     while(!wait_time(now, msec));       
   

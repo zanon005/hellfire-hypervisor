@@ -16,11 +16,11 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 */
 
 /**
- * @file guest_services.c
+ * @file vtimer.c
  * 
  * @section DESCRIPTION
  * 
- * This driver implements the guests hypercalls.
+ * This driver register the mtimer hypercall.
  */
 
 #include <hypercall.h>
@@ -38,22 +38,25 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  * @brief Hypercall implementation. Returns the VM identifier number for the calling VM. 
  * V0 guest register will be replaced with the VM id. 
  */
-void get_vm_id(){
-	MoveToPreviousGuestGPR(REG_A0,vcpu_in_execution->vm->id);
+void get_mtimer_value(){
+	uint64_t mtime = MTIME;
+
+	MoveToPreviousGuestGPR(REG_A0,mtime);
 }
 
 /**
  * @brief Driver init call.  Registers the hypercalls. 
  */
-void guest_services_init(){
-	if (register_hypercall(get_vm_id, HCALL_GET_VM_ID) < 0){
-		ERROR("Error registering the HCALL_GET_VM_ID hypercall");
+void vtimer_init(){
+	if (register_hypercall(get_mtimer_value, HCALL_GET_MTIMER_VALUE) < 0){
+		ERROR("Error registering the HCALL_GET_MTIMER_VALUE hypercall");
 		return;
 	}
     
-	INFO("Hypercall Guest ID implemented.");
+	INFO("Hypercall MTimer Value implemented.");
 }
 
-driver_init(guest_services_init);
+driver_init(vtimer_init);
+
 
 

@@ -22,6 +22,7 @@ CROSS_COMPILER = riscv64-unknown-elf-
 
 # Optional Device Drivers
 CONFIG_GUEST_SERVICES = yes
+CONFIG_VTIMER = yes
 #CONFIG_INTERVMCOMM_DRV = yes
 #CONFIG_NO_VMS_DRV = yes
 #CONFIG_PIC32MZ_USB_DRV = yes
