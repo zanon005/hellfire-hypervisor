@@ -43,7 +43,7 @@ CONFIG_GUEST_SERVICES = yes
 # Platform info
 CFLAGS = -DCPU_ID="virt"
 CFLAGS += -DCPU_ARCH="QEMU VIRT"
-CFLAGS += -DCPU_FREQ=200000000
+CFLAGS += -DCPU_FREQ=20000000
 
 # Define DEBUG_GUEST to yes if you desire to compile the guests for debug. The code optimization will be O0.
 DEBUG_GUEST = no
