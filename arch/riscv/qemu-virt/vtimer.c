@@ -22,23 +22,20 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  * 
  * This driver register the mtimer hypercall.
  */
-
-#include <hypercall.h>
-#include <scheduler.h>
-#include <hal.h>
 #include <globals.h>
-#include <tlb.h>
-#include <driver.h>
-#include <hypercall_defines.h>
-#include <proc.h>
+#include <hal.h>
+#include <qemu_virt.h>
 #include <guest_interrupts.h>
+#include <scheduler.h>
+#include <interrupts.h>
 #include <libc.h>
+#include <proc.h>
 
 /**
  * @brief Hypercall implementation. Returns the VM identifier number for the calling VM. 
  * V0 guest register will be replaced with the VM id. 
  */
-void get_mtimer_value(){
+static void get_mtimer(){
 	uint64_t mtime = MTIME;
 
 	MoveToPreviousGuestGPR(REG_A0,mtime);
@@ -48,7 +45,7 @@ void get_mtimer_value(){
  * @brief Driver init call.  Registers the hypercalls. 
  */
 void vtimer_init(){
-	if (register_hypercall(get_mtimer_value, HCALL_GET_MTIMER_VALUE) < 0){
+	if (register_hypercall(get_mtimer, HCALL_GET_MTIMER_VALUE) < 0){
 		ERROR("Error registering the HCALL_GET_MTIMER_VALUE hypercall");
 		return;
 	}

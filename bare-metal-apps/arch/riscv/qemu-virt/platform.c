@@ -21,6 +21,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <malloc.h>
 #include <libc.h>
 #include <platform.h>
+#include <hypercalls.h>
 
 #define NUM_GUEST_INTERRUPTS 10
 
@@ -74,7 +75,7 @@ uint32_t wait_time(uint32_t old_time, uint32_t ms_delay){
 	if (now >= old_time)
 		diff_time = now - old_time;
 	else
-		diff_time = 0xffffffff - (old_time - now);
+		diff_time = 0xffffffffffffffff - (old_time - now);
 
 	if(diff_time > (ms_delay * MILISECOND)){
 		return 1;

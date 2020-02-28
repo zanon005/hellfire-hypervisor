@@ -76,10 +76,6 @@ endif
 ifeq ($(CONFIG_GUEST_SERVICES),yes)
 	DRIVERS_LIST += $(TOPDIR)drivers/guest_services.c
 endif
-
-ifeq ($(CONFIG_VTIMER),yes)
-	DRIVERS_LIST += $(TOPDIR)drivers/vtimer.c
-endif  
   
 
 
