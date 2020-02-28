@@ -50,7 +50,8 @@ void timer_interrupt_handler(){
 	run_scheduler();
 
 	/* wait interrupt bit fall to avoid spurious interrupts. */
-	while(read_csr(mip) & MIP_MTIP);
+	/* FIXME: It appears to be not working during debugging.*/
+	/*while(read_csr(mip) & MIP_MTIP); */
 }
 
 /**
