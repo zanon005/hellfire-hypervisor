@@ -22,14 +22,16 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  * 
  * This driver register the mtimer hypercall.
  */
+
 #include <globals.h>
 #include <hal.h>
-#include <qemu_virt.h>
-#include <guest_interrupts.h>
-#include <scheduler.h>
-#include <interrupts.h>
 #include <libc.h>
 #include <proc.h>
+#include <hypercall_defines.h>
+#include <hypercall.h>
+#include <driver.h>
+#include <interrupts.h>
+#include <platform.h>
 
 /**
  * @brief Hypercall implementation. Returns the VM identifier number for the calling VM. 
@@ -51,6 +53,7 @@ void vtimer_init(){
 	}
     
 	INFO("Hypercall MTimer Value implemented.");
+	
 }
 
 driver_init(vtimer_init);
