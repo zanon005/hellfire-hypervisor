@@ -26,10 +26,10 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 extern uint64_t __pages_start;
 static const uint8_t *page_Buffer = (uint8_t *)&__pages_start;
 
-
+uint32_t next_page = 0;
 
 static uint64_t * get_next_page(){
-	static uint32_t next_page = 0;
+
 	uint64_t *page_addr = page_Buffer + next_page  * PAGESIZE;
 	memset(page_addr, 0, PAGESIZE);
 	
@@ -43,6 +43,20 @@ static uint64_t * get_next_page(){
 /** Get a random tlb index  */
 uint32_t tblGetRandomIndex(){
 	return 0;
+}
+
+void dumpPageTables(){
+	uint32_t i, j;
+
+	for (i=0; i<next_page; i++){
+		printf("Table %d at 0x%x\n", i, (page_Buffer + (i*PAGESIZE)));
+		for (j=0; j<512; j++){
+			uint64_t v = ((uint64_t*)(page_Buffer + (i*PAGESIZE)))[j];
+			if (v != 0){
+				printf("%d, %x\n", j, v);
+			}
+		}
+	}
 }
 
 /** Write an entry to the tbl.

@@ -74,5 +74,5 @@ typedef struct tlbentry{
 
 void tlbEntryWrite(vm_t* vm, struct tlbentry *entry);
 uint32_t tlbCreateEntry(uint32_t address, uint32_t baseaddr, uint32_t size, uint32_t tlbindex, uint32_t use_cache);
-
+void dumpPageTables();
 #endif
