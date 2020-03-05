@@ -50,7 +50,8 @@ static void guest_exit_exception(long cause, uint64_t epc){
 			hypercall_execution();
 			break;
 		default:
-			WARNING("Guest exit cause code %d not supported.", cause);
+			WARNING("Stopping VM %d due to cause error %d .", vcpu_in_execution->vm->id, cause);
+			vcpu_in_execution->state = VCPU_BLOCKED;
 			break;
 	}
 	
