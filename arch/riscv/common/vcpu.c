@@ -76,7 +76,9 @@ static void config_idle_cpu(){
  * @brief  Restore the VCPU context on context switch. 
  */
 void contextRestore(){
-	
+
+	uint64_t test;
+
 	vcpu_t *vcpu = vcpu_in_execution;
 
 	/* There are not VCPUs ready to execute. Put CPU in adle mode. */
@@ -97,10 +99,14 @@ void contextRestore(){
 	/* FIXME: setting supervisor mode. */	
 	write_csr(mstatus, read_csr(mstatus) ^ 0x1000);
 
+	asm volatile ("SFENCE.VMA");
+
 	write_csr(satp, (8ULL<<60) | (1ULL<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
 
-	asm volatile ("SFENCE.VMA");
-	
+	test = read_csr(satp);
+
+	printf("\n%x\n",test);
+
 	gpr_context_restore(vcpu->gpr);
 }
 
