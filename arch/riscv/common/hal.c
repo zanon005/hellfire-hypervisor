@@ -186,6 +186,8 @@ int32_t ConfigureGPRShadow(){
  * @return 1 for error or 0 for success.
  */
 int32_t LowLevelProcInit(){
+
+	write_csr(mstatus, read_csr(mstatus) ^ 0x100000);
     
 	return 0;
 }
