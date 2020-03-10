@@ -139,11 +139,6 @@ vm_t *create_vm(const struct vmconf_t const *vm_conf) {
 	vcpu = create_vcpu(vm, entry_point, vm_conf->priority);	
 	
 	queue_addtail(scheduler_info.vcpu_ready_list, vcpu);
-
-
-	if(vcpu->id==1){
-		vcpu->state = VCPU_BLOCKED;
-	}
 	
 	return vm;
 }

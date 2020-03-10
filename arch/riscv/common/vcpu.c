@@ -77,7 +77,7 @@ static void config_idle_cpu(){
  */
 void contextRestore(){
 
-	uint64_t test;
+	int64_t test;
 
 	vcpu_t *vcpu = vcpu_in_execution;
 
@@ -96,16 +96,13 @@ void contextRestore(){
 	
 	setEPC(vcpu->pc);
 
-	/* FIXME: setting supervisor mode. */	
-	write_csr(mstatus, read_csr(mstatus) ^ 0x1000);
+	/* FIXME: setting supervisor mode. */
 
-	asm volatile ("SFENCE.VMA");
+	write_csr(mstatus, (read_csr(mstatus) & 0xFFFFFFFFFFFFEFFF));
 
 	write_csr(satp, (8ULL<<60) | (1ULL<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
 
-	test = read_csr(satp);
-
-	printf("\n%x\n",test);
+	asm volatile ("SFENCE.VMA");
 
 	gpr_context_restore(vcpu->gpr);
 }

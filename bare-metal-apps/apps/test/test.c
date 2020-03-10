@@ -9,7 +9,8 @@
 
 
 int main() {
-	uint64_t id;
+	uint64_t id,test;
+
 	while(1){
 		id = get_guestid();
 		printf("Guest %d running!\n", id);
