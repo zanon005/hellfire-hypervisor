@@ -77,7 +77,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	addr = (vm->base_addr>>12);
 
 	first_va = VIRTUALBASE;
-	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE;
+	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE - 1;
 	first_va_jump = first_va>>30;
 	last_va_jump = last_va>>30;
 
@@ -113,7 +113,7 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	page_table[i] |= (addr + (uint64_t)(0x1*(i-first_va_jump)))<< 10;
 
 	}
-
+	
 }
 
 
