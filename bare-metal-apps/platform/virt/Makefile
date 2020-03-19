@@ -64,7 +64,7 @@ else
 endif
 
 ### GCC flags configuration: processor tunning ###
-CFLAGS += -march=rv64imafdc -Wall -fpie -ffunction-sections -fdata-sections
+CFLAGS += -march=rv64imac -mabi=lp64 -Wall -fpie -ffunction-sections -fdata-sections
 
 CFLAGS += -Wno-duplicate-decl-specifier -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast#-Wa, 
 #flointing pointing options

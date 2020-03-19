@@ -1296,6 +1296,11 @@ float __floatunsisf(uint32_t af){
 }
 
 
+float __truncdfsf2 (double a){
+  /* FIXME: Ugly hack just to compile! Must provide correct implementation here!*/
+  return (float)a;
+}
+
 uint32_t toupper (uint32_t ch){
 	 if(('a' <= ch) && (ch <= 'z')){
 		ch = 'A' + (ch - 'a');
