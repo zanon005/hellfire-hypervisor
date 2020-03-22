@@ -35,10 +35,11 @@ extern long _stack;
 
 
 void print_stack(){
-	uint32_t i;
+	uint64_t i, j;
+
 	printf("\n==========================");
-	for(i=((unsigned long)(&_stack))-GPR_SIZE;  i<((unsigned long)(&_stack)); i+=sizeof(unsigned long*)){
-		printf("\n0x%x", *(long*)i);
+	for(i=((uint64_t)(&_stack))-GPR_SIZE;  i<((uint64_t)(&_stack)); i+=sizeof(uint64_t)){
+		printf("\n0x%x", *(uint64_t*)i);
 	}
 	printf("\n==========================");
 }
@@ -48,9 +49,9 @@ void print_stack(){
  * @param grp_p Pointer to the address where the gpr is saved. 
  */
 void gpr_context_restore(long* gpr_p){
-	uint32_t i, j;
-	for(i=((unsigned long)(&_stack))-GPR_SIZE, j=0; i<((unsigned long)(&_stack)); i+=sizeof(unsigned long*), j++){
-		*(long*)i = gpr_p[j]; 
+	uint64_t i, j;
+	for(i=((uint64_t)(&_stack))-GPR_SIZE, j=0; i<((uint64_t)(&_stack)); i+=sizeof(uint64_t), j++){
+		*(uint64_t*)i = gpr_p[j]; 
 	}
 }
 
@@ -60,9 +61,9 @@ void gpr_context_restore(long* gpr_p){
  * @param grp_p Pointer to the address where gpr will be saved. 
  */
 void gpr_context_save(long* gpr_p){
-	uint32_t i, j;
-	for(i=((long)(&_stack))-GPR_SIZE, j=0; i<((long)(&_stack)); i+=sizeof(long*), j++){
-		gpr_p[j] = ((long)*(long*)i); 
+	uint64_t i, j;
+	for(i=((uint64_t)(&_stack))-GPR_SIZE, j=0; i<((uint64_t)(&_stack)); i+=sizeof(uint64_t), j++){
+		gpr_p[j] = ((uint64_t)*(uint64_t*)i); 
 	}
 }
 
@@ -73,7 +74,7 @@ void gpr_context_save(long* gpr_p){
  * @param value Value to write on the stack.
  */
 void MoveToPreviousGuestGPR(long reg, uint64_t value){
-	uint64_t* sp = (((uint64_t*)(&_stack)) - GPR_SIZE);
+	uint64_t* sp = (((uint64_t)(&_stack)) - GPR_SIZE);
 	sp[reg] = value;
 }
 
@@ -84,7 +85,7 @@ void MoveToPreviousGuestGPR(long reg, uint64_t value){
  * @return GPR data.
  */
 uint64_t MoveFromPreviousGuestGPR(long reg){
-	uint64_t* sp = (((uint64_t*)(&_stack)) - GPR_SIZE);
+	uint64_t* sp = (((uint64_t)(&_stack)) - GPR_SIZE);
 	return sp[reg];
 }
 

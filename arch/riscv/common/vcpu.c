@@ -47,7 +47,6 @@ void contextSave(){
 	
 	if (vcputosave->init == 0){
 		/* FIXME: CSR registers to save? .*/
-
 		gpr_context_save(vcputosave->gpr);
 	}
 }
@@ -100,11 +99,12 @@ void contextRestore(){
 
 	write_csr(mstatus, (read_csr(mstatus) & 0xFFFFFFFFFFFFEFFF));
 
-	write_csr(satp, (8ULL<<60) | (1ULL<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
+	write_csr(satp, (8ULL<<60) | (((uint64_t)vcpu->vm->id)<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
 
 	asm volatile ("SFENCE.VMA");
 
 	gpr_context_restore(vcpu->gpr);
+
 }
 
 /**
