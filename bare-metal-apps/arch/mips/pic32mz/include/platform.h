@@ -27,7 +27,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #define NEXT_TIMER() 	do{}while(0)
 #define ENABLE_INTERVM_INT() do{}while(0)
 
-#define GET_TIMER()  get_mtimer_value()
+#define GET_TIMER()  mfc0(CP0_COUNT, 0)
 
 typedef void interrupt_handler_t();
 typedef long time_t;

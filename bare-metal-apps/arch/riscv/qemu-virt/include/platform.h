@@ -29,7 +29,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 	
 #define ENABLE_INTERVM_INT() 
 
-#define GET_TIMER()  mfc0(CP0_COUNT, 0)
+#define GET_TIMER()  get_mtimer_value()
 
 #define read_csr(reg) ({ unsigned long __tmp; \
   asm volatile ("csrr %0, " #reg : "=r"(__tmp)); __tmp; })
