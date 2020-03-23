@@ -53,7 +53,7 @@ int main() {
 			print_net_error(ret);
 		}else{
 			/* get current time and calculates one way delay. */
-			timenow = mfc0(CP0_COUNT, 0);
+			timenow = GET_TIMER();
 			
 			memcpy(&timesstart, message_buffer, sizeof(uint32_t));
 			

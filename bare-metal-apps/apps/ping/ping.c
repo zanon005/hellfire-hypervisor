@@ -73,7 +73,7 @@ int main() {
 		
 		for(i = 0; i < NUMBER_OF_ROUNDS; i++){
 			/* start time */
-			timestart = mfc0(CP0_COUNT, 0);
+			timestart = GET_TIMER();
 			
 			/* send the initial time to the recipient VM. */
 			memcpy(message_buffer, &timestart, sizeof(uint32_t));
@@ -92,7 +92,7 @@ int main() {
 				}else{	
 					if(ret){
 						/* get current time */
-						timenow = mfc0(CP0_COUNT, 0);
+						timenow = GET_TIMER();
 						
 						/* calc round trip average, worst and best cases. */
 						diff_time = calc_diff_time(timenow, timestart);
