@@ -31,15 +31,24 @@ asm volatile ("nop"); })
 /* interVM send message  */
 #define ipc_send(targed_id, msg, size) ({ int32_t __ret; \
 asm volatile (                    \
-"nop" \
- : "=r" (__ret) : "r" ((uint32_t) (target_id)), "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_IPC_SEND_MSG) : "a0", "a1", "a2", "a0"); \
+"move a0, %z1 \n \
+ move a1, %z2 \n \
+ move a2, %z3 \n \
+ li a7, %4 \n\
+ ecall \n\
+  move %0, a0" \
+ : "=r" (__ret) : "r" ((uint32_t) (target_id)), "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_IPC_SEND_MSG) : "a0", "a1", "a2"); \
  __ret; })
  
  /* interVM recv message  */
 #define ipc_recv(source_id, msg) ({ int32_t __ret; \
 asm volatile (                    \
-"nop" \
- : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a0"); \
+"move a0, %z2 \n\
+ li a7, %3 \n\
+ ecall \n\
+ sw a0, 0(%z1)\n \
+ move %0, a1 " \
+ : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a1"); \
  __ret; })
 
  

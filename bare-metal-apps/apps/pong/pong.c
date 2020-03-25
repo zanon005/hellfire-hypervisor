@@ -47,8 +47,11 @@ int main() {
 	memset(message_buffer, 0, sizeof(message_buffer));
 	
 	while (1){
+
 		/* Receive a message */
 		ret = ReceiveMessage(&source, message_buffer, sizeof(message_buffer), 1);
+		printf("\nWait...");
+
 		if (ret<0){
 			print_net_error(ret);
 		}else{

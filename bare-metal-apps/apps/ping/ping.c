@@ -85,6 +85,8 @@ int main() {
 				print_net_error(ret);
 			}else{
 				/* Receive VM's 2 response */
+
+
 				ret = ReceiveMessage(&source, message_buffer, sizeof(message_buffer), 1);
 			
 				if (ret<0){

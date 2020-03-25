@@ -30,7 +30,11 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
         di();
         if(message_list.num_messages == 0 && block){
             ei();
-            while(!message_list.num_messages);
+            while(!message_list.num_messages){
+                irq_network();
+                printf("test\n");
+            }
+
         }else if (message_list.num_messages == 0){
             ei();
             return 0;
@@ -106,7 +110,7 @@ void print_net_error(int32_t error){
 
 void init_network(){
 	ENABLE_INTERVM_INT();
-	interrupt_register(irq_network, GUEST_INTERVM_INT);
+	/*interrupt_register(irq_network, GUEST_INTERVM_INT);*/
 	memset((void *)&message_list, 0, sizeof(message_list));
 }
 

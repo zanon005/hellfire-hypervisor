@@ -94,11 +94,11 @@ void mdelay(uint32_t msec){
 
 
 void di(){
-
+	    asm volatile("nop");
 }
 
 void ei(){
-
+	asm volatile("nop");
 }
 
 

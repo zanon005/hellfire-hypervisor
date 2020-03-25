@@ -16,6 +16,7 @@
 #Input CFG file for VMs configuration
 #CFG_FILE = cfg/sample-blink.cfg
 CFG_FILE = cfg/test.cfg
+#CFG_FILE = cfg/sample-ping-pong.cfg
 
 # CROSS Compiler 
 CROSS_COMPILER = riscv64-unknown-elf-
