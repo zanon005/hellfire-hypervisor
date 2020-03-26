@@ -32,7 +32,6 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
             ei();
             while(!message_list.num_messages){
                 irq_network();
-                printf("test\n");
             }
 
         }else if (message_list.num_messages == 0){
@@ -51,6 +50,7 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
         }
 
         memcpy(message, message_list.messages[out].message, size);
+
         *source = message_list.messages[out].source_id;
         
         message_list.out = (out + 1) % MESSAGELIST_SZ;
@@ -81,6 +81,8 @@ void irq_network(){
                 }
                 in = message_list.in = (in + 1) % MESSAGELIST_SZ;
                 message_list.num_messages++;
+
+
         }
 }
 

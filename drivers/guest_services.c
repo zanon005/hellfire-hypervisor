@@ -53,6 +53,7 @@ void get_vm_id(){
 void intervm_send_msg(){
 	vcpu_t* vcpu;
     
+
 	/* Getting parameters from guest */
 	uint32_t target_id  = MoveFromPreviousGuestGPR(REG_A0);
 	char* message_ptr = (char*)MoveFromPreviousGuestGPR(REG_A1); 
@@ -83,7 +84,7 @@ void intervm_send_msg(){
 		vcpu->guestclt2 |= (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);
 		MoveToPreviousGuestGPR(REG_A0, MESSAGE_FULL);
 		return;
-	}     
+	}   
      
 	/* copy message to message queue */
 	char* message_ptr_mapped = (char*)tlbCreateEntry((uint32_t)message_ptr, vm_in_execution->base_addr, message_size, 0xf, NONCACHEABLE);
@@ -92,7 +93,7 @@ void intervm_send_msg(){
 	vcpu->messages.message_list[vcpu->messages.in].source_id = vm_in_execution->id;
                         
 	vcpu->messages.num_messages++;
-	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ;
+	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ; 
                         
 	/* generate virtual interrupt to guest */
 	//vcpu->guestclt2 |= (GUEST_INTERVM_INT<<VI_SHIFT);
@@ -130,8 +131,8 @@ void intervm_recv_msg(){
 	memcpy(message_ptr_mapped, vcpu->messages.message_list[vcpu->messages.out].message, messagesz);
     
 	/* Return the message size to the receiver */
-	MoveToPreviousGuestGPR(REG_A0, messagesz);
-	MoveToPreviousGuestGPR(REG_A1, vcpu->messages.message_list[vcpu->messages.out].source_id); 
+	MoveToPreviousGuestGPR(REG_A1, messagesz);
+	MoveToPreviousGuestGPR(REG_A0, vcpu->messages.message_list[vcpu->messages.out].source_id); 
                         
 	/* free the message allocation in the message list */
 	vcpu->messages.num_messages--;

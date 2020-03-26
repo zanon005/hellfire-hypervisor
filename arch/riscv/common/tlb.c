@@ -125,7 +125,9 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
  *    @param use_cache Determines if the page will be mapped to KSEG1 or KSEG2
  *    @return Mapped address. 
  */
-uint32_t tlbCreateEntry(uint32_t address, uint32_t baseaddr, uint32_t size, uint32_t tlbindex, uint32_t use_cache){ 
+uint32_t tlbCreateEntry(uint32_t address, uint32_t baseaddr, uint32_t size, uint32_t tlbindex, uint32_t use_cache){
+
+	address = address-0x80000000+baseaddr; 
     
-	return 0;
+	return address;
 }

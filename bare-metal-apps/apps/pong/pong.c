@@ -50,7 +50,6 @@ int main() {
 
 		/* Receive a message */
 		ret = ReceiveMessage(&source, message_buffer, sizeof(message_buffer), 1);
-		printf("\nWait...");
 
 		if (ret<0){
 			print_net_error(ret);
@@ -71,4 +70,20 @@ int main() {
     
 	return 0;
 }
+
+/*int main(){
+	uint32_t source,i;
+	int32_t ret;
+
+	memset(message_buffer, 0, sizeof(message_buffer));
+
+	while(1){
+
+		ret = ReceiveMessage(&source, message_buffer, sizeof(message_buffer), 1);
+		printf("\n%d",ret);
+		mdelay(1000);
+
+	}
+
+}*/
 
