@@ -37,7 +37,7 @@ asm volatile (                    \
  li a7, %4 \n\
  ecall \n\
   move %0, a0" \
- : "=r" (__ret) : "r" ((uint32_t) (target_id)), "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_IPC_SEND_MSG) : "a0", "a1", "a2"); \
+ : "=r" (__ret) : "r" ((uint32_t) (target_id)), "r" ((uint32_t) (msg)), "r" ((uint32_t) (size)), "I" (HCALL_IPC_SEND_MSG) : "a0", "a1", "a2","a7"); \
  __ret; })
  
  /* interVM recv message  */
@@ -48,7 +48,7 @@ asm volatile (                    \
  ecall \n\
  sw a0, 0(%z1)\n \
  move %0, a1 " \
- : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a1"); \
+ : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a1", "a7"); \
  __ret; })
 
  

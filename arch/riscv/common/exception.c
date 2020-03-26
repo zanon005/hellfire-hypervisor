@@ -44,13 +44,16 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  * 
  */
 static void guest_exit_exception(long cause, uint64_t epc){
+	int32_t mepc,mstatus;
+	mepc = read_csr(mepc);
+	mstatus = read_csr(mstatus);
 
 	switch (cause) {
 		case IRQ_S_EXT:	
 			hypercall_execution();
 			break;
 		default:
-			WARNING("Stopping VM %d due to cause error %d .", vcpu_in_execution->vm->id, cause);
+			WARNING("Stopping VM %d due to cause error %d .mepc:%xmstatus:%x\n", vcpu_in_execution->vm->id, cause,mepc,mstatus);
 			vcpu_in_execution->state = VCPU_BLOCKED;
 			break;
 	}

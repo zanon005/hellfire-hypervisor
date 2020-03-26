@@ -58,7 +58,7 @@ int main() {
 	
 	memset(message_buffer, 0, sizeof(message_buffer));
 	
-	interrupt_register(irq_timer, GUEST_TIMER_INT);
+	//interrupt_register(irq_timer, GUEST_TIMER_INT);
     
 	printf("Measuring Inter VM communication latency.");
 	
@@ -153,3 +153,15 @@ int main() {
 	return 0;
 }
 
+/*int main(){
+	int32_t ret;
+
+	uint32_t message_size = 64;
+
+	while(1){
+		
+		ret = SendMessage(2, message_buffer, message_size);
+		printf("\n%d",ret);
+		mdelay(1000);
+	}
+}*/
