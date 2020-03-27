@@ -40,6 +40,8 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  */
 void get_vm_id(){
 	MoveToPreviousGuestGPR(REG_A0,vcpu_in_execution->vm->id);
+
+	write_csr(sie,read_csr(sie)|0x2);
 }
 
 /**
