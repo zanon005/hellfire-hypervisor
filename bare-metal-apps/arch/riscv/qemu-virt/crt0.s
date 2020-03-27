@@ -101,15 +101,15 @@ trap_vector:
     lxsp    t5, 29
     lxsp    t6, 30
     addi sp, sp, 248
-    mret
+    sret
 
 .section .e_entry
 .globl _start
 _start:
     
     # setup default trap vector
-#    la      t0, trap_vector
-#    csrw    mtvec, t0
+    la      t0, trap_vector
+    csrw    stvec, t0
 
     la  sp, _stack
     la  a0, _bss_end

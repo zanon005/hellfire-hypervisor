@@ -9,12 +9,19 @@
 
 
 int main() {
-	uint64_t id,test;
+	uint64_t id;
+	uint32_t test;
+
+	write_csr(sie,read_csr(sie)|0x2);
+
+	write_csr(sip,read_csr(sip)|0x2);
 
 	while(1){
 		id = get_guestid();
-		printf("Guest %d running!\n", id);
+		printf("Guest %d running! sie:%d sip:%d\n", id,read_csr(sie),read_csr(sip));
 		mdelay(1000);
+
+		write_csr(sip,read_csr(sip)|0x2);
 	}
     
 	
