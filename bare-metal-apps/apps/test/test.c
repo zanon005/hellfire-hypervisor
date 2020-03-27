@@ -12,16 +12,17 @@ int main() {
 	uint64_t id;
 	uint32_t test;
 
-	write_csr(sie,read_csr(sie)|0x2);
+	//limpa interrupções.
+	write_csr(sip,read_csr(sip)^0x2ULL);
 
-	write_csr(sip,read_csr(sip)|0x2);
+	//habilita interrupções.
+	write_csr(sie,read_csr(sie)|0x2ULL);
+
 
 	while(1){
 		id = get_guestid();
-		printf("Guest %d running! sie:%d sip:%d\n", id,read_csr(sie),read_csr(sip));
+		printf("Guest %d running! sie:%x sip:%x\n", id,read_csr(sie),read_csr(sip));
 		mdelay(1000);
-
-		write_csr(sip,read_csr(sip)|0x2);
 	}
     
 	

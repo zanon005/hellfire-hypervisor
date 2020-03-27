@@ -39,6 +39,8 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <vcpu.h>
 #include <timer.h>
 
+
+uint32_t count = 0;
 /**
  * @brief Guest exit exception handler. 
  * 
@@ -81,8 +83,13 @@ void general_exception_handler(long mcause, uint64_t mepc){
 	if(MCAUSE_INT & mcause){
 		switch(cause){
 			case IRQ_M_TIMER:
-					timer_interrupt_handler();
-					break;
+				count++;
+				if (count % 1000 == 0){
+				printf("\n*\n");
+				write_csr(mip,read_csr(mip)|0x2);
+				}			
+				timer_interrupt_handler();
+				break;
 		}
 	}else{ /* Exceptions */ 
 		guest_exit_exception(cause, mepc);
