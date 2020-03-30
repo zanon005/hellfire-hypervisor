@@ -90,6 +90,8 @@ void general_exception_handler(long mcause, uint64_t mepc){
 				}			
 				timer_interrupt_handler();
 				break;
+			default:
+				printf("\nDefault Interruption\n");
 		}
 	}else{ /* Exceptions */ 
 		guest_exit_exception(cause, mepc);

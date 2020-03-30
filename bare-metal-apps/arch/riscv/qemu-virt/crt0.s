@@ -64,8 +64,8 @@ trap_vector:
     sxsp    t6, 30
 
     # Invoke the handler.
-    csrr    a0, mcause
-    csrr    a1, mepc
+    csrr    a0, scause
+    csrr    a1, sepc
     jal     _irq_handler
 
     # Restore registers.

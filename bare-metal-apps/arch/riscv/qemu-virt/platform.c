@@ -47,7 +47,7 @@ uint32_t interrupt_register(interrupt_handler_t *handler, uint32_t interrupt){
  */
 void _irq_handler(uint32_t status, uint32_t cause){
 
-	printf("Interrupt VM: %d",cause);
+	printf("Interrupt cause: %x",status);
 
 	write_csr(sip,read_csr(sip)^0x2);		
 }
