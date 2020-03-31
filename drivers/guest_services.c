@@ -96,12 +96,12 @@ void intervm_send_msg(){
 	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ; 
                         
 	/* generate virtual interrupt to guest */
-	//vcpu->guestclt2 |= (GUEST_INTERVM_INT<<VI_SHIFT);
+	write_csr(sip,read_csr(sip)|0x2);
                                 
 	/* Return success to sender */
 	MoveToPreviousGuestGPR(REG_A0, message_size);
 	
-	//fast_interrupt_delivery(vcpu);
+	fast_interrupt_delivery(vcpu);
      
 }
 
@@ -137,11 +137,7 @@ void intervm_recv_msg(){
 	/* free the message allocation in the message list */
 	vcpu->messages.num_messages--;
 	vcpu->messages.out = (vcpu->messages.out + 1) % MESSAGELIST_SZ;
-	
-	/* clean interrupt */
-	//setGuestCTL2(getGuestCTL2() & ~(GUEST_INTERVM_INT<<VI_SHIFT));
-	//vcpu->guestclt2 &= ~(GUEST_INTERVM_INT<<VI_SHIFT);
-                       
+	                   
 }
 
 /**

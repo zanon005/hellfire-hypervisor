@@ -282,8 +282,6 @@ void enableIE(){
 	write_csr(mideleg, read_csr(mideleg) | 0x2);
 
 	write_csr(mideleg, read_csr(mideleg) | 0x4);
-
-	write_csr(sie,read_csr(sie)|0x2ULL);
 	
 }
 

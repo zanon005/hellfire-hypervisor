@@ -55,10 +55,12 @@ int main() {
 	uint32_t average_one_way = 0;
 	uint32_t average_round_trip = 0;
 	uint32_t message_size = 64;
+
+	enable_interrupts();
 	
 	memset(message_buffer, 0, sizeof(message_buffer));
 	
-	//interrupt_register(irq_timer, GUEST_TIMER_INT);
+	interrupt_register(irq_timer, GUEST_TIMER_INT);
     
 	printf("Measuring Inter VM communication latency.");
 	
@@ -74,7 +76,7 @@ int main() {
 		for(i = 0; i < NUMBER_OF_ROUNDS; i++){
 			/* start time */
 			timestart = GET_TIMER();
-			
+		
 			/* send the initial time to the recipient VM. */
 			memcpy(message_buffer, &timestart, sizeof(uint32_t));
 		

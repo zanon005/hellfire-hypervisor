@@ -12,6 +12,8 @@ int main() {
 	uint64_t id;
 	uint32_t test;
 
+	enable_interrupts();
+
 	while(1){
 		id = get_guestid();
 		printf("Guest %d running! sie:%x sip:%x\n", id,read_csr(sie),read_csr(sip));

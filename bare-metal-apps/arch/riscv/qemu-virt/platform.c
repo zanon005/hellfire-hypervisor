@@ -36,6 +36,16 @@ static interrupt_handler_t * interrupt_handlers[NUM_GUEST_INTERRUPTS] = {[0 ... 
  *   	in the guest_interrupts.h file. 
  */
 uint32_t interrupt_register(interrupt_handler_t *handler, uint32_t interrupt){
+	uint32_t i;
+	
+	for(i=0; i<NUM_GUEST_INTERRUPTS; i++){
+		if(interrupt & (1<<i)){
+			if (interrupt_handlers[i] == NULL){
+				interrupt_handlers[i] = handler;
+				return (uint32_t)handler;
+			}
+		}
+	}
 		
 	return 0;
 }
@@ -45,11 +55,18 @@ uint32_t interrupt_register(interrupt_handler_t *handler, uint32_t interrupt){
  *   All interrupts or exceptions invoke this routine. Call the 
  *   function handler corresponding to the RIPL field.
  */
-void _irq_handler(uint32_t status, uint32_t cause){
+void _irq_handler(uint32_t sstatus, uint32_t sepc){
 
-	printf("Interrupt cause: %x",status);
+	if(read_csr(sip)&0x2ULL){
 
-	write_csr(sip,read_csr(sip)^0x2);		
+		if (interrupt_handlers[2]){
+			((interrupt_handler_t*)interrupt_handlers[2])();
+		}
+
+		write_csr(sip,read_csr(sip)^0x2);
+	}
+
+			
 }
 
 
@@ -101,6 +118,12 @@ void di(){
 
 void ei(){
 	asm volatile("nop");
+}
+
+void enable_interrupts(){
+
+	write_csr(sie,read_csr(sie)|0x2ULL);
+	
 }
 
 

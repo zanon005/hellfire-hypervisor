@@ -112,7 +112,7 @@ void print_net_error(int32_t error){
 
 void init_network(){
 	ENABLE_INTERVM_INT();
-	/*interrupt_register(irq_network, GUEST_INTERVM_INT);*/
+	interrupt_register(irq_network, GUEST_INTERVM_INT);
 	memset((void *)&message_list, 0, sizeof(message_list));
 }
 

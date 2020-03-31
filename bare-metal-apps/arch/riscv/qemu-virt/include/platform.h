@@ -49,4 +49,6 @@ void mdelay(uint32_t msec);
 void di();
 void ei();
 
+void enable_interrupts();
+
 #endif

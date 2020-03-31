@@ -148,4 +148,7 @@ void ei(){
 	asm volatile("ei");
 }
 
+void enable_interrupts(){
+	
+}
 
