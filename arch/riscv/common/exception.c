@@ -83,11 +83,6 @@ void general_exception_handler(long mcause, uint64_t mepc){
 	if(MCAUSE_INT & mcause){
 		switch(cause){
 			case IRQ_M_TIMER:
-				count++;
-				if (count % 1000 == 0){
-				printf("\n*\n");
-				write_csr(mip,read_csr(mip)|0x2);
-				}			
 				timer_interrupt_handler();
 				break;
 			default:
