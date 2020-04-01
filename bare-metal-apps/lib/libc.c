@@ -1296,9 +1296,61 @@ float __floatunsisf(uint32_t af){
 }
 
 
-float __truncdfsf2 (double a){
-  /* FIXME: Ugly hack just to compile! Must provide correct implementation here!*/
-  return (float)a;
+/* convert double to float */
+float __truncdfsf2 (double a1){
+	long exp;
+	long mant;
+	union float_long fl;
+	union double_long dl1;
+
+	dl1.d = a1;
+
+	if (!dl1.l.upper && !dl1.l.lower)
+		return 0;
+
+	exp = EXPD (dl1) - EXCESSD + EXCESS;
+
+	/* shift double mantissa 6 bits so we can round */
+	mant = MANTD (dl1) >> 6;
+
+	/* now round and shift down */
+	mant += 1;
+	mant >>= 1;
+
+	/* did the round overflow? */
+	if (mant & 0xFF000000) {
+		mant >>= 1;
+		exp++;
+	}
+
+	mant &= ~HIDDEN;
+
+	/* pack up and go home */
+	fl.l = PACK (SIGND (dl1), exp, mant);
+
+	return (fl.f);
+}
+
+/* convert float to double */
+double __extendsfdf2 (float a1){
+	union float_long fl1;
+	union double_long dl;
+	long exp;
+
+	fl1.f = a1;
+
+	if (!fl1.l) {
+		dl.l.upper = dl.l.lower = 0;
+		return dl.d;
+	}
+
+	dl.l.upper = SIGN (fl1.l);
+	exp = EXP (fl1.l) - EXCESS + EXCESSD;
+	dl.l.upper |= exp << 20;
+	dl.l.upper |= (MANT (fl1.l) & ~HIDDEN) >> 3;
+	dl.l.lower = MANT (fl1.l) << 29;
+
+	return dl.d;
 }
 
 uint32_t toupper (uint32_t ch){

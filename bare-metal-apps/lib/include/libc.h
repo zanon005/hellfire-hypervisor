@@ -95,16 +95,35 @@ void unlock(mutex_t *mutex);
 #define SNG_EXP_BIAS	127
 #define SNG_EXP_INFNAN	255
 #define EXCESS		126
+#define EXCESSD		1022
 #define SIGNBIT		0x80000000
 #define HIDDEN		(1 << 23)
+#define HIDDEND		(1 << 20)
 #define SIGN(fp)	((fp) & SIGNBIT)
+#define SIGND(fp)	((fp.l.upper) & SIGNBIT)
 #define EXP(fp)		(((fp) >> 23) & 0xFF)
+#define EXPD(fp)	(((fp.l.upper) >> 20) & 0x7FF)
 #define MANT(fp)	(((fp) & 0x7FFFFF) | HIDDEN)
+#define MANTD(fp)	(((((fp.l.upper) & 0xFFFFF) | HIDDEND) << 10) | (fp.l.lower >> 22))
 #define PACK(s,e,m)	((s) | ((e) << 23) | (m))
 
 union float_long{
 	float f;
 	int32_t l;
+};
+
+union double_long {
+	double d;
+	struct {
+#ifdef LITTLE_ENDIAN
+		unsigned long lower;
+		long upper;
+#else
+		long upper;
+		unsigned long lower;
+#endif
+	} l;
+	long long ll;
 };
 
 
