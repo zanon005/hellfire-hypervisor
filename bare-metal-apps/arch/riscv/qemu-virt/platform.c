@@ -59,8 +59,8 @@ void _irq_handler(uint32_t sstatus, uint32_t sepc){
 
 	if(read_csr(sip)&0x2ULL){
 
-		if (interrupt_handlers[2]){
-			((interrupt_handler_t*)interrupt_handlers[2])();
+		if (interrupt_handlers[1]){
+			((interrupt_handler_t*)interrupt_handlers[1])();
 		}
 
 		write_csr(sip,read_csr(sip)^0x2);
