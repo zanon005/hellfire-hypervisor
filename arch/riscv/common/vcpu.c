@@ -103,6 +103,10 @@ void contextRestore(){
 
 	asm volatile ("SFENCE.VMA");
 
+	write_csr(sip,read_csr(sip)&vcpu->guestclt2);
+
+	vcpu->guestclt2 = 0;
+
 	gpr_context_restore(vcpu->gpr);
 
 }

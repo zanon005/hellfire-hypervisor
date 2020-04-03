@@ -93,10 +93,10 @@ void intervm_send_msg(){
 	vcpu->messages.message_list[vcpu->messages.in].source_id = vm_in_execution->id;
                         
 	vcpu->messages.num_messages++;
-	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ; 
-                        
+	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ;
+
 	/* generate virtual interrupt to guest */
-	write_csr(sip,read_csr(sip)|0x2);
+	vcpu->guestclt2 |= (GUEST_INTERVM_INT);
                                 
 	/* Return success to sender */
 	MoveToPreviousGuestGPR(REG_A0, message_size);
