@@ -61,6 +61,8 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
  */
 void get_vm_id(){
 	MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->vm->id);
+
+
 }
 
 /**
@@ -118,7 +120,7 @@ void intervm_send_msg(){
 	/* message queue full */
 	if(vcpu->messages.num_messages == MESSAGELIST_SZ){
 #ifdef RISCV64
-
+		vcpu->guestclt2 = (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);
 #else
 		vcpu->guestclt2 |= (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);		
 #endif
@@ -137,7 +139,7 @@ void intervm_send_msg(){
                         
 	/* generate virtual interrupt to guest */
 #ifdef RISCV64
-
+	vcpu->guestclt2 |= (GUEST_INTERVM_INT);
 #else
 	vcpu->guestclt2 |= (GUEST_INTERVM_INT<<VI_SHIFT);
 #endif	
@@ -159,6 +161,8 @@ void intervm_send_msg(){
 void intervm_recv_msg(){
 	vcpu_t* vcpu = vcpu_in_execution;
 	uint32_t messagesz;
+
+		printf("\naqui");
 
 	/* No messages in the receiver queue */
 	if(vcpu->messages.num_messages == 0){
@@ -184,6 +188,7 @@ void intervm_recv_msg(){
 	
 	/* clean interrupt */
 #ifdef RISCV64
+	vcpu->guestclt2 = 0;
 #else	
 	setGuestCTL2(getGuestCTL2() & ~(GUEST_INTERVM_INT<<VI_SHIFT));
 	vcpu->guestclt2 &= ~(GUEST_INTERVM_INT<<VI_SHIFT);

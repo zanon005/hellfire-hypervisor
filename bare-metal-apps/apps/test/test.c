@@ -38,6 +38,8 @@ int main(){
 	uint32_t i = 0;
 	char msg[32];
 
+	enable_interrupts();
+
 	uint32_t message_size = 64;
 
 	while(1){
