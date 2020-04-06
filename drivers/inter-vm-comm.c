@@ -31,28 +31,36 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <tlb.h>
 #include <driver.h>
 #include <hypercall_defines.h>
+#if defined(RISCV64)
+#include <proc.h>
+#else
 #include <mips_cp0.h>
+#endif 
 #include <guest_interrupts.h>
 #include <libc.h>
 
 /*guestclt2 fields are different on M5150 and */ 
 #ifdef BAIKAL_T1
-
 #define VI_SHIFT GUESTCLT2_VIP_SHIFT
-
+#elif RISCV64
 #else
-
 #define VI_SHIFT GUESTCLT2_GRIPL_SHIFT
+#endif 
 
+#if defined(RISCV64)
+#define RETURN_REG REG_A0
+#define SOURCE_REG REG_A1
+#else
+#define RETURN_REG REG_V0
+#define SOURCE_REG REG_A0
 #endif
-
 
 /**
  * @brief Hypercall implementation. Returns the VM identifier number for the calling VM. 
  * V0 guest register will be replaced with the VM id. 
  */
 void get_vm_id(){
-	MoveToPreviousGuestGPR(REG_V0, vcpu_in_execution->vm->id);
+	MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->vm->id);
 }
 
 /**
@@ -65,9 +73,9 @@ void guest_is_up(){
 	uint32_t target_id  = MoveFromPreviousGuestGPR(REG_A0);
 	vcpu = (vcpu_t*)get_vcpu_from_id(target_id);
 	if(!vcpu){
-		MoveToPreviousGuestGPR(REG_V0, MESSAGE_VCPU_NOT_FOUND);
+		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_VCPU_NOT_FOUND);
 	}else{
-		MoveToPreviousGuestGPR(REG_V0, vcpu->init? MESSAGE_VCPU_NOT_INIT : 1);
+		MoveToPreviousGuestGPR(RETURN_REG, vcpu->init? MESSAGE_VCPU_NOT_INIT : 1);
 	}
 }
 
@@ -89,7 +97,7 @@ void intervm_send_msg(){
                         
 	/* check if the message has acceptable size */
 	if(message_size > MESSAGE_SZ){
-		MoveToPreviousGuestGPR(REG_V0, MESSAGE_TOO_BIG);
+		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_TOO_BIG);
 		return;
 	}
                         
@@ -98,19 +106,23 @@ void intervm_send_msg(){
 
 	/* destination vcpu not found */
 	if(vcpu == NULL){
-		MoveToPreviousGuestGPR(REG_V0, MESSAGE_VCPU_NOT_FOUND);
+		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_VCPU_NOT_FOUND);
 		return;
 	}
                         
 	if (vcpu->init){
-		MoveToPreviousGuestGPR(REG_V0, MESSAGE_VCPU_NOT_INIT);
+		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_VCPU_NOT_INIT);
 		return;
 	}
                         
 	/* message queue full */
 	if(vcpu->messages.num_messages == MESSAGELIST_SZ){
-		vcpu->guestclt2 |= (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);
-		MoveToPreviousGuestGPR(REG_V0, MESSAGE_FULL);
+#ifdef RISCV64
+
+#else
+		vcpu->guestclt2 |= (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);		
+#endif
+		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_FULL);
 		return;
 	}     
      
@@ -124,10 +136,14 @@ void intervm_send_msg(){
 	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ;
                         
 	/* generate virtual interrupt to guest */
+#ifdef RISCV64
+
+#else
 	vcpu->guestclt2 |= (GUEST_INTERVM_INT<<VI_SHIFT);
+#endif	
                                 
 	/* Return success to sender */
-	MoveToPreviousGuestGPR(REG_V0, message_size);
+	MoveToPreviousGuestGPR(RETURN_REG, message_size);
 	
 	fast_interrupt_delivery(vcpu);
      
@@ -146,7 +162,7 @@ void intervm_recv_msg(){
 
 	/* No messages in the receiver queue */
 	if(vcpu->messages.num_messages == 0){
-		MoveToPreviousGuestGPR(REG_V0, MESSAGE_EMPTY); 
+		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_EMPTY); 
 		return;
 	}
 
@@ -159,16 +175,19 @@ void intervm_recv_msg(){
 	memcpy(message_ptr_mapped, vcpu->messages.message_list[vcpu->messages.out].message, messagesz);
     
 	/* Return the message size to the receiver */
-	MoveToPreviousGuestGPR(REG_V0, messagesz);
-	MoveToPreviousGuestGPR(REG_A0, vcpu->messages.message_list[vcpu->messages.out].source_id); 
+	MoveToPreviousGuestGPR(RETURN_REG, messagesz);
+	MoveToPreviousGuestGPR(SOURCE_REG, vcpu->messages.message_list[vcpu->messages.out].source_id); 
                         
 	/* free the message allocation in the message list */
 	vcpu->messages.num_messages--;
 	vcpu->messages.out = (vcpu->messages.out + 1) % MESSAGELIST_SZ;
 	
 	/* clean interrupt */
+#ifdef RISCV64
+#else	
 	setGuestCTL2(getGuestCTL2() & ~(GUEST_INTERVM_INT<<VI_SHIFT));
 	vcpu->guestclt2 &= ~(GUEST_INTERVM_INT<<VI_SHIFT);
+#endif 
                        
 }
 

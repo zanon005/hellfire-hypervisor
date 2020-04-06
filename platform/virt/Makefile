@@ -22,8 +22,8 @@ CFG_FILE = cfg/test.cfg
 CROSS_COMPILER = riscv64-unknown-elf-
 
 # Optional Device Drivers
-CONFIG_GUEST_SERVICES = yes
-#CONFIG_INTERVMCOMM_DRV = yes
+#CONFIG_GUEST_SERVICES = yes
+CONFIG_INTERVMCOMM_DRV = yes
 #CONFIG_NO_VMS_DRV = yes
 #CONFIG_PIC32MZ_USB_DRV = yes
 #CONFIG_PIC32MZ_ETHERNET_DRV = yes
@@ -71,7 +71,7 @@ VERSION:=$(shell $(TOPDIR)/scripts/genversion.sh)
 LINKER_SCRIPT = ../../arch/riscv/qemu-virt/qemu-virt.ld
 
 ### GCC flags configuration: processor tunning ###
-CFLAGS += -march=rv64imafdc -Wall -fpie -ffunction-sections -fdata-sections
+CFLAGS += -march=rv64imafdc -Wall -fpie -ffunction-sections -fdata-sections -DRISCV64
 #MIPZ VZ support
 CFLAGS += -Wno-duplicate-decl-specifier -Wno-pointer-to-int-cast -Wno-int-to-pointer-cast#-Wa, 
 #flointing pointing options
