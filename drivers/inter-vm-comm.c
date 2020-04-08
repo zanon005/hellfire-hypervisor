@@ -62,7 +62,6 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 void get_vm_id(){
 	MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->vm->id);
 
-
 }
 
 /**
@@ -161,8 +160,6 @@ void intervm_send_msg(){
 void intervm_recv_msg(){
 	vcpu_t* vcpu = vcpu_in_execution;
 	uint32_t messagesz;
-
-		printf("\naqui");
 
 	/* No messages in the receiver queue */
 	if(vcpu->messages.num_messages == 0){

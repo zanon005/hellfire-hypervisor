@@ -107,9 +107,9 @@ void contextRestore(){
 
 		printf("\nmessage queue full");
 
-	}else{
+	}else if(vcpu->guestclt2 == 2){
 		
-		write_csr(sip,read_csr(sip)&vcpu->guestclt2);
+		write_csr(sip,read_csr(sip)|vcpu->guestclt2);
 
 	}
 
