@@ -49,6 +49,8 @@ int main(){
 		
 		printf("\nMessage %s from %d", message_buffer, source);
 
+		mdelay(1000);
+
 	}
 
 }
