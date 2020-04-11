@@ -46,8 +46,8 @@ asm volatile (                    \
 "move a0, %z2 \n\
  li a7, %3 \n\
  ecall \n\
- sw a0, 0(%z1)\n \
- move %0, a1 " \
+ sw a1, 0(%z1)\n \
+ move %0, a0 " \
  : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a1", "a7"); \
  __ret; })
 
