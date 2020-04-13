@@ -57,9 +57,6 @@ uint32_t interrupt_register(interrupt_handler_t *handler, uint32_t interrupt){
  */
 void _irq_handler(uint32_t sstatus, uint32_t sepc){
 
-
-	printf("\ninterrupt");
-
 	if(read_csr(sip)&0x2ULL){
 
 		if (interrupt_handlers[1]){

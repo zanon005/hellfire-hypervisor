@@ -30,7 +30,9 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
         di();
         if(message_list.num_messages == 0 && block){
             ei();
-            while(!message_list.num_messages);
+            while(!message_list.num_messages){
+                mdelay(1);
+            }
         }else if (message_list.num_messages == 0){
             ei();
             return 0;
