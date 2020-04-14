@@ -26,12 +26,13 @@ static struct message_list_t message_list;
 
 int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t block){
         unsigned int size, out;
+
 	
         di();
         if(message_list.num_messages == 0 && block){
             ei();
             while(!message_list.num_messages){
-                mdelay(1);
+                mdelay(0);
             }
         }else if (message_list.num_messages == 0){
             ei();
@@ -39,10 +40,10 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
         }
         
         di();
-        
+
         out = message_list.out;
         size = message_list.messages[out].size;
-        
+
         /* If the buffer has no enough size the message is truncaded. */
         if (size>bufsz){
             size=bufsz;
@@ -66,23 +67,25 @@ int32_t SendMessage(uint32_t target_id, void* message, uint32_t size){
 
 
 void irq_network(){
-        int ret = 1, in;
-        
-        if(message_list.num_messages == MESSAGELIST_SZ){
-                return;
+    int ret = 1, in;
+
+    if(message_list.num_messages == MESSAGELIST_SZ){
+        return;
+    }
+    
+    in = message_list.in;
+
+    while(ret && message_list.num_messages < MESSAGELIST_SZ){
+
+        ret = message_list.messages[in].size = ipc_recv(&message_list.messages[in].source_id, message_list.messages[in].message);
+    
+        if(ret==MESSAGE_EMPTY){
+            return;
         }
-        in = message_list.in;
-
-        while(ret && message_list.num_messages < MESSAGELIST_SZ){
-		ret = message_list.messages[in].size = ipc_recv(&message_list.messages[in].source_id, message_list.messages[in].message);
-                if(ret==MESSAGE_EMPTY){
-                    return;
-                }
-                in = message_list.in = (in + 1) % MESSAGELIST_SZ;
-                message_list.num_messages++;
-
-
-        }
+    
+        in = message_list.in = (in + 1) % MESSAGELIST_SZ;
+        message_list.num_messages++;
+    }
 }
 
 
