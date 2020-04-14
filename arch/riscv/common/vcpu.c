@@ -49,6 +49,10 @@ void contextSave(){
 		/* FIXME: CSR registers to save? .*/
 		gpr_context_save(vcputosave->gpr);
 	}
+
+	vcputosave->cp0_registers[0] = read_csr(sstatus);
+	vcputosave->cp0_registers[1] = read_csr(sie);
+	vcputosave->cp0_registers[2] = read_csr(sip);
 }
 
 /**
@@ -89,6 +93,10 @@ void contextRestore(){
 	/* Mark the VCPU as initialized. */
 	if(vcpu_in_execution->init){
 		vcpu_in_execution->init = 0;
+	}else{
+		write_csr(sstatus, vcpu->cp0_registers[0]);
+		write_csr(sie, vcpu->cp0_registers[1]);
+		write_csr(sip, vcpu->cp0_registers[3]);
 	}
 	
 	/* FIXME: Code for context restore should be here!!*/	
@@ -103,17 +111,8 @@ void contextRestore(){
 
 	asm volatile ("SFENCE.VMA");
 
-	if(vcpu->guestclt2 == 0x2000000){
-
-		printf("\nmessage queue full");
-
-	}else if(vcpu->guestclt2 == 2){
-		
-		write_csr(sip,read_csr(sip)|vcpu->guestclt2);
-
-	}
-
 	gpr_context_restore(vcpu->gpr);
+
 
 }
 
