@@ -77,6 +77,7 @@ void _irq_handler(uint32_t sstatus, uint32_t sepc){
 void init_proc(){
 	/* Enable float-point instructions */
 	write_csr(sstatus, read_csr(sstatus) | (1 << 13));
+
 }
 
 
@@ -113,17 +114,11 @@ void mdelay(uint32_t msec){
 
 
 void di(){
-	    asm volatile("nop");
+	write_csr(sie, read_csr(sie) ^ 2);
 }
 
 void ei(){
-	asm volatile("nop");
-}
-
-void enable_interrupts(){
-
-	write_csr(sie,read_csr(sie)|0x2ULL);
-	
+	write_csr(sie, read_csr(sie) | 2);	
 }
 
 
