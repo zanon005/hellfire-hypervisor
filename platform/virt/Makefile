@@ -150,7 +150,7 @@ debug:
 	$(HOME)/riscv-tools/qemu-4.2.0/riscv64-softmmu/qemu-system-riscv64 -M virt -nographic -bios firmware.bin -serial mon:stdio -s -S &
 
 stop:
-	killall qemu-system-riscv64 | true
+	killall qemu-system-riscv64 riscv64-unknown-elf-gdb | true
 
 reload: stop all debug
 	gnome-terminal -e "riscv64-unknown-elf-gdb --command gdb_cmd.txt"
