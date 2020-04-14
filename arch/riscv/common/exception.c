@@ -45,9 +45,9 @@ uint32_t count = 0;
  * @brief Guest exit exception handler. 
  * 
  */
-static void guest_exit_exception(long cause, uint64_t epc){
-	int32_t mepc,mstatus;
-	mepc = read_csr(mepc);
+void guest_exit_exception(uint64_t cause, uint64_t mepc){
+	uint64_t mstatus;
+
 	mstatus = read_csr(mstatus);
 
 	switch (cause) {
@@ -55,13 +55,13 @@ static void guest_exit_exception(long cause, uint64_t epc){
 			hypercall_execution();
 			break;
 		default:
-			WARNING("Stopping VM %d due to cause error %d .mepc:%xmstatus:%x\n", vcpu_in_execution->vm->id, cause,mepc,mstatus);
+			WARNING("Stopping VM %d due to cause error %d mepc:0x%x mstatus:0x%x", vcpu_in_execution->vm->id, cause, mepc, mstatus);
 			vcpu_in_execution->state = VCPU_BLOCKED;
 			break;
 	}
 	
 	/* Advance to the next instruction. */
-	vcpu_in_execution->pc = epc+4;
+	vcpu_in_execution->pc = mepc+4;
 
 	setEPC(vcpu_in_execution->pc);	
 
@@ -69,14 +69,13 @@ static void guest_exit_exception(long cause, uint64_t epc){
 		run_scheduler();
 	}
 	
-	return 0;
 }
 
 /**
  * @brief General exception handler. 
  * 
  */
-void general_exception_handler(long mcause, uint64_t mepc){
+void general_exception_handler(uint64_t mcause, uint64_t mepc){
 	uint32_t cause = get_field(mcause, MCAUSE_MASK);
 
 	/* Interruption */
