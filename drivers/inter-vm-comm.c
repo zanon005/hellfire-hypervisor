@@ -118,11 +118,7 @@ void intervm_send_msg(){
                         
 	/* message queue full */
 	if(vcpu->messages.num_messages == MESSAGELIST_SZ){
-#ifdef RISCV64
-		vcpu->guestclt2 = (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);
-#else
 		vcpu->guestclt2 |= (GUEST_INTERVM_INT<<GUESTCLT2_GRIPL_SHIFT);		
-#endif
 		MoveToPreviousGuestGPR(RETURN_REG, MESSAGE_FULL);
 		return;
 	}     
@@ -187,7 +183,6 @@ void intervm_recv_msg(){
 #ifdef RISCV64
 	vcpu->guestclt2 = 0;
 #else	
-	setGuestCTL2(getGuestCTL2() & ~(GUEST_INTERVM_INT<<VI_SHIFT));
 	vcpu->guestclt2 &= ~(GUEST_INTERVM_INT<<VI_SHIFT);
 #endif 
                        
