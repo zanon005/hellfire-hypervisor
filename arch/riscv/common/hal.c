@@ -191,6 +191,9 @@ int32_t ConfigureGPRShadow(){
 int32_t LowLevelProcInit(){
 
 	write_csr(mstatus, read_csr(mstatus) | 0x100000);
+
+	/* Enable fp instructions */
+	write_csr(mstatus, read_csr(mstatus) | (1 << 13));
     
 	return 0;
 }
