@@ -116,6 +116,7 @@ typedef struct vcpu_t {
 	uint32_t init;	
 	message_buffer_t messages;
     uint64_t *gpr;
+    uint64_t fp_registers[32];
 }vcpu_t;
 
 typedef struct {
