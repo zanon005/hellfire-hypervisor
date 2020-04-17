@@ -121,4 +121,7 @@ void ei(){
 	write_csr(sie, read_csr(sie) | 2);	
 }
 
+void enable_interrupts(){
+	ei();
+}
 
