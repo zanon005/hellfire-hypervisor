@@ -27,12 +27,11 @@ static struct message_list_t message_list;
 int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t block){
         unsigned int size, out;
 
-	
-        di();
+	    di();
         if(message_list.num_messages == 0 && block){
             ei();
             while(!message_list.num_messages){
-                mdelay(0);
+                
             }
         }else if (message_list.num_messages == 0){
             ei();
@@ -55,7 +54,7 @@ int32_t ReceiveMessage(uint32_t *source, void* message, uint32_t bufsz, uint32_t
         
         message_list.out = (out + 1) % MESSAGELIST_SZ;
         message_list.num_messages--;
-        
+
         ei();
         
         return size;
@@ -72,7 +71,7 @@ void irq_network(){
     if(message_list.num_messages == MESSAGELIST_SZ){
         return;
     }
-    
+
     in = message_list.in;
 
     while(ret && message_list.num_messages < MESSAGELIST_SZ){
