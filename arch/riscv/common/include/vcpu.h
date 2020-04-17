@@ -110,9 +110,9 @@ typedef struct vcpu_t {
 	uint32_t bgjobs;
 	uint32_t gprshadowset;
 	uint64_t cp0_registers[3];
-	uint32_t guestclt2;
+	uint64_t guestclt2;
 	vm_t *vm;
-	uint32_t pc;
+	uint64_t pc;
 	uint32_t init;	
 	message_buffer_t messages;
     uint64_t *gpr;

@@ -27,7 +27,7 @@ sd \a, ((\b)*REGBYTES)(sp)
 .endm
     
 
-    .align 2
+.align 4
 trap_vector:
     # Save registers.
     addi    sp, sp, -248

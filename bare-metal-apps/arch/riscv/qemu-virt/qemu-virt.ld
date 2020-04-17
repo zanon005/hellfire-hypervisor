@@ -24,14 +24,15 @@ SECTIONS{
   } >ram AT>ram :text
 
   .rodata : {
+    . = ALIGN(8);
     PROVIDE(_rodata_start = .);
     *(.rodata .rodata.*)
     PROVIDE(_rodata_end = .);
-  } >ram AT>ram :text
+  } >ram AT>ram :data
 
 
   .data : {
-    . = ALIGN(4096);
+    . = ALIGN(8);
     PROVIDE(_data_start = .);
     *(.sdata .sdata.*) *(.data .data.*)
     PROVIDE(_data_end = .);
@@ -48,6 +49,6 @@ SECTIONS{
 }
 
 _end = .;
-. = ALIGN(4); 
+. = ALIGN(8); 
 _heap_start = . ;
-_heap_size = LENGTH(ram) - (_heap_start - ORIGIN(ram)) - 4 - _stack_size;
+_heap_size = LENGTH(ram) - (_heap_start - ORIGIN(ram)) - 8 - _stack_size;

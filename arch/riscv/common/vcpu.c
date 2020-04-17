@@ -50,11 +50,12 @@ void contextSave(){
 		gpr_context_save(vcputosave->gpr);
 	}
 
-	//fp_context_save((uint64_t)vcputosave->fp_registers);
+	fp_context_save((uint64_t*)vcputosave->fp_registers);
 
 	vcputosave->cp0_registers[0] = read_csr(sstatus);
 	vcputosave->cp0_registers[1] = read_csr(sie);
 	vcputosave->cp0_registers[2] = read_csr(sip);
+	vcputosave->pc = read_csr(mepc);
 }
 
 /**
@@ -101,7 +102,7 @@ void contextRestore(){
 		write_csr(sip, vcpu->cp0_registers[3]);
 	}
 	
-	//fp_context_restore((uint64_t)vcpu->fp_registers);
+	fp_context_restore((uint64_t*)vcpu->fp_registers);
 
 
 	/* FIXME: Code for context restore should be here!!*/	
