@@ -99,7 +99,7 @@ void contextRestore(){
 	}else{
 		write_csr(sstatus, vcpu->cp0_registers[0]);
 		write_csr(sie, vcpu->cp0_registers[1]);
-		write_csr(sip, vcpu->cp0_registers[3]);
+		write_csr(sip, vcpu->cp0_registers[2] | vcpu->guestclt2);
 	}
 	
 	fp_context_restore((uint64_t*)vcpu->fp_registers);
