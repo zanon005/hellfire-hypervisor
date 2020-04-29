@@ -24,7 +24,7 @@ cd ..
 wget https://download.qemu.org/qemu-4.2.0.tar.xz
 tar -xvf qemu-4.2.0.tar.xz
 cd qemu-4.2.0
-./configure --target-list=riscv64-softmmu
+./configure --target-list=riscv64-softmmu,riscv32-softmmu
 make
 cd ..
 
