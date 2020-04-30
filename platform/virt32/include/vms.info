@@ -1,0 +1,3 @@
+VM name 	code_size 	ram_size 	 address_start
+test 	32768 	32768 	0x80040000
+test2 	32768 	32768 	0x80048000

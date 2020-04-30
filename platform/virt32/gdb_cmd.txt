@@ -1,0 +1,4 @@
+target remote :1234
+file prplHypervisor.elf
+load prplHypervisor.elf
+set output-radix 16
