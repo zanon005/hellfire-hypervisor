@@ -29,6 +29,14 @@ typedef __UINT16_TYPE__ uint16_t;
 typedef __UINT32_TYPE__ uint32_t;
 typedef __UINT64_TYPE__ uint64_t;
 
+#if defined(RISCV64)
+typedef __UINT64_TYPE__ uint32_64_t;
+typedef __INT64_TYPE__ int32_64_t;
+#else
+typedef __UINT32_TYPE__ uint32_64_t;
+typedef __INT32_TYPE__ int32_64_t;
+#endif
+
 typedef uint32_t size_t;
 
 #endif /*_TYPES_H_*/  
