@@ -13,14 +13,8 @@
 #
 #This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCRS/Brazil.
 
-qemu-virt32:
-	$(CC) $(CFLAGS) $(INC_DIRS) \
-		$(TOPDIR)arch/riscv/qemu-virt32/boot.S \
-		$(TOPDIR)arch/riscv/qemu-virt32/timer.c \
-		$(TOPDIR)arch/riscv/qemu-virt32/gpr_context.c \
-		$(TOPDIR)arch/riscv/qemu-virt32/uart_driver.c \
-		$(TOPDIR)arch/riscv/qemu-virt32/vtimer.c
+hal:
+	$(CC) $(CFLAGS) $(INC_DIRS) $(TOPDIR)arch/riscv/qemu-virt32/eth.c -o $(TOPDIR)apps/$(APP)/eth.o
+	$(CC) $(CFLAGS) $(INC_DIRS) $(TOPDIR)arch/riscv/qemu-virt32/platform.c -o $(TOPDIR)apps/$(APP)/platform.o
+	$(CC) $(CFLAGS) $(INC_DIRS) $(TOPDIR)arch/riscv/qemu-virt32/crt0.s -o $(TOPDIR)apps/$(APP)/crt.o
 
-
-		
-		

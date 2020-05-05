@@ -31,7 +31,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <tlb.h>
 #include <driver.h>
 #include <hypercall_defines.h>
-#if defined(RISCV64)
+#if defined(RISCV64) || defined(RISCV32)
 #include <proc.h>
 #else
 #include <mips_cp0.h>
@@ -47,7 +47,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #define VI_SHIFT GUESTCLT2_GRIPL_SHIFT
 #endif 
 
-#if defined(RISCV64)
+#if defined(RISCV64) || defined(RISCV32)
 #define RETURN_REG REG_A0
 #define SOURCE_REG REG_A1
 #else
@@ -133,7 +133,7 @@ void intervm_send_msg(){
 	vcpu->messages.in = (vcpu->messages.in + 1) % MESSAGELIST_SZ;
                         
 	/* generate virtual interrupt to guest */
-#ifdef RISCV64
+#if defined(RISCV64) || defined(RISCV32) 
 	vcpu->guestclt2 |= (GUEST_INTERVM_INT);
 #else
 	vcpu->guestclt2 |= (GUEST_INTERVM_INT<<VI_SHIFT);
@@ -180,7 +180,7 @@ void intervm_recv_msg(){
 	vcpu->messages.out = (vcpu->messages.out + 1) % MESSAGELIST_SZ;
 	
 	/* clean interrupt */
-#ifdef RISCV64
+#if defined(RISCV64) || defined(RISCV32)
 	vcpu->guestclt2 = 0;
 #else	
 	vcpu->guestclt2 &= ~(GUEST_INTERVM_INT<<VI_SHIFT);
