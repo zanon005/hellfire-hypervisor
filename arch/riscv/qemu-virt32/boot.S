@@ -2,19 +2,19 @@
 .equ REGBYTES, 8
 
 .macro lxsp a, b
-ld \a, ((\b)*REGBYTES)(sp)
+lw \a, ((\b)*REGBYTES)(sp)
 .endm
 
 .macro sxsp a, b
-sd \a, ((\b)*REGBYTES)(sp)
+sw \a, ((\b)*REGBYTES)(sp)
 .endm
 
 .macro lxfp a, b
-fld \a, ((\b)*REGBYTES)(a0)
+flw \a, ((\b)*REGBYTES)(a0)
 .endm
 
 .macro sxfp a, b
-fsd \a, ((\b)*REGBYTES)(a0)
+fsw \a, ((\b)*REGBYTES)(a0)
 .endm
     
 

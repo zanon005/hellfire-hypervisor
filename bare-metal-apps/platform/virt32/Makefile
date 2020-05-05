@@ -38,12 +38,12 @@ TOPDIR=../../
 INC_DIRS += -I$(TOPDIR)/lib/include \
             -I$(TOPDIR)../include \
             -Iinclude \
-           -I$(TOPDIR)arch/riscv/qemu-virt/include/
+           -I$(TOPDIR)arch/riscv/qemu-virt32/include/
 
 include $(TOPDIR)lib/lib.mk
-include $(TOPDIR)arch/riscv/qemu-virt/hal.mk
+include $(TOPDIR)arch/riscv/qemu-virt32/hal.mk
 include $(TOPDIR)apps/$(APP)/app.mk
-include $(TOPDIR)platform/virt/platform.mk
+include $(TOPDIR)platform/virt32/platform.mk
            
 #Configure CROSS COMPILER
 AS = $(CROSS_COMPILER)as 
@@ -55,7 +55,7 @@ SIZE = $(CROSS_COMPILER)size
 CC= $(CROSS_COMPILER)gcc
 STRIP = $(CROSS_COMPILER)strip
 
-LINKER_SCRIPT = ../../apps/$(APP)/qemu-virt.ld
+LINKER_SCRIPT = ../../apps/$(APP)/qemu-virt32.ld
 
 ifeq ($(DEBUG_GUEST), yes)
 	CFLAGS += -O0 -g
@@ -88,9 +88,9 @@ $(APP):
 	$(SIZE) ../../apps/$(APP)/$(APP).elf
 
 conf_liker:
-	cp $(TOPDIR)arch/riscv/qemu-virt/qemu-virt.ld ../../apps/$(APP)/
-	sed -i -e 's/RAM_SIZE/$(RAM_SIZE)/' ../../apps/$(APP)/qemu-virt.ld
-	sed -i -e 's/STACK_SIZE/$(STACK_SIZE)/' ../../apps/$(APP)/qemu-virt.ld
+	cp $(TOPDIR)arch/riscv/qemu-virt32/qemu-virt32.ld ../../apps/$(APP)/
+	sed -i -e 's/RAM_SIZE/$(RAM_SIZE)/' ../../apps/$(APP)/qemu-virt32.ld
+	sed -i -e 's/STACK_SIZE/$(STACK_SIZE)/' ../../apps/$(APP)/qemu-virt32.ld
 	
 	
 	
