@@ -6,7 +6,7 @@ sudo apt update
 sudo apt --yes --force-yes install autoconf automake autotools-dev curl \
   		libmpc-dev libmpfr-dev libgmp-dev gawk build-essential \
   		bison flex texinfo gperf libtool patchutils bc zlib1g-dev pkg-config \
-		libglibmm-2.4-dev libpixman-1-dev libconfig-dev libexpat1-dev
+		libglibmm-2.4-dev libpixman-1-dev libconfig-dev libexpat1-dev srecord
 
 
 mkdir -p $TOOLS_DIR
