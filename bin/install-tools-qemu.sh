@@ -1,3 +1,5 @@
+#!/bin/sh
+
 TOOLS_DIR=$HOME/riscv-tools
 
 # Install required packages
@@ -10,13 +12,18 @@ sudo apt --yes --force-yes install autoconf automake autotools-dev curl \
 
 
 mkdir -p $TOOLS_DIR
-pushd $TOOLS_DIR
+cd $TOOLS_DIR
 
 # Download and install the toolchain. This can take hours!
 git clone https://github.com/riscv/riscv-gnu-toolchain.git
 cd riscv-gnu-toolchain
 git submodule update --init --recursive
-./configure --prefix=$TOOLS_DIR/riscv-gnu-toolchain-bins --enable-gdb --with-arch=rv32gc
+./configure --prefix=$TOOLS_DIR/riscv-gnu-toolchain-bins32 --enable-gdb --with-arch=rv32gc
+make
+
+#compiles for riscv64
+make clean
+./configure --prefix=$TOOLS_DIR/riscv-gnu-toolchain-bins --enable-gdb 
 make
 cd ..
 
@@ -28,11 +35,13 @@ cd qemu-4.2.0
 make
 cd ..
 
-popd
+cd ..
 
 # Configure path.
+sed -i '/riscv-tools/d' ~/.profile
+
 echo  >> ~/.profile
-echo "export PATH=\"\$PATH:\"$TOOLS_DIR/riscv-gnu-toolchain-bins/bin\"\"" >> ~/.profile
+echo "export PATH=\"\$PATH:\"$TOOLS_DIR/riscv-gnu-toolchain-bins32/bin:$TOOLS_DIR/riscv-gnu-toolchain-bins/bin\"\"" >> ~/.profile
 echo  >> ~/.profile
 
 echo "***********************************************************"
