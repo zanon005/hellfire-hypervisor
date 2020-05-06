@@ -19,11 +19,11 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 .equ REGBYTES, 8
 
 .macro lxsp a, b
-ld \a, ((\b)*REGBYTES)(sp)
+lw \a, ((\b)*REGBYTES)(sp)
 .endm
 
 .macro sxsp a, b
-sd \a, ((\b)*REGBYTES)(sp)
+sw \a, ((\b)*REGBYTES)(sp)
 .endm
     
 

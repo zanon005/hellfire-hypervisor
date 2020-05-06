@@ -28,9 +28,9 @@ static const uint8_t *page_Buffer = (uint8_t *)&__pages_start;
 
 uint32_t next_page = 0;
 
-static uint64_t * get_next_page(){
+static uint32_64_t* get_next_page(){
 
-	uint64_t *page_addr = page_Buffer + next_page  * PAGESIZE;
+	uint32_64_t *page_addr = page_Buffer + next_page  * PAGESIZE;
 	memset(page_addr, 0, PAGESIZE);
 	
 	next_page++;
@@ -64,8 +64,8 @@ void dumpPageTables(){
 	@param entry the entry to be written.
  */
 void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
-	uint64_t *page_table, *inner_page_table;
-	uint64_t addr, i, first_va, last_va, first_va_jump, last_va_jump;
+	uint32_64_t *page_table, *inner_page_table;
+	uint32_64_t addr, i, first_va, last_va, first_va_jump, last_va_jump;
 
 	/* Get level 1 and 2 page tables. */
 	page_table = get_next_page();
@@ -77,28 +77,43 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	addr = (vm->base_addr>>12);
 
 	first_va = VIRTUALBASE;
-	last_va = (uint64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE - 1;
+	last_va = (uint32_64_t)(((entry->entrylo1 - entry->entrylo0)*2)<<12) + VIRTUALBASE - 1;
+
+	#if defined(RISCV64)
 	first_va_jump = first_va>>30;
 	last_va_jump = last_va>>30;
+	#else
+	first_va_jump = first_va>>22;
+	last_va_jump = last_va>>22;
+	#endif
 
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 	
-	page_table[i] |= 1;
-	page_table[i] |= (((uint64_t)inner_page_table + (uint64_t)(0x1*(i-first_va_jump))) >> 12) << 10;
+		page_table[i] |= 1;
+		page_table[i] |= (((uint32_64_t)inner_page_table + (uint32_64_t)(i-first_va_jump)) >> 12) << 10;
 
 	}
 
 	/* Get level 3 page table */
 	page_table = inner_page_table;
+
+	#if defined(RISCV64)
 	inner_page_table = get_next_page();
 
 	first_va_jump = (first_va&0x3FE00000)>>21;
 	last_va_jump = (last_va&0x3FE00000)>21;
 
+	#else
+	first_va_jump = (first_va&0x3FF000)>>12;
+	last_va_jump = (last_va&0x3FF000)>12;
+	#endif
+	
+
+	#if defined(RISCV64)
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 
-	page_table[i] |= 1;
-	page_table[i] |= (((uint64_t)inner_page_table + (uint64_t)(0x1*(i-first_va_jump))) >> 12) << 10;
+		page_table[i] |= 1;
+		page_table[i] |= (((uint32_64_t)inner_page_table + (uint32_64_t)(i-first_va_jump)) >> 12) << 10;
 
 	}
 
@@ -109,10 +124,20 @@ void tlbEntryWrite(vm_t* vm, struct tlbentry *entry){
 	
 	for(i=first_va_jump;i<=(last_va_jump);i++){
 
-	page_table[i] |= 0xf;
-	page_table[i] |= (addr + (uint64_t)(0x1*(i-first_va_jump)))<< 10;
+		page_table[i] |= 0xf;
+		page_table[i] |= (addr + (uint32_64_t)(i-first_va_jump))<< 10;
 
 	}
+	#else
+
+	for(i=first_va_jump;i<=(last_va_jump);i++){
+
+		page_table[i] |= 0xf;
+		page_table[i] |= (addr + (uint32_64_t)(i-first_va_jump))<< 10;
+
+	}
+
+	#endif
 	
 }
 

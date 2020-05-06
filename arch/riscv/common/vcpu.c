@@ -113,7 +113,11 @@ void contextRestore(){
 
 	write_csr(mstatus, (read_csr(mstatus) & 0xFFFFFFFFFFFFEFFF));
 
+	#if defined(RISCV64)
 	write_csr(satp, (8ULL<<60) | (((uint64_t)vcpu->vm->id)<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
+	#else
+	write_csr(satp, (1<<31) | (((uint64_t)vcpu->vm->id)<<22) | (uint64_t)vcpu->vm->root_page_table >> 12);
+	#endif
 
 	asm volatile ("SFENCE.VMA");
 

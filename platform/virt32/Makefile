@@ -43,7 +43,7 @@ CONFIG_INTERVMCOMM_DRV = yes
 
 # Platform info
 CFLAGS = -DCPU_ID="RISCv 32"
-CFLAGS += -DCPU_ARCH="QEMU VIRT"
+CFLAGS += -DCPU_ARCH="QEMU VIRT 32"
 CFLAGS += -DCPU_FREQ=20000000
 
 # Define DEBUG_GUEST to yes if you desire to compile the guests for debug. The code optimization will be O0.
