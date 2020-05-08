@@ -45,8 +45,8 @@ uint32_t count = 0;
  * @brief Guest exit exception handler. 
  * 
  */
-void guest_exit_exception(uint64_t cause, uint64_t mepc){
-	uint64_t mstatus;
+void guest_exit_exception(uint32_64_t cause, uint32_64_t mepc){
+	uint32_64_t mstatus;
 
 	mstatus = read_csr(mstatus);
 
@@ -75,7 +75,7 @@ void guest_exit_exception(uint64_t cause, uint64_t mepc){
  * @brief General exception handler. 
  * 
  */
-void general_exception_handler(uint64_t mcause, uint64_t mepc){
+void general_exception_handler(uint32_64_t mcause, uint32_64_t mepc){
 	uint32_t cause = get_field(mcause, MCAUSE_MASK);
 
 	/* Interruption */

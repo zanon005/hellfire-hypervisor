@@ -141,8 +141,14 @@ static inline long set_field(uint64_t reg, long mask, long val){
 #define SSTATUS32_SD        0x80000000
 #define SSTATUS64_SD        0x8000000000000000
 
+#if defined(RISCV64)
 #define MCAUSE_INT			(1ULL<<63)
 #define MCAUSE_MASK			0x7FFFFFFFFFFFFFFF
+#else
+#define MCAUSE_INT			(1<<31)
+#define MCAUSE_MASK			0x7FFFFFFF
+#endif
+
 #define SATP_ASID_MASK		0x0FFFF00000000000
 #define SATP_PPN_MASK		0xFFFFFFFFFFF
 
