@@ -109,14 +109,14 @@ typedef struct vcpu_t {
 	enum vcpu_state state; 
 	uint32_t bgjobs;
 	uint32_t gprshadowset;
-	uint64_t cp0_registers[3];
-	uint64_t guestclt2;
+	uint32_64_t cp0_registers[3];
+	uint32_64_t guestclt2;
 	vm_t *vm;
-	uint64_t pc;
+	uint32_64_t pc;
 	uint32_t init;	
 	message_buffer_t messages;
-    uint64_t *gpr;
-    uint64_t fp_registers[32];
+    uint32_64_t *gpr;
+    uint32_64_t fp_registers[32];
 }vcpu_t;
 
 typedef struct {

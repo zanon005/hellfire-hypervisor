@@ -83,8 +83,6 @@ static void config_idle_cpu(){
  */
 void contextRestore(){
 
-	int64_t test;
-
 	vcpu_t *vcpu = vcpu_in_execution;
 
 	/* There are not VCPUs ready to execute. Put CPU in adle mode. */
@@ -102,21 +100,19 @@ void contextRestore(){
 		write_csr(sip, vcpu->cp0_registers[2] | vcpu->guestclt2);
 	}
 	
-	fp_context_restore((uint64_t*)vcpu->fp_registers);
+	fp_context_restore((uint32_64_t*)vcpu->fp_registers);
 
 
 	/* FIXME: Code for context restore should be here!!*/	
 	
 	setEPC(vcpu->pc);
 
-	/* FIXME: setting supervisor mode. */
-
-	write_csr(mstatus, (read_csr(mstatus) & 0xFFFFFFFFFFFFEFFF));
-
 	#if defined(RISCV64)
+	write_csr(mstatus, (read_csr(mstatus) & 0xFFFFFFFFFFFFEFFF));
 	write_csr(satp, (8ULL<<60) | (((uint64_t)vcpu->vm->id)<<44) | (uint64_t)vcpu->vm->root_page_table >> 12);
 	#else
-	write_csr(satp, (1<<31) | (((uint64_t)vcpu->vm->id)<<22) | (uint64_t)vcpu->vm->root_page_table >> 12);
+	write_csr(mstatus, (read_csr(mstatus) & 0xFFFFEFFF));
+	write_csr(satp, (1<<31) | (((uint32_64_t)vcpu->vm->id)<<22) | (uint32_64_t)vcpu->vm->root_page_table >> 12);
 	#endif
 
 	asm volatile ("SFENCE.VMA");

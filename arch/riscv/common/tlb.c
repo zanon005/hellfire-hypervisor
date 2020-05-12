@@ -51,7 +51,7 @@ void dumpPageTables(){
 	for (i=0; i<next_page; i++){
 		printf("Table %d at 0x%x\n", i, (page_Buffer + (i*PAGESIZE)));
 		for (j=0; j<512; j++){
-			uint64_t v = ((uint64_t*)(page_Buffer + (i*PAGESIZE)))[j];
+			uint32_64_t v = ((uint32_64_t*)(page_Buffer + (i*PAGESIZE)))[j];
 			if (v != 0){
 				printf("%d, %x\n", j, v);
 			}
