@@ -20,6 +20,6 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 
 #include <types.h>
 
-void guest_exit_exception(uint64_t cause, uint64_t mepc);
+void guest_exit_exception(uint32_64_t cause, uint32_64_t mepc);
 
 #endif 
