@@ -17,9 +17,11 @@
 #INC_DIRS += 
 
 #Aditional C flags
-CFLAGS += -DPIC32MZ  -DMEM_METHOD=MEM_STATIC -DHAS_PRINTF -DMAIN_HAS_NOARGC -DLITTLE_ENDIAN -finline-limit=200 -fselective-scheduling -falign-jumps=4 -falign-loops=4 -Wno-unused-result -Wno-pointer-to-int-cast 
+#tirei isso do CFLAGS += .... -DPIC32MZ
+CFLAGS +=  -DMEM_METHOD=MEM_STATIC -DHAS_PRINTF -DMAIN_HAS_NOARGC -DLITTLE_ENDIAN -finline-limit=200 -fselective-scheduling -falign-jumps=4 -falign-loops=4 -Wno-unused-result -Wno-pointer-to-int-cast 
 
-PORT_CFLAGS = -O2 -EL
+#Flag abaixo comentada pois nao estava funcionando na compilacao com o RiscV
+#PORT_CFLAGS = -O2 -EL
 XCFLAGS = -DPERFORMANCE_RUN=1
 XLFLAGS = -lrt -static
 FLAGS_STR = "$(PORT_CFLAGS) $(XCFLAGS) $(XLFLAGS) $(LFLAGS_END)"
