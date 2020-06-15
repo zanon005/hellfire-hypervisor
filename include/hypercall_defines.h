@@ -171,5 +171,12 @@ typedef void hypercall_t();
  */
 #define HCALL_GET_MTIMER_VALUE 21
 
+
+/* GET VM PRIORITY 
+ * v0 = identification number.
+ */
+#define HCALL_GET_VM_PRIORITY 22
+
+
 #endif
 

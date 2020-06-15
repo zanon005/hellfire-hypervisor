@@ -68,9 +68,9 @@ int main() {
 	/*printf("\nPerforming the coremark, wait...");
 
 	performance_counter_start(perf0.w, perf1.w);*/
-	
+	printf("\nExecutando a funcao coremain()... | apps/coremark/main.c\n");
 	coremain();    
-	
+	printf("\Funcao coremain() finalizou!!!!!!!!| apps/coremark/main.c\n");
 	/*performance_counter_stop(perfcount);
 	
 	printf("\nD-Cache Misses: %d", perfcount[0]);

@@ -64,6 +64,16 @@ void get_vm_id(){
 
 }
 
+
+/**
+ * @brief Hypercall implementation. Returns the VM priority number for the calling VM. 
+ * V0 guest register will be replaced with the VM priority. 
+ */
+void get_vm_priority(){        
+	MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->vm->priority);
+
+}
+
 /**
  * @brief Checks if a given VM is running.
  * V0 guest register will be replaced with 1 if the VM is running or MESSAGE_VCPU_NOT_INIT otherwise. MESSAGE_VCPU_NOT_FOUND 

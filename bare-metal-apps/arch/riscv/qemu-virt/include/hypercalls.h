@@ -60,6 +60,17 @@ asm volatile (                    \
  move %0, a0 " \
  : "=r" (__ret) : "I" (HCALL_GET_VM_ID) : "a0", "a7"); \
  __ret; })
+ 
+ 
+/* Get own guest Priority */
+#define get_guest_Priority() ({ int32_t __ret; \
+asm volatile (                    \
+"li a7, %1 \n\
+ ecall \n\
+ move %0, a0 " \
+ : "=r" (__ret) : "I" (HCALL_GET_VM_PRIORITY) : "a0", "a7"); \
+ __ret; })
+
 
  /* Ethernert link checker */
 #define eth_watch() ({ int32_t __ret; \
