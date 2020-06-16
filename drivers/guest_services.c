@@ -42,6 +42,16 @@ void get_vm_id(){
 	MoveToPreviousGuestGPR(REG_A0,vcpu_in_execution->vm->id);
 }
 
+
+/**
+ * @brief Hypercall implementation. Returns the VM priority number for the calling VM. 
+ * V0 guest register will be replaced with the VM priority. 
+ */
+void get_vm_priority(){
+	MoveToPreviousGuestGPR(REG_A0, vcpu_in_execution->priority);
+}
+
+
 /**
  * @brief Send a message for a target VM. 
  * Calling convention (guest registers): 
@@ -146,6 +156,11 @@ void intervm_recv_msg(){
 void guest_services_init(){
 	if (register_hypercall(get_vm_id, HCALL_GET_VM_ID) < 0){
 		ERROR("Error registering the HCALL_GET_VM_ID hypercall");
+		return;
+	}
+	
+	if (register_hypercall(get_vm_priority, HCALL_GET_VM_PRIORITY) < 0){
+		ERROR("Error registering the HCALL_GET_VM_PRIORITY hypercall");
 		return;
 	}
 

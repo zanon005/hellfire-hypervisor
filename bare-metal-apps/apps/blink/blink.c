@@ -23,6 +23,7 @@ This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCR
 #include <guest_interrupts.h>
 #include <platform.h>
 #include <io.h>
+//#include <inter-vm-comm.c>
 
 volatile int32_t t2 = 0;
 
@@ -33,9 +34,12 @@ void irq_timer(){
 
 
 int main() {
-
+  
 	asm volatile ("ecall");
-    
+	
+  printf("\n**************************INICIANDO MAIN 'BLINK.C'... ********************\n");
+  //printf("PRIORIDADE DA VM -> %d\n",get_vm_priority());
+  
 	interrupt_register(irq_timer, GUEST_TIMER_INT);
 	
 	START_TIMER();

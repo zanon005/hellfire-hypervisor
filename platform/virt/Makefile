@@ -14,9 +14,9 @@
 #This code was written by Carlos Moratelli at Embedded System Group (GSE) at PUCRS/Brazil.
 
 #Input CFG file for VMs configuration
-#CFG_FILE = cfg/sample-blink.cfg
+CFG_FILE = cfg/sample-blink.cfg
 #CFG_FILE = cfg/sample-ping-pong.cfg
-CFG_FILE = cfg/coremark.cfg
+#CFG_FILE = cfg/coremark.cfg
 #CFG_FILE = cfg/sample-ping-pong.cfg
 
 # CROSS Compiler 

@@ -1,2 +1,2 @@
 VM name 	code_size 	ram_size 	 address_start
-coremark 	65536 	65536 	0x80040000
+blink 	32768 	32768 	0x80040000

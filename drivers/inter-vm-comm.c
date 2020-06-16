@@ -70,7 +70,8 @@ void get_vm_id(){
  * V0 guest register will be replaced with the VM priority. 
  */
 void get_vm_priority(){        
-	MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->vm->priority);
+  //MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->vm->priority);
+	MoveToPreviousGuestGPR(RETURN_REG, vcpu_in_execution->priority);
 
 }
 
@@ -204,6 +205,11 @@ void intervm_recv_msg(){
 void intervm_init(){
 	if (register_hypercall(get_vm_id, HCALL_GET_VM_ID) < 0){
 		ERROR("Error registering the HCALL_GET_VM_ID hypercall");
+		return;
+	}
+	
+	if (register_hypercall(get_vm_priority, HCALL_GET_VM_PRIORITY) < 0){
+		ERROR("Error registering the HCALL_GET_VM_PRIORITY hypercall");
 		return;
 	}
     
