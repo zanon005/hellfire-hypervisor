@@ -38,7 +38,10 @@ int main() {
 	asm volatile ("ecall");
 	
   printf("\n**************************INICIANDO MAIN 'BLINK.C'... ********************\n");
-  //printf("PRIORIDADE DA VM -> %d\n",get_vm_priority());
+  printf("PRIORIDADE DA VM -> %d\n",get_guest_Priority());
+  printf("ALTERANDO A PRIORIDADE DA VM PARA 200...\n",set_guest_Priority(200));
+  printf("(teste1)PRIORIDADE DA VM DEPOIS DO SET -> %d\n",get_guest_Priority());
+  printf("(teste2)PRIORIDADE DA VM DEPOIS DO SET -> %d\n",get_guest_Priority());
   
 	interrupt_register(irq_timer, GUEST_TIMER_INT);
 	

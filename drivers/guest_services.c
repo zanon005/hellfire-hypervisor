@@ -43,13 +43,6 @@ void get_vm_id(){
 }
 
 
-/**
- * @brief Hypercall implementation. Returns the VM priority number for the calling VM. 
- * V0 guest register will be replaced with the VM priority. 
- */
-void get_vm_priority(){
-	MoveToPreviousGuestGPR(REG_A0, vcpu_in_execution->priority);
-}
 
 
 /**

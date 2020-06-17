@@ -76,6 +76,24 @@ void get_vm_priority(){
 }
 
 /**
+ * @brief Hypercall implementation. Sets the VM priority number for the calling VM.
+ * Calling convention (guest registers): 
+ *   a0 = Value
+ *   V0
+ */
+void set_vm_priority(){
+   vcpu_t* vcpu = vcpu_in_execution;
+         
+  /* Getting parameters from guest */
+	uint32_t value  = MoveFromPreviousGuestGPR(REG_A0);
+	
+	vcpu->priority = value;
+	
+	/* Return success to sender */
+	//MoveToPreviousGuestGPR(RETURN_REG, 1);
+}
+
+/**
  * @brief Checks if a given VM is running.
  * V0 guest register will be replaced with 1 if the VM is running or MESSAGE_VCPU_NOT_INIT otherwise. MESSAGE_VCPU_NOT_FOUND 
  * can be returned if the target VM is not running. 
@@ -210,6 +228,11 @@ void intervm_init(){
 	
 	if (register_hypercall(get_vm_priority, HCALL_GET_VM_PRIORITY) < 0){
 		ERROR("Error registering the HCALL_GET_VM_PRIORITY hypercall");
+		return;
+	}
+	
+	if (register_hypercall(set_vm_priority, HCALL_SET_VM_PRIORITY) < 0){
+		ERROR("Error registering the HCALL_SET_VM_PRIORITY hypercall");
 		return;
 	}
     

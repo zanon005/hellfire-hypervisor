@@ -50,9 +50,8 @@ asm volatile (                    \
  move %0, a0 " \
  : "=r" (__ret) : "r" ((uint32_t) (source_id)), "r" ((uint32_t) (msg)), "I" (HCALL_IPC_RECV_MSG) : "a0", "a1", "a7"); \
  __ret; })
-
  
-/* Get own guest ID  */
+ /* Get own guest ID  */
 #define get_guestid() ({ int32_t __ret; \
 asm volatile (                    \
 "li a7, %1 \n\
@@ -70,7 +69,16 @@ asm volatile (                    \
  move %0, a0 " \
  : "=r" (__ret) : "I" (HCALL_GET_VM_PRIORITY) : "a0", "a7"); \
  __ret; })
-
+ 
+/* Set own guest Priority*/
+#define set_guest_Priority(value) ({ int32_t __ret; \
+asm volatile (                    \
+"move a0, %z1 \n \
+ li a7, %2 \n\
+ ecall \n\
+ move %0, a0" \
+ : "=r" (__ret) : "r" ((uint32_t) (value)), "I" (HCALL_SET_VM_PRIORITY) : "a0", "a7"); \
+ __ret; })
 
  /* Ethernert link checker */
 #define eth_watch() ({ int32_t __ret; \
